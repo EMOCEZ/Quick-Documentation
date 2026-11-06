@@ -1,33 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Documentation</title>
     <link rel="stylesheet" href="style.css">
+    <!-- 引入 Markdown 渲染库 -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <main id="content">
-        <p>Loading document...</p>
+        <p>正在加载文档...</p>
     </main>
 
     <script>
-        // 获取 URL 参数，默认读取 README
+        // 1. 获取 URL 中的参数，比如 ?cursedgold
         const urlParams = new URLSearchParams(window.location.search);
-        const pageName = urlParams.keys().next().value || 'README';
+        // 如果没写参数，默认读取 cursedgold
+        const pageName = urlParams.keys().next().value || 'cursedgold';
+        
+        // 2. 动态设置网页标题
+        document.title = `${pageName} - Quick Documentation`;
 
+        // 3. 读取对应的 markdown 文件
         fetch(`${pageName}.md`)
             .then(response => {
-                if (!response.ok) throw new Error('File not found');
+                if (!response.ok) throw new Error('找不到文件');
                 return response.text();
             })
             .then(text => {
-                // 解析并注入内容
+                // 将 Markdown 解析为 HTML 并注入页面
                 document.getElementById('content').innerHTML = marked.parse(text);
             })
             .catch(err => {
-                document.getElementById('content').innerHTML = `<h1>404 Not Found</h1><p>Failed to load: ${pageName}.md</p>`;
+                document.getElementById('content').innerHTML = `
+                    <h1>404 Not Found</h1>
+                    <p>无法加载文档：<code>${pageName}.md</code></p>
+                `;
             });
     </script>
 </body>
