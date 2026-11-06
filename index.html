@@ -17,7 +17,7 @@
         // 1. 获取 URL 中的参数，比如 ?cursedgold
         const urlParams = new URLSearchParams(window.location.search);
         // 如果没写参数，默认读取 cursedgold
-        const pageName = urlParams.keys().next().value || 'cursedgold';
+        const pageName = urlParams.keys().next().value || 'README';
         
         // 2. 动态设置网页标题
         document.title = `${pageName} - Quick Documentation`;
