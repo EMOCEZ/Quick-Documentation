@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,51 +8,13 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <span>Quick Docs</span>
-        <button id="theme-toggle">🌙 Dark</button>
-    </div>
-
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Sidebar TOC -->
-        <aside id="sidebar">
-            <h3>Contents</h3>
-            <ul id="toc-list"></ul>
-        </aside>
-        
-        <!-- Content Area -->
-        <main id="content">
-            <p>Loading document...</p>
-        </main>
-    </div>
+    <main id="content">
+        <p>Loading document...</p>
+    </main>
 
     <script>
-        // === 1. Theme Toggle ===
-        const themeBtn = document.getElementById('theme-toggle');
-        const htmlEl = document.documentElement;
-
-        const savedTheme = localStorage.getItem('theme') || 
-            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        htmlEl.setAttribute('data-theme', savedTheme);
-        updateButtonText(savedTheme);
-
-        themeBtn.addEventListener('click', () => {
-            const current = htmlEl.getAttribute('data-theme');
-            const next = current === 'light' ? 'dark' : 'light';
-            htmlEl.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-            updateButtonText(next);
-        });
-
-        function updateButtonText(theme) {
-            themeBtn.textContent = theme === 'light' ? '🌙 Dark' : '☀️ Light';
-        }
-
-        // === 2. Load Markdown & Generate TOC ===
+        // 获取 URL 参数，默认读取 README
         const urlParams = new URLSearchParams(window.location.search);
-        // Default to 'README' if no parameter is provided
         const pageName = urlParams.keys().next().value || 'README';
 
         fetch(`${pageName}.md`)
@@ -61,44 +23,12 @@
                 return response.text();
             })
             .then(text => {
-                const html = marked.parse(text);
-                document.getElementById('content').innerHTML = html;
-                generateTOC();
+                // 解析并注入内容
+                document.getElementById('content').innerHTML = marked.parse(text);
             })
             .catch(err => {
-                document.getElementById('content').innerHTML = `<h1>404</h1><p>Failed to load: ${pageName}.md</p>`;
+                document.getElementById('content').innerHTML = `<h1>404 Not Found</h1><p>Failed to load: ${pageName}.md</p>`;
             });
-
-        // Generate TOC from h2 and h3 tags
-        function generateTOC() {
-            const tocList = document.getElementById('toc-list');
-            const headings = document.querySelectorAll('#content h2, #content h3');
-            
-            if (headings.length === 0) {
-                document.getElementById('sidebar').style.display = 'none';
-                return;
-            }
-
-            headings.forEach((heading, index) => {
-                const id = `heading-${index}`;
-                heading.id = id;
-
-                const li = document.createElement('li');
-                li.className = heading.tagName.toLowerCase();
-                
-                const a = document.createElement('a');
-                a.href = `#${id}`;
-                a.textContent = heading.textContent;
-                
-                a.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    heading.scrollIntoView({ behavior: 'smooth' });
-                });
-
-                li.appendChild(a);
-                tocList.appendChild(li);
-            });
-        }
     </script>
 </body>
 </html>
