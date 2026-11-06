@@ -22,21 +22,15 @@
         // 2. 动态设置网页标题
         document.title = `${pageName} - Quick Documentation`;
 
-        // 3. 读取对应的 markdown 文件
-        fetch(`${pageName}.md`)
+                // 3. 读取对应的 markdown 文件（加上时间戳防止缓存）
+        // 🚨 核心修复：在文件名后面加个 ?t=当前时间，强制浏览器去服务器下载最新版
+        fetch(`${pageName}.md?t=${new Date().getTime()}`)
             .then(response => {
                 if (!response.ok) throw new Error('找不到文件');
                 return response.text();
             })
             .then(text => {
-                // 👇 核心修复：开启渲染为 HTML 的权限，保留链接
-                marked.setOptions({
-                    sanitize: false, // 旧版标志，允许 HTML
-                    headerIds: false,
-                    mangle: false
-                });
-        
-                // 渲染并注入
+                // 将 Markdown 解析为 HTML 并注入页面
                 document.getElementById('content').innerHTML = marked.parse(text);
             })
             .catch(err => {
