@@ -29,7 +29,14 @@
                 return response.text();
             })
             .then(text => {
-                // 将 Markdown 解析为 HTML 并注入页面
+                // 👇 核心修复：开启渲染为 HTML 的权限，保留链接
+                marked.setOptions({
+                    sanitize: false, // 旧版标志，允许 HTML
+                    headerIds: false,
+                    mangle: false
+                });
+        
+                // 渲染并注入
                 document.getElementById('content').innerHTML = marked.parse(text);
             })
             .catch(err => {
