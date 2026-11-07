@@ -1,3 +1,9 @@
+---
+theme: red
+title: "cursed gold"
+sidebar-title: "Module Documentation"
+---
+
 This is a Minecraft mod; the link is here.
 
 [https://www.curseforge.com/minecraft/mc-mods/cursed-gold](https://www.curseforge.com/minecraft/mc-mods/cursed-gold)
