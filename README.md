@@ -9,6 +9,7 @@ This project used AI for assistance.
 
 # Some sample documents
 [cursed gold](https://emocez.github.io/Quick-Documentation/?cursedgold)
+
 [pi](https://emocez.github.io/Quick-Documentation/?pi)
 
 # How do I submit a new document?
