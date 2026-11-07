@@ -23,3 +23,6 @@ This project used AI for assistance.
 Once submitted, I will save it as `ender-dragon.md` and deploy it, making it accessible via `?ender-dragon`.
 
 Note: To keep the repository clean, please do not include `<script>` tags in your documents (while they might technically run, I will remove them). Sticking to text, images, and tables is the best approach.
+
+# Personalization
+You can toggle between dark and light modes by clicking the sun/moon icon next to the table of contents heading, or long-press to upload a background.
