@@ -29,6 +29,9 @@
             --pre-text: #f8fafc;
             --blockquote-bg: rgba(0, 0, 0, 0.02);
             --blockquote-text: #475569;
+            --glass-blur: 14px;
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.55);
         }
 
         /* ---------- Base Dark Mode ---------- */
@@ -47,6 +50,8 @@
             --pre-text: #e2e8f0;
             --blockquote-bg: rgba(255, 255, 255, 0.03);
             --blockquote-text: #cbd5e1;
+            --glass-bg: rgba(17, 26, 46, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.12);
         }
 
         /* ---------- 7 Accent Colors ---------- */
@@ -291,6 +296,57 @@
             .main-content { padding: 1rem; justify-content: flex-start; }
             #content { padding: 1.5rem; }
         }
+
+                /* ---------- Background Image + Glass UI ---------- */
+        body.has-bg {
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        /* 让侧边栏和内容卡片变毛玻璃 */
+        html[data-glass="on"] .sidebar,
+        html[data-glass="on"] #content {
+            background: var(--glass-bg) !important;
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+            backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+            border-color: var(--glass-border) !important;
+        }
+        html[data-glass="on"] .sidebar {
+            box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+        }
+        html[data-glass="on"] #content {
+            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+        }
+
+        /* 背景开启时，避免 pre/code 过于透明影响可读性 */
+        html[data-glass="on"] #content pre {
+            background: var(--pre-bg) !important;
+        }
+
+        /* 上传中提示 */
+        .bg-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%) translateY(12px);
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            box-shadow: 0 6px 20px var(--shadow);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 9999;
+        }
+        .bg-toast.visible {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -309,6 +365,9 @@
             <li class="toc-placeholder">No headings yet</li>
         </ul>
     </aside>
+
+    <input type="file" id="bg-file-input" accept="image/*" style="display:none">
+    <div class="bg-toast" id="bg-toast"></div>
 
     <div class="main-content">
         <main id="content">
@@ -397,11 +456,208 @@
             let currentTheme = getPreferredTheme();
             applyTheme(currentTheme);
 
-            themeToggleBtn.addEventListener('click', () => {
+            // ============================================================
+            // 主题按钮：点击切换明暗；长按上传背景图；有背景时点击只关闭/再长按替换
+            // ============================================================
+            const BG_DB_NAME = 'qd-bg-db';
+            const BG_STORE = 'bg';
+            const BG_KEY = 'current';
+            const GLASS_KEY = 'qd-glass';      // 'on' / 'off'
+            const bgFileInput = document.getElementById('bg-file-input');
+            const bgToast = document.getElementById('bg-toast');
+
+            let bgObjectUrl = null;
+
+            function openBgDB() {
+                return new Promise((resolve, reject) => {
+                    const req = indexedDB.open(BG_DB_NAME, 1);
+                    req.onupgradeneeded = () => {
+                        const db = req.result;
+                        if (!db.objectStoreNames.contains(BG_STORE)) db.createObjectStore(BG_STORE);
+                    };
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
+                });
+            }
+
+            async function saveBgBlob(blob) {
+                const db = await openBgDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(BG_STORE, 'readwrite');
+                    tx.objectStore(BG_STORE).put(blob, BG_KEY);
+                    tx.oncomplete = () => resolve();
+                    tx.onerror = () => reject(tx.error);
+                });
+            }
+
+            async function loadBgBlob() {
+                const db = await openBgDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(BG_STORE, 'readonly');
+                    const req = tx.objectStore(BG_STORE).get(BG_KEY);
+                    req.onsuccess = () => resolve(req.result || null);
+                    req.onerror = () => reject(req.error);
+                });
+            }
+
+            async function deleteBgBlob() {
+                const db = await openBgDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(BG_STORE, 'readwrite');
+                    tx.objectStore(BG_STORE).delete(BG_KEY);
+                    tx.oncomplete = () => resolve();
+                    tx.onerror = () => reject(tx.error);
+                });
+            }
+
+            function showBgToast(msg) {
+                bgToast.textContent = msg;
+                bgToast.classList.add('visible');
+                clearTimeout(showBgToast._t);
+                showBgToast._t = setTimeout(() => bgToast.classList.remove('visible'), 2000);
+            }
+
+            function applyBackground(blob) {
+                if (bgObjectUrl) URL.revokeObjectURL(bgObjectUrl);
+                bgObjectUrl = URL.createObjectURL(blob);
+                document.body.style.backgroundImage = `url("${bgObjectUrl}")`;
+                document.body.classList.add('has-bg');
+                htmlEl.setAttribute('data-glass', 'on');
+                localStorage.setItem(GLASS_KEY, 'on');
+            }
+
+            function clearBackground() {
+                if (bgObjectUrl) {
+                    URL.revokeObjectURL(bgObjectUrl);
+                    bgObjectUrl = null;
+                }
+                document.body.style.backgroundImage = '';
+                document.body.classList.remove('has-bg');
+                htmlEl.setAttribute('data-glass', 'off');
+                localStorage.setItem(GLASS_KEY, 'off');
+            }
+
+            // 页面加载时恢复
+            (async function restoreBackground() {
+                try {
+                    const blob = await loadBgBlob();
+                    if (blob && localStorage.getItem(GLASS_KEY) === 'on') {
+                        applyBackground(blob);
+                    }
+                } catch (e) { /* 忽略 */ }
+            })();
+
+            // 点击 vs 长按
+            let pressTimer = null;
+            let longPressed = false;
+            const LONG_PRESS_MS = 550;
+
+            function startPress() {
+                longPressed = false;
+                clearTimeout(pressTimer);
+                pressTimer = setTimeout(() => {
+                    longPressed = true;
+                    // 长按：打开文件选择
+                    bgFileInput.value = '';
+                    bgFileInput.click();
+                }, LONG_PRESS_MS);
+            }
+            function cancelPress() {
+                clearTimeout(pressTimer);
+            }
+
+            themeToggleBtn.addEventListener('pointerdown', (e) => {
+                if (e.button !== undefined && e.button !== 0) return;
+                startPress();
+            });
+            themeToggleBtn.addEventListener('pointerup', cancelPress);
+            themeToggleBtn.addEventListener('pointerleave', cancelPress);
+            themeToggleBtn.addEventListener('pointercancel', cancelPress);
+            // 阻止长按触发右键菜单/选择
+            themeToggleBtn.addEventListener('contextmenu', (e) => e.preventDefault());
+
+            themeToggleBtn.addEventListener('click', (e) => {
+                if (longPressed) {
+                    // 长按已处理，忽略这次 click
+                    longPressed = false;
+                    e.preventDefault();
+                    return;
+                }
+                // 原有切换明暗逻辑；但如果当前有背景，则点击优先关闭背景
+                if (document.body.classList.contains('has-bg')) {
+                    clearBackground();
+                    showBgToast('背景已关闭，长按可重新上传');
+                    return;
+                }
                 currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
                 applyTheme(currentTheme);
                 localStorage.setItem(THEME_KEY, currentTheme);
             });
+
+            // 文件选择后处理
+            bgFileInput.addEventListener('change', async () => {
+                const file = bgFileInput.files && bgFileInput.files[0];
+                if (!file) return;
+                if (!file.type.startsWith('image/')) {
+                    showBgToast('请选择图片文件');
+                    return;
+                }
+                showBgToast('正在保存背景…');
+                try {
+                    // 可选：压缩过大图片
+                    const blob = await maybeCompressImage(file);
+                    await saveBgBlob(blob);
+                    applyBackground(blob);
+                    showBgToast('背景已应用，点击日月按钮可关闭');
+                } catch (err) {
+                    console.error(err);
+                    showBgToast('保存失败：' + (err && err.message ? err.message : '未知错误'));
+                }
+            });
+
+            // 简单压缩：超过 4MB 或超大尺寸时缩放
+            async function maybeCompressImage(file) {
+                const MAX_BYTES = 4 * 1024 * 1024;
+                const MAX_DIM = 2560;
+                if (file.size <= MAX_BYTES) {
+                    // 也检查尺寸
+                    const dim = await getImageSize(file).catch(() => null);
+                    if (!dim || (dim.w <= MAX_DIM && dim.h <= MAX_DIM)) return file;
+                }
+                const dim = await getImageSize(file).catch(() => null);
+                if (!dim) return file;
+
+                const scale = Math.min(1, MAX_DIM / Math.max(dim.w, dim.h));
+                const w = Math.round(dim.w * scale);
+                const h = Math.round(dim.h * scale);
+
+                const bitmap = await createImageBitmap(file);
+                const canvas = document.createElement('canvas');
+                canvas.width = w; canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(bitmap, 0, 0, w, h);
+                bitmap.close && bitmap.close();
+
+                const type = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+                const blob = await new Promise(res => canvas.toBlob(res, type, 0.88));
+                return blob || file;
+            }
+
+            function getImageSize(file) {
+                return new Promise((resolve, reject) => {
+                    const url = URL.createObjectURL(file);
+                    const img = new Image();
+                    img.onload = () => {
+                        URL.revokeObjectURL(url);
+                        resolve({ w: img.naturalWidth, h: img.naturalHeight });
+                    };
+                    img.onerror = () => {
+                        URL.revokeObjectURL(url);
+                        reject(new Error('图片加载失败'));
+                    };
+                    img.src = url;
+                });
+            }
 
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
                 if (!localStorage.getItem(THEME_KEY)) {
