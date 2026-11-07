@@ -524,6 +524,15 @@
                 document.body.classList.add('has-bg');
                 htmlEl.setAttribute('data-glass', 'on');
                 localStorage.setItem(GLASS_KEY, 'on');
+
+                // 有背景时强制暗色（亮色毛玻璃不好看）
+                currentTheme = 'dark';
+                applyTheme('dark');
+                localStorage.setItem(THEME_KEY, 'dark');
+                // 记录“进入背景前”的主题，关闭背景时恢复
+                if (!localStorage.getItem('qd-theme-before-bg')) {
+                    localStorage.setItem('qd-theme-before-bg', getPreferredTheme() === 'dark' ? 'light' : getPreferredTheme());
+                }
             }
 
             function clearBackground() {
@@ -535,6 +544,15 @@
                 document.body.classList.remove('has-bg');
                 htmlEl.setAttribute('data-glass', 'off');
                 localStorage.setItem(GLASS_KEY, 'off');
+
+                // 恢复进入背景前的主题偏好
+                const prev = localStorage.getItem('qd-theme-before-bg');
+                if (prev === 'light' || prev === 'dark') {
+                    currentTheme = prev;
+                    applyTheme(prev);
+                    localStorage.setItem(THEME_KEY, prev);
+                    localStorage.removeItem('qd-theme-before-bg');
+                }
             }
 
             // 页面加载时恢复
