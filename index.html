@@ -6,7 +6,7 @@
     <title>Quick Documentation</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es6/tex-mml-chtml.js"></script>
     <style>
         /* ---------- Base Variables ---------- */
         :root {
@@ -49,9 +49,7 @@
             --blockquote-text: #cbd5e1;
         }
 
-        /* ---------- 7 Accent Colors (Light & Dark) ---------- */
-        
-        /* Blue (Default) */
+        /* ---------- 7 Accent Colors ---------- */
         html[data-accent="blue"] {
             --bg: #f8fafc; --surface: #ffffff; --surface-2: #f1f5f9;
             --border: #e2e8f0; --border-strong: #cbd5e1;
@@ -61,8 +59,6 @@
             --bg: #0b1120; --surface: #111a2e; --surface-2: #1b263e; --border: #2a3b5c;
             --accent: #60a5fa; --accent-hover: #93c5fd; --accent-soft: #1e3a5f; --accent-border: #60a5fa;
         }
-
-        /* Red */
         html[data-accent="red"] {
             --bg: #fefafa; --surface: #ffffff; --surface-2: #fef2f2;
             --border: #fee2e2; --border-strong: #fca5a5;
@@ -72,8 +68,6 @@
             --bg: #140b0b; --surface: #1f1010; --surface-2: #2c1515; --border: #4a2222;
             --accent: #f87171; --accent-hover: #fca5a5; --accent-soft: #4c1d1d; --accent-border: #f87171;
         }
-
-        /* Green */
         html[data-accent="green"] {
             --bg: #f9fdfa; --surface: #ffffff; --surface-2: #f0fdf4;
             --border: #dcfce7; --border-strong: #86efac;
@@ -83,8 +77,6 @@
             --bg: #0a140e; --surface: #101f15; --surface-2: #182e1f; --border: #264d33;
             --accent: #4ade80; --accent-hover: #86efac; --accent-soft: #14432a; --accent-border: #4ade80;
         }
-
-        /* Purple */
         html[data-accent="purple"] {
             --bg: #fcfbfe; --surface: #ffffff; --surface-2: #f5f3ff;
             --border: #ede9fe; --border-strong: #c4b5fd;
@@ -94,8 +86,6 @@
             --bg: #100a1c; --surface: #181026; --surface-2: #221736; --border: #38265c;
             --accent: #a78bfa; --accent-hover: #c4b5fd; --accent-soft: #2e1f5e; --accent-border: #a78bfa;
         }
-
-        /* Orange */
         html[data-accent="orange"] {
             --bg: #fffaf7; --surface: #ffffff; --surface-2: #fff7ed;
             --border: #ffedd5; --border-strong: #fdba74;
@@ -105,8 +95,6 @@
             --bg: #150d08; --surface: #20140d; --surface-2: #2e1c12; --border: #4a2c1c;
             --accent: #fb923c; --accent-hover: #fdba74; --accent-soft: #4a2508; --accent-border: #fb923c;
         }
-
-        /* Pink */
         html[data-accent="pink"] {
             --bg: #fffbfd; --surface: #ffffff; --surface-2: #fdf2f8;
             --border: #fce7f3; --border-strong: #f9a8d4;
@@ -116,8 +104,6 @@
             --bg: #140a10; --surface: #1f101a; --surface-2: #2e1626; --border: #4a233d;
             --accent: #f472b6; --accent-hover: #f9a8d4; --accent-soft: #4a1530; --accent-border: #f472b6;
         }
-
-        /* Teal */
         html[data-accent="teal"] {
             --bg: #f8fdfc; --surface: #ffffff; --surface-2: #f0fdfa;
             --border: #ccfbf1; --border-strong: #5eead4;
@@ -162,6 +148,8 @@
             top: 0;
             box-shadow: 2px 0 8px var(--shadow-sidebar);
             transition: background-color 0.25s ease, border-color 0.25s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar.hidden {
@@ -213,11 +201,10 @@
             list-style: none;
             padding-left: 0;
             margin: 0;
+            flex: 1; /* 撑开底部 */
         }
 
-        .toc-list li {
-            margin: 0.3rem 0;
-        }
+        .toc-list li { margin: 0.3rem 0; }
 
         .toc-list a {
             display: block;
@@ -231,16 +218,10 @@
             border-left: 3px solid transparent;
         }
 
-        .toc-list a:hover {
-            background-color: var(--toc-hover-bg);
-            color: var(--text);
-        }
-
+        .toc-list a:hover { background-color: var(--toc-hover-bg); color: var(--text); }
         .toc-list a.active {
-            background-color: var(--accent-soft);
-            color: var(--accent);
-            border-left-color: var(--accent-border);
-            font-weight: 500;
+            background-color: var(--accent-soft); color: var(--accent);
+            border-left-color: var(--accent-border); font-weight: 500;
         }
 
         .toc-level-1 a { font-weight: 600; font-size: 0.95rem; padding-left: 0.5rem; }
@@ -250,11 +231,7 @@
         .toc-level-5 a { padding-left: 3.5rem; font-size: 0.8rem; }
         .toc-level-6 a { padding-left: 4.25rem; font-size: 0.75rem; }
 
-        .toc-placeholder {
-            color: var(--text-faint);
-            font-size: 0.85rem;
-            padding-left: 0.5rem;
-        }
+        .toc-placeholder { color: var(--text-faint); font-size: 0.85rem; padding-left: 0.5rem; }
 
         /* ---------- Main Content ---------- */
         .main-content {
@@ -263,9 +240,9 @@
             max-width: 1000px;
             margin: 0 auto;
             overflow-x: auto;
-            display: flex;              /* 让内容居中 */
+            display: flex;
             flex-direction: column;
-            justify-content: center;    /* 404时垂直居中 */
+            justify-content: center; 
         }
 
         #content {
@@ -278,11 +255,7 @@
             transition: background-color 0.25s ease, border-color 0.25s ease;
         }
 
-        .loading {
-            color: var(--text-muted);
-            font-style: italic;
-            padding: 1rem 0;
-        }
+        .loading { color: var(--text-muted); font-style: italic; padding: 1rem 0; }
 
         /* ---------- Error Box ---------- */
         .error-box {
@@ -293,25 +266,13 @@
             padding: 1rem 1.25rem;
             margin-top: 1rem;
         }
-        .error-box h3 {
-            margin-top: 0 !important;
-            font-size: 1.1rem !important;
-            color: var(--error);
-            border: none !important;
-        }
-        .error-box p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
+        .error-box h3 { margin-top: 0 !important; font-size: 1.1rem !important; color: var(--error); border: none !important; }
+        .error-box p { font-size: 0.95rem; color: var(--text-muted); }
 
-        /* Markdown Styles */
+        /* ---------- Markdown Styles ---------- */
         #content h1, #content h2, #content h3, #content h4, #content h5, #content h6 {
-            margin-top: 1.5em;
-            margin-bottom: 0.6em;
-            font-weight: 600;
-            line-height: 1.3;
-            scroll-margin-top: 20px;
-            color: var(--text);
+            margin-top: 1.5em; margin-bottom: 0.6em;
+            font-weight: 600; line-height: 1.3; scroll-margin-top: 20px; color: var(--text);
         }
         #content h1 { font-size: 2rem; border-bottom: 2px solid var(--accent-border); padding-bottom: 0.3rem; }
         #content h2 { font-size: 1.6rem; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
@@ -322,87 +283,81 @@
         #content a:hover { text-decoration: underline; color: var(--accent-hover); }
         
         #content code {
-            background: var(--code-bg);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.9em;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            color: var(--text);
+            background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 4px;
+            font-size: 0.9em; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--text);
         }
-        
         #content pre {
-            background: var(--pre-bg);
-            color: var(--pre-text);
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 1rem 0;
+            background: var(--pre-bg); color: var(--pre-text); padding: 1rem;
+            border-radius: 8px; overflow-x: auto; margin: 1rem 0;
         }
-        
-        #content pre code {
-            background: transparent;
-            padding: 0;
-            color: inherit;
-            font-size: 0.9em;
-        }
-        
+        #content pre code { background: transparent; padding: 0; color: inherit; font-size: 0.9em; }
         #content blockquote {
-            border-left: 4px solid var(--accent-border);
-            margin: 1rem 0;
-            padding: 0.5rem 0 0.5rem 1rem;
-            color: var(--blockquote-text);
-            background: var(--blockquote-bg);
-            border-radius: 0 6px 6px 0;
+            border-left: 4px solid var(--accent-border); margin: 1rem 0;
+            padding: 0.5rem 0 0.5rem 1rem; color: var(--blockquote-text);
+            background: var(--blockquote-bg); border-radius: 0 6px 6px 0;
         }
-        #content ul, #content ol {
-            padding-left: 1.8rem;
-            margin: 0.8rem 0;
-        }
-        #content img {
-            max-width: 100%;
-            border-radius: 6px;
-        }
-        #content hr {
-            border: none;
+        #content ul, #content ol { padding-left: 1.8rem; margin: 0.8rem 0; }
+        #content img { max-width: 100%; border-radius: 6px; }
+        #content hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+        #content table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        #content th, #content td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
+        #content th { background: var(--surface-2); border-bottom: 2px solid var(--accent-border); }
+
+        /* ---------- Language Selector ---------- */
+        .lang-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
             border-top: 1px solid var(--border);
-            margin: 1.5rem 0;
+            display: none; /* 默认隐藏，如果有语言才显示 */
         }
-        #content table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 1rem 0;
+        .lang-footer.visible {
+            display: block;
         }
-        #content th, #content td {
-            border: 1px solid var(--border);
-            padding: 0.5rem 0.75rem;
-            text-align: left;
+        .lang-footer-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        #content th {
+        .lang-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .lang-links a {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
             background: var(--surface-2);
-            border-bottom: 2px solid var(--accent-border);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        .lang-links a:hover {
+            background: var(--accent-soft);
+            border-color: var(--accent-border);
+            color: var(--accent);
+        }
+        .lang-links a.current {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            pointer-events: none;
         }
 
         /* ---------- Mobile ---------- */
         @media (max-width: 700px) {
-            body {
-                flex-direction: column;
-            }
+            body { flex-direction: column; }
             .sidebar {
-                width: 100%;
-                height: auto;
-                max-height: 220px;
-                position: relative;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
-                padding: 1rem;
+                width: 100%; height: auto; max-height: 220px;
+                position: relative; border-right: none;
+                border-bottom: 1px solid var(--border); padding: 1rem;
             }
-            .main-content {
-                padding: 1rem;
-                justify-content: flex-start; /* 手机端靠上 */
-            }
-            #content {
-                padding: 1.5rem;
-            }
+            .main-content { padding: 1rem; justify-content: flex-start; }
+            #content { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -410,9 +365,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h3 id="toc-title">Table of Contents</h3>
-            <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
-                <!-- Icon injected by JS -->
-            </button>
+            <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme"></button>
         </div>
         <ul class="toc-list" id="toc-list">
             <li class="toc-placeholder">No headings yet</li>
@@ -423,13 +376,17 @@
         <main id="content">
             <p class="loading">loading...</p>
         </main>
+        
+        <!-- 语言切换底部 UI -->
+        <div class="lang-footer" id="lang-footer">
+            <div class="lang-footer-title">Available Languages</div>
+            <div class="lang-links" id="lang-links"></div>
+        </div>
     </div>
 
     <script>
         (function() {
-            // ============================================================
-            // 0. 解析 URL 参数
-            // ============================================================
+            // 1. 解析 URL 参数
             const searchStr = window.location.search;
             const urlParams = {};
             let pageName = 'README';
@@ -451,16 +408,13 @@
 
             const ACCENTS = ['blue', 'red', 'green', 'purple', 'orange', 'pink', 'teal'];
 
-            // ============================================================
-            // 1. 主题逻辑 (提前应用主题色)
-            // ============================================================
+            // 2. 主题逻辑
             const THEME_KEY = 'qd-theme';
             const htmlEl = document.documentElement;
             const themeToggleBtn = document.getElementById('theme-toggle');
             const tocTitleEl = document.getElementById('toc-title');
             const sidebarEl = document.getElementById('sidebar');
 
-            // 提前设置主题色，防止 404 时掉回默认冷色
             const initThemeColor = urlParams['theme'];
             if (initThemeColor && ACCENTS.includes(initThemeColor)) {
                 htmlEl.setAttribute('data-accent', initThemeColor);
@@ -507,9 +461,7 @@
             const contentEl = document.getElementById('content');
             const tocListEl = document.getElementById('toc-list');
 
-            // ============================================================
-            // 2. Front-matter 解析
-            // ============================================================
+            // 3. Front-matter 解析
             function parseFrontMatter(text) {
                 const meta = {};
                 const result = { meta, body: text };
@@ -569,9 +521,7 @@
                 }
             }
 
-            // ============================================================
-            // 3. Generate TOC
-            // ============================================================
+            // 4. TOC 逻辑
             function generateTOC() {
                 const headings = contentEl.querySelectorAll('h1, h2, h3, h4, h5, h6');
                 if (headings.length === 0) {
@@ -580,7 +530,6 @@
                 }
 
                 const tocItems = [];
-
                 headings.forEach((heading, index) => {
                     if (!heading.id) {
                         const text = heading.textContent.trim().toLowerCase()
@@ -628,24 +577,13 @@
                 setupScrollSpy(headings);
             }
 
-            // ============================================================
-            // 4. Scroll spy highlight
-            // ============================================================
             function setupScrollSpy(headings) {
                 if (headings.length === 0) return;
-
                 const tocLinks = tocListEl.querySelectorAll('a');
                 const linkMap = new Map();
-                tocLinks.forEach(link => {
-                    linkMap.set(link.dataset.target, link);
-                });
+                tocLinks.forEach(link => linkMap.set(link.dataset.target, link));
 
-                const observerOptions = {
-                    root: null,
-                    rootMargin: '0px 0px -20% 0px',
-                    threshold: 0.1
-                };
-
+                const observerOptions = { root: null, rootMargin: '0px 0px -20% 0px', threshold: 0.1 };
                 let activeId = null;
 
                 const observer = new IntersectionObserver((entries) => {
@@ -654,9 +592,7 @@
 
                     let topEntry = visibleEntries[0];
                     visibleEntries.forEach(entry => {
-                        if (entry.boundingClientRect.top < topEntry.boundingClientRect.top) {
-                            topEntry = entry;
-                        }
+                        if (entry.boundingClientRect.top < topEntry.boundingClientRect.top) topEntry = entry;
                     });
 
                     const newActiveId = topEntry.target.id;
@@ -672,13 +608,111 @@
             }
 
             // ============================================================
-            // 5. Load and Render
+            // 5. 语言变种探测与自动提示
             // ============================================================
+            async function checkLanguageVariants() {
+                // 主页 (README) 忽略多语言探测
+                if (pageName.toLowerCase() === 'readme') return;
+
+                // 解析基础文件名和当前后缀
+                let baseName = pageName;
+                let currentLang = 'en'; // 默认英文
+                
+                const langRegex = /-(zh|jp|kr)$/i;
+                const match = pageName.match(langRegex);
+                if (match) {
+                    currentLang = match[1].toLowerCase();
+                    baseName = pageName.replace(langRegex, '');
+                }
+
+                const variants = {
+                    'en': { suffix: '', name: 'English' },
+                    'zh': { suffix: '-zh', name: '中文' },
+                    'jp': { suffix: '-jp', name: '日本語' },
+                    'kr': { suffix: '-kr', name: '한국어' }
+                };
+
+                const available = [];
+                const langKeys = Object.keys(variants);
+                
+                // 并发探测所有变种文件是否存在 (使用 HEAD 请求，极快)
+                const checks = langKeys.map(async (lang) => {
+                    const filename = lang === 'en' ? `${baseName}.md` : `${baseName}${variants[lang].suffix}.md`;
+                    try {
+                        // 加时间戳防缓存，加 ?t= 是为了避免有些服务器缓存 404
+                        const res = await fetch(`${filename}?t=${new Date().getTime()}`, { method: 'HEAD' });
+                        if (res.ok) available.push({ lang, ...variants[lang], filename });
+                    } catch (e) {
+                        // 忽略错误
+                    }
+                });
+
+                await Promise.all(checks);
+
+                if (available.length <= 1) return; // 如果只有当前这一种语言，就不显示
+
+                // 渲染底部 UI
+                const footerEl = document.getElementById('lang-footer');
+                const linksEl = document.getElementById('lang-links');
+                linksEl.innerHTML = '';
+
+                // 按英、中、日、韩排序
+                available.sort((a, b) => langKeys.indexOf(a.lang) - langKeys.indexOf(b.lang));
+
+                available.forEach(item => {
+                    const a = document.createElement('a');
+                    // 构建新的 URL 链接 (保留原有的主题等参数)
+                    let newUrl = `?${item.lang === 'en' ? baseName : baseName + item.suffix}`;
+                    const queryParams = [];
+                    for (const [k, v] of Object.entries(urlParams)) {
+                        queryParams.push(`${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
+                    }
+                    if (queryParams.length > 0) newUrl += `&${queryParams.join('&')}`;
+
+                    a.href = newUrl;
+                    a.textContent = item.name;
+                    if (item.lang === currentLang) {
+                        a.classList.add('current');
+                    }
+                    linksEl.appendChild(a);
+                });
+
+                footerEl.classList.add('visible');
+
+                // 自动弹窗检测逻辑
+                const browserLang = (navigator.language || navigator.userLanguage).toLowerCase();
+                let preferredLang = 'en';
+                if (browserLang.startsWith('zh')) preferredLang = 'zh';
+                else if (browserLang.startsWith('ja')) preferredLang = 'jp';
+                else if (browserLang.startsWith('ko')) preferredLang = 'kr';
+
+                // 只有当用户的语言与当前语言不一致，且该语言存在变种时，才弹窗
+                if (preferredLang !== currentLang) {
+                    const targetVariant = available.find(v => v.lang === preferredLang);
+                    
+                    // 延迟 500ms 弹窗，避免阻塞页面渲染
+                    setTimeout(() => {
+                        if (targetVariant) {
+                            // 有用户的语言变种
+                            const confirmSwitch = confirm(`It looks like you prefer ${targetVariant.name}. Would you like to switch to the ${targetVariant.name} version?`);
+                            if (confirmSwitch) {
+                                window.location.href = `?${baseName}${targetVariant.suffix}`;
+                            }
+                        } else {
+                            // 支持的语言里没有用户的语言，提示切换到英文
+                            const confirmEnglish = confirm(`A version in your language is not available. Would you like to switch to the English version?`);
+                            if (confirmEnglish) {
+                                window.location.href = `?${baseName}`;
+                            }
+                        }
+                    }, 500);
+                }
+            }
+
+            // 6. 执行加载与渲染
             fetch(fetchUrl)
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
-                    }
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     return response.text();
                 })
                 .then(text => {
@@ -690,6 +724,9 @@
                     if (window.MathJax && MathJax.typesetPromise) {
                         MathJax.typesetPromise([contentEl]).catch((err) => console.warn('MathJax error:', err));
                     }
+
+                    // 文档渲染成功后，触发多语言探测
+                    checkLanguageVariants();
                 })
                 .catch(err => {
                     console.error(err);
