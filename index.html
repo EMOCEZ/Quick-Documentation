@@ -326,7 +326,13 @@
             // 1. 解析 URL 参数
             const searchStr = window.location.search;
             const urlParams = {};
-            let pageName = 'README';
+                        let pageName = 'README';
+
+            // 如果网址里没有问号（或者问号后面是空的），自动加上 ?README 并刷新
+            if (searchStr.length <= 1) {
+                window.location.search = '?README';
+                return; // 终止后续执行，等待跳转
+            }
 
             if (searchStr.length > 1) {
                 const raw = searchStr.substring(1);
