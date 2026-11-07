@@ -1,7 +1,7 @@
 ---
 theme: "red"
 title: "cursed gold"
-sidebar-title: "Module Documentation"
+sidebar-title: "Mod Documentation"
 ---
 
 This is a Minecraft mod; the link is here.
