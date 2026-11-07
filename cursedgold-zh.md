@@ -1,3 +1,8 @@
+---
+theme: "red"
+title: "被诅咒的黄金"
+sidebar-title: "模组文档"
+---
 这是一个《我的世界》（Minecraft）模组；链接如下：
 
 [https://www.curseforge.com/minecraft/mc-mods/cursed-gold](https://www.curseforge.com/minecraft/mc-mods/cursed-gold)
