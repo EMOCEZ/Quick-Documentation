@@ -626,7 +626,7 @@
                     const blob = await maybeCompressImage(file);
                     await saveBgBlob(blob);
                     applyBackground(blob);
-                    showBgToast('Background: On\nClick the sun/moon button to turn off');
+                    showBgToast('Background: On;  Click the sun/moon button to turn off');
                 } catch (err) {
                     console.error(err);
                     showBgToast('Save failed: ' + (err && err.message ? err.message : 'Unknown error'));
