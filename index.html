@@ -604,7 +604,7 @@
                 // 原有切换明暗逻辑；但如果当前有背景，则点击优先关闭背景
                 if (document.body.classList.contains('has-bg')) {
                     clearBackground();
-                    showBgToast('背景已关闭，长按可重新上传');
+                    showBgToast('background:off');
                     return;
                 }
                 currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -617,19 +617,19 @@
                 const file = bgFileInput.files && bgFileInput.files[0];
                 if (!file) return;
                 if (!file.type.startsWith('image/')) {
-                    showBgToast('请选择图片文件');
+                    showBgToast('background');
                     return;
                 }
-                showBgToast('正在保存背景…');
+                showBgToast('saveing...');
                 try {
                     // 可选：压缩过大图片
                     const blob = await maybeCompressImage(file);
                     await saveBgBlob(blob);
                     applyBackground(blob);
-                    showBgToast('背景已应用，点击日月按钮可关闭');
+                    showBgToast('Background: On\nClick the sun/moon button to turn off');
                 } catch (err) {
                     console.error(err);
-                    showBgToast('保存失败：' + (err && err.message ? err.message : '未知错误'));
+                    showBgToast('Save failed: ' + (err && err.message ? err.message : 'Unknown error'));
                 }
             });
 
@@ -671,7 +671,7 @@
                     };
                     img.onerror = () => {
                         URL.revokeObjectURL(url);
-                        reject(new Error('图片加载失败'));
+                        reject(new Error('Failed to load'));
                     };
                     img.src = url;
                 });
