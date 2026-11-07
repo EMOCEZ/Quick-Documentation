@@ -7,7 +7,11 @@ This project used AI for assistance.
 
 [go back to github](https://github.com/EMOCEZ/Quick-Documentation/tree/main)
 
-## How do I submit a new document?
+# Some sample documents
+[cursed gold](https://emocez.github.io/Quick-Documentation/?cursedgold)
+[pi](https://emocez.github.io/Quick-Documentation/?pi)
+
+# How do I submit a new document?
 
 1. Click the "Issues" tab at the top, then click "New Issue."
 
