@@ -1,5 +1,5 @@
 ---
-theme: red
+theme: "red"
 title: "cursed gold"
 sidebar-title: "Module Documentation"
 ---
