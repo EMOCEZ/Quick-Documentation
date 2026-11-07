@@ -9,6 +9,7 @@
 
 # 文档示例
 [被诅咒的黄金 (cursed gold)](https://emocez.github.io/Quick-Documentation/?cursedgold)
+
 [圆周率 (pi)](https://emocez.github.io/Quick-Documentation/?pi)
 
 # 如何提交新文档？
