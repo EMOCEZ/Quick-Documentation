@@ -23,3 +23,7 @@ Este proyecto utiliza IA como ayuda.
 Una vez enviado, lo guardaré como `ender-dragon.md` y lo publicaré, haciéndolo accesible a través de `?ender-dragon`.
 
 Nota: Para mantener el repositorio ordenado, por favor no incluyas etiquetas `<script>` en tus documentos (aunque técnicamente podrían ejecutarse, las eliminaré). Lo ideal es limitarse a texto, imágenes y tablas.
+
+# Personalización
+
+Toca el icono del sol y la luna junto al título de la carpeta para alternar entre el modo oscuro y el claro. Además, mantén pulsado el icono para subir un fondo de pantalla.
