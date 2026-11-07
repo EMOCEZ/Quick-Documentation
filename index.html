@@ -60,7 +60,9 @@
             --error: #f87171;
         }
 
-        /* ---------- 7 accent colors ---------- */
+               /* ---------- 7 accent colors (with tinted dark mode) ---------- */
+        
+        /* Blue (Default) */
         html[data-accent="blue"] {
             --accent: #2563eb;
             --accent-hover: #1d4ed8;
@@ -68,11 +70,17 @@
             --accent-border: #3b82f6;
         }
         html[data-theme="dark"][data-accent="blue"] {
+            --bg: #0b1120;         /* 深蓝黑 */
+            --surface: #111a2e;
+            --surface-2: #1b263e;
+            --border: #2a3b5c;
             --accent: #60a5fa;
             --accent-hover: #93c5fd;
             --accent-soft: #1e3a5f;
             --accent-border: #60a5fa;
         }
+
+        /* Red */
         html[data-accent="red"] {
             --accent: #dc2626;
             --accent-hover: #b91c1c;
@@ -80,11 +88,17 @@
             --accent-border: #ef4444;
         }
         html[data-theme="dark"][data-accent="red"] {
+            --bg: #140b0b;         /* 极暗的暖红黑 */
+            --surface: #1f1010;    /* 暗红色表面 */
+            --surface-2: #2c1515;
+            --border: #4a2222;
             --accent: #f87171;
             --accent-hover: #fca5a5;
             --accent-soft: #4c1d1d;
             --accent-border: #f87171;
         }
+
+        /* Green */
         html[data-accent="green"] {
             --accent: #16a34a;
             --accent-hover: #15803d;
@@ -92,11 +106,17 @@
             --accent-border: #22c55e;
         }
         html[data-theme="dark"][data-accent="green"] {
+            --bg: #0a140e;         /* 极暗的墨绿黑 */
+            --surface: #101f15;
+            --surface-2: #182e1f;
+            --border: #264d33;
             --accent: #4ade80;
             --accent-hover: #86efac;
             --accent-soft: #14432a;
             --accent-border: #4ade80;
         }
+
+        /* Purple */
         html[data-accent="purple"] {
             --accent: #7c3aed;
             --accent-hover: #6d28d9;
@@ -104,11 +124,17 @@
             --accent-border: #8b5cf6;
         }
         html[data-theme="dark"][data-accent="purple"] {
+            --bg: #100a1c;         /* 极暗的紫黑 */
+            --surface: #181026;
+            --surface-2: #221736;
+            --border: #38265c;
             --accent: #a78bfa;
             --accent-hover: #c4b5fd;
             --accent-soft: #2e1f5e;
             --accent-border: #a78bfa;
         }
+
+        /* Orange */
         html[data-accent="orange"] {
             --accent: #ea580c;
             --accent-hover: #c2410c;
@@ -116,11 +142,17 @@
             --accent-border: #f97316;
         }
         html[data-theme="dark"][data-accent="orange"] {
+            --bg: #150d08;         /* 极暗的橘黑 */
+            --surface: #20140d;
+            --surface-2: #2e1c12;
+            --border: #4a2c1c;
             --accent: #fb923c;
             --accent-hover: #fdba74;
             --accent-soft: #4a2508;
             --accent-border: #fb923c;
         }
+
+        /* Pink */
         html[data-accent="pink"] {
             --accent: #db2777;
             --accent-hover: #be185d;
@@ -128,11 +160,17 @@
             --accent-border: #ec4899;
         }
         html[data-theme="dark"][data-accent="pink"] {
+            --bg: #140a10;         /* 极暗的粉紫黑 */
+            --surface: #1f101a;
+            --surface-2: #2e1626;
+            --border: #4a233d;
             --accent: #f472b6;
             --accent-hover: #f9a8d4;
             --accent-soft: #4a1530;
             --accent-border: #f472b6;
         }
+
+        /* Teal */
         html[data-accent="teal"] {
             --accent: #0d9488;
             --accent-hover: #0f766e;
@@ -140,10 +178,15 @@
             --accent-border: #14b8a6;
         }
         html[data-theme="dark"][data-accent="teal"] {
+            --bg: #081413;         /* 极暗的青黑 */
+            --surface: #0d1f1e;
+            --surface-2: #142e2d;
+            --border: #1f4a47;
             --accent: #2dd4bf;
             --accent-hover: #5eead4;
             --accent-soft: #0f3d3a;
             --accent-border: #2dd4bf;
+        }
         }
 
         /* ---------- Global ---------- */
