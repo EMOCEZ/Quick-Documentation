@@ -8,7 +8,7 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* ---------- 主题变量 ---------- */
+        /* ---------- Theme variables ---------- */
         :root {
             --bg: #f9fafb;
             --surface: #ffffff;
@@ -30,14 +30,14 @@
             --shadow-sidebar: rgba(0, 0, 0, 0.02);
             --error: #b91c1c;
 
-            /* 主题色（默认 blue） */
+            /* Accent (default: blue) */
             --accent: #2563eb;
             --accent-hover: #1d4ed8;
             --accent-soft: #eff6ff;
             --accent-border: #3b82f6;
         }
 
-        /* 暗色模式变量 */
+        /* Dark mode variables */
         html[data-theme="dark"] {
             --bg: #0f172a;
             --surface: #1e293b;
@@ -60,7 +60,7 @@
             --error: #f87171;
         }
 
-        /* ---------- 7 色主题 ---------- */
+        /* ---------- 7 accent colors ---------- */
         html[data-accent="blue"] {
             --accent: #2563eb;
             --accent-hover: #1d4ed8;
@@ -146,7 +146,7 @@
             --accent-border: #2dd4bf;
         }
 
-        /* ---------- 全局 ---------- */
+        /* ---------- Global ---------- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -167,7 +167,7 @@
             transition: background-color 0.25s ease, color 0.25s ease;
         }
 
-        /* ---------- 侧边栏 ---------- */
+        /* ---------- Sidebar ---------- */
         .sidebar {
             width: 280px;
             flex-shrink: 0;
@@ -205,7 +205,6 @@
             word-break: break-word;
         }
 
-        /* 主题切换按钮 */
         .theme-toggle {
             background: var(--surface-2);
             border: 1px solid var(--border);
@@ -227,7 +226,7 @@
             color: var(--text);
         }
 
-        /* 目录 */
+        /* TOC */
         .toc-list {
             list-style: none;
             padding-left: 0;
@@ -275,7 +274,7 @@
             padding-left: 0.5rem;
         }
 
-        /* ---------- 主内容 ---------- */
+        /* ---------- Main content ---------- */
         .main-content {
             flex: 1;
             padding: 2rem 2.5rem;
@@ -304,7 +303,7 @@
             color: var(--error);
         }
 
-        /* Markdown 样式 */
+        /* Markdown styles */
         #content h1, #content h2, #content h3, #content h4, #content h5, #content h6 {
             margin-top: 1.5em;
             margin-bottom: 0.6em;
@@ -378,7 +377,38 @@
         }
         #content th { border-bottom: 2px solid var(--accent-border); }
 
-        /* ---------- 移动端 ---------- */
+        /* Debug panel */
+        .debug-box {
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-top: 1rem;
+        }
+        .debug-box h3 {
+            margin-top: 0 !important;
+            font-size: 1rem !important;
+            color: var(--error);
+            border: none !important;
+        }
+        .debug-box .kv {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0.35rem 0;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        .debug-box .kv strong {
+            flex-shrink: 0;
+            color: var(--text-muted);
+            min-width: 8em;
+        }
+        .debug-box pre {
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        /* ---------- Mobile ---------- */
         @media (max-width: 700px) {
             body {
                 flex-direction: column;
@@ -406,7 +436,7 @@
         <div class="sidebar-header">
             <h3 id="toc-title">Table of Contents</h3>
             <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
-                <!-- 图标由 JS 填充 -->
+                <!-- Icon injected by JS -->
             </button>
         </div>
         <ul class="toc-list" id="toc-list">
@@ -423,7 +453,7 @@
     <script>
         (function() {
             // ============================================================
-            // 0. 主题 (暗色/亮色) 逻辑
+            // 0. Theme (dark/light) logic
             // ============================================================
             const THEME_KEY = 'qd-theme';
             const htmlEl = document.documentElement;
@@ -465,35 +495,47 @@
             });
 
             // ============================================================
-            // 1. 解析 URL 参数（支持 ?file&theme=red&sidebar-title=xxx）
+            // 1. Parse URL params (?file&theme=red&sidebar-title=xxx)
             // ============================================================
             const searchStr = window.location.search;
             const urlParams = {};
             let pageName = 'README';
+            let urlParseError = null;
 
             if (searchStr.length > 1) {
-                const raw = searchStr.substring(1);
-                const parts = raw.split('&');
-                parts.forEach((part, idx) => {
-                    if (idx === 0 && !part.includes('=')) {
-                        pageName = part; // 第一个无等号的参数视为文件名
-                    } else if (part.includes('=')) {
-                        const [k, v] = part.split('=');
-                        urlParams[decodeURIComponent(k)] = decodeURIComponent(v);
-                    }
-                });
+                try {
+                    const raw = searchStr.substring(1);
+                    const parts = raw.split('&');
+                    parts.forEach((part, idx) => {
+                        if (idx === 0 && !part.includes('=')) {
+                            pageName = decodeURIComponent(part);
+                        } else if (part.includes('=')) {
+                            const eq = part.indexOf('=');
+                            const k = part.slice(0, eq);
+                            const v = part.slice(eq + 1);
+                            urlParams[decodeURIComponent(k)] = decodeURIComponent(v);
+                        }
+                    });
+                } catch (e) {
+                    urlParseError = e;
+                }
             }
 
             const ACCENTS = ['blue', 'red', 'green', 'purple', 'orange', 'pink', 'teal'];
 
+            document.title = `${pageName} - Quick Documentation`;
+            const fetchUrl = `${pageName}.md?t=${new Date().getTime()}`;
+
+            const contentEl = document.getElementById('content');
+            const tocListEl = document.getElementById('toc-list');
+
             // ============================================================
-            // 2. Front-matter 解析（无依赖，宽容解析）
+            // 2. Front-matter parsing (no dependency, lenient)
             // ============================================================
             function parseFrontMatter(text) {
                 const meta = {};
-                const result = { meta, body: text };
-                // 必须以 --- 开头（允许前面有空白）
-                const trimmed = text.replace(/^\s+/, '');
+                const result = { meta, body: text, rawFrontMatter: null };
+                const trimmed = text.replace(/^\uFEFF/, '').replace(/^\s+/, '');
                 if (!trimmed.startsWith('---')) return result;
 
                 const lines = trimmed.split(/\r?\n/);
@@ -508,12 +550,13 @@
                 }
                 if (endIdx === -1) return result;
 
+                result.rawFrontMatter = lines.slice(0, endIdx + 1).join('\n');
+
                 const metaLines = lines.slice(1, endIdx);
                 metaLines.forEach(line => {
                     const m = line.match(/^\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
                     if (m) {
                         let value = m[2].trim();
-                        // 去掉首尾引号
                         if ((value.startsWith('"') && value.endsWith('"')) ||
                             (value.startsWith("'") && value.endsWith("'"))) {
                             value = value.slice(1, -1);
@@ -526,9 +569,7 @@
                 return result;
             }
 
-            // 应用 front-matter / URL 参数
             function applyMeta(meta) {
-                // 主题色
                 const theme = urlParams['theme'] || meta['theme'];
                 if (theme && ACCENTS.includes(theme)) {
                     htmlEl.setAttribute('data-accent', theme);
@@ -536,33 +577,24 @@
                     htmlEl.setAttribute('data-accent', 'blue');
                 }
 
-                // 侧边栏标题
                 const sidebarTitle = urlParams['sidebar-title'] || meta['sidebar-title'];
                 if (sidebarTitle) {
                     tocTitleEl.textContent = sidebarTitle;
                 }
 
-                // 页面标题
                 const docTitle = urlParams['doc-title'] || meta['doc-title'];
                 document.title = docTitle
                     ? `${docTitle} - Quick Documentation`
                     : `${pageName} - Quick Documentation`;
 
-                // 隐藏目录
                 const hideToc = urlParams['hide-toc'] || meta['hide-toc'];
                 if (hideToc === 'true' || hideToc === '1') {
                     sidebarEl.classList.add('hidden');
                 }
             }
 
-            document.title = `${pageName} - Quick Documentation`;
-
-            const fetchUrl = `${pageName}.md?t=${new Date().getTime()}`;
-            const contentEl = document.getElementById('content');
-            const tocListEl = document.getElementById('toc-list');
-
             // ============================================================
-            // 3. 生成目录 (TOC)
+            // 3. Generate TOC
             // ============================================================
             function generateTOC() {
                 const headings = contentEl.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -621,7 +653,7 @@
             }
 
             // ============================================================
-            // 4. 滚动监听高亮
+            // 4. Scroll spy highlight
             // ============================================================
             function setupScrollSpy(headings) {
                 if (headings.length === 0) return;
@@ -664,29 +696,154 @@
             }
 
             // ============================================================
-            // 5. 加载并渲染 Markdown
+            // 5. Staged error handling + detailed debug output
             // ============================================================
+            function showDebugPanel(info) {
+                const rows = Object.entries(info).map(([k, v]) =>
+                    `<div class="kv"><strong>${k}</strong><span>${String(v)}</span></div>`
+                ).join('');
+
+                return `
+                    <div class="debug-box">
+                        <h3>⚠ Failed to load — Debug info</h3>
+                        ${rows}
+                    </div>
+                `;
+            }
+
+            let stage = 'init';
+            let rawText = null;
+            let parsed = null;
+
+            if (urlParseError) {
+                stage = 'url-parse';
+                contentEl.innerHTML = `<h1>Failed to parse URL parameters</h1>` + showDebugPanel({
+                    'Error': urlParseError.message || String(urlParseError),
+                    'Search': searchStr
+                });
+                tocListEl.innerHTML = '<li class="toc-placeholder">Content unavailable</li>';
+                return;
+            }
+
+            stage = 'fetch';
             fetch(fetchUrl)
                 .then(response => {
-                    if (!response.ok) throw new Error('File not found');
+                    if (!response.ok) {
+                        const e = new Error(`File not found (HTTP ${response.status} ${response.statusText})`);
+                        e.stage = 'http';
+                        e.status = response.status;
+                        e.url = response.url;
+                        throw e;
+                    }
+                    stage = 'read-text';
                     return response.text();
                 })
                 .then(text => {
-                    const { meta, body } = parseFrontMatter(text);
-                    applyMeta(meta);
+                    rawText = text;
+                    stage = 'front-matter';
+                    try {
+                        parsed = parseFrontMatter(text);
+                    } catch (e) {
+                        e.stage = 'front-matter';
+                        throw e;
+                    }
 
-                    contentEl.innerHTML = marked.parse(body);
-                    generateTOC();
+                    stage = 'apply-meta';
+                    try {
+                        applyMeta(parsed.meta);
+                    } catch (e) {
+                        e.stage = 'apply-meta';
+                        throw e;
+                    }
+
+                    stage = 'marked-parse';
+                    let html;
+                    try {
+                        if (typeof marked === 'undefined' || !marked.parse) {
+                            throw new Error('marked library not loaded (CDN blocked or network issue)');
+                        }
+                        html = marked.parse(parsed.body);
+                    } catch (e) {
+                        e.stage = 'marked-parse';
+                        throw e;
+                    }
+
+                    stage = 'render';
+                    try {
+                        contentEl.innerHTML = html;
+                    } catch (e) {
+                        e.stage = 'render';
+                        throw e;
+                    }
+
+                    stage = 'toc';
+                    try {
+                        generateTOC();
+                    } catch (e) {
+                        console.warn('TOC generation failed (content still displayed):', e);
+                    }
+
+                    stage = 'done';
 
                     if (window.MathJax && MathJax.typesetPromise) {
                         MathJax.typesetPromise([contentEl]).catch((err) => console.warn('MathJax error:', err));
                     }
                 })
                 .catch(err => {
-                    console.error(err);
+                    console.error('[QD] load failed at stage:', stage, err);
+
+                    const msg = (err && (err.message || String(err))) || 'Unknown error';
+                    const isFetchTypeError = err instanceof TypeError;
+                    const isHttp = err.stage === 'http' || /HTTP \d+/.test(msg);
+
+                    let title, hint;
+                    if (isFetchTypeError && stage === 'fetch') {
+                        title = 'Network request failed (fetch threw TypeError)';
+                        hint = 'fetch itself failed: wrong path, CORS, offline, or cross-origin under file://.';
+                    } else if (isHttp) {
+                        title = `File not found or not served (HTTP ${err.status || '?'})`;
+                        hint = 'Server returned a non-2xx status. Check the file was uploaded, the path/case, or whether GitHub Pages (Jekyll) is ignoring it. Visit the URL below to verify.';
+                    } else if (stage === 'front-matter') {
+                        title = 'Front-matter parsing failed';
+                        hint = 'Error while parsing the leading --- block. Check for invisible characters or malformed syntax.';
+                    } else if (stage === 'apply-meta') {
+                        title = 'Failed to apply front-matter metadata';
+                        hint = 'Error while handling theme / sidebar-title / doc-title / hide-toc.';
+                    } else if (stage === 'marked-parse') {
+                        title = 'Markdown rendering failed (marked.parse)';
+                        hint = 'Error while rendering the body with marked. The library may not have loaded, or the body contains problematic content.';
+                    } else if (stage === 'render') {
+                        title = 'DOM render failed';
+                        hint = 'Error while writing HTML into the page.';
+                    } else {
+                        title = 'Unknown error stage';
+                        hint = 'See the stack trace below.';
+                    }
+
+                    const debugInfo = {
+                        'Stage': stage,
+                        'Error type': err && err.name ? err.name : typeof err,
+                        'Error message': msg,
+                        'Request URL': fetchUrl,
+                        'Page param': pageName,
+                        'HTTP status': err && err.status ? err.status : 'N/A',
+                        'Raw text length': rawText ? rawText.length : 'N/A',
+                        'Raw text first 80 chars': rawText ? JSON.stringify(rawText.slice(0, 80)) : 'N/A',
+                        'Front-matter raw': parsed && parsed.rawFrontMatter
+                            ? JSON.stringify(parsed.rawFrontMatter)
+                            : 'N/A',
+                        'Parsed meta': parsed ? JSON.stringify(parsed.meta) : 'N/A',
+                        'Body first 80 chars': parsed ? JSON.stringify(parsed.body.slice(0, 80)) : 'N/A'
+                    };
+
                     contentEl.innerHTML = `
-                        <h1>404 Not Found</h1>
-                        <p class="error">Unable to load document: <code>${pageName}.md</code></p>
+                        <h1 style="color:var(--error)">${title}</h1>
+                        <p style="color:var(--error)"><strong>Hint:</strong> ${hint}</p>
+                        ${showDebugPanel(debugInfo)}
+                        <details style="margin-top:1rem">
+                            <summary style="cursor:pointer;color:var(--text-muted)">Original stack trace</summary>
+                            <pre style="white-space:pre-wrap;font-size:0.8em">${(err && err.stack) || msg}</pre>
+                        </details>
                     `;
                     tocListEl.innerHTML = '<li class="toc-placeholder">Content unavailable</li>';
                 });
