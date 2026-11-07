@@ -18,12 +18,7 @@
             --text: #1e293b;
             --text-muted: #64748b;
             --text-faint: #94a3b8;
-            --link: #2563eb;
-            --link-hover: #1d4ed8;
             --toc-hover-bg: #f1f5f9;
-            --toc-active-bg: #eff6ff;
-            --toc-active-text: #1d4ed8;
-            --toc-active-border: #3b82f6;
             --code-bg: #f1f5f9;
             --code-text: inherit;
             --pre-bg: #1e293b;
@@ -34,6 +29,12 @@
             --shadow: rgba(0, 0, 0, 0.03);
             --shadow-sidebar: rgba(0, 0, 0, 0.02);
             --error: #b91c1c;
+
+            /* 主题色（默认 blue） */
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-soft: #eff6ff;
+            --accent-border: #3b82f6;
         }
 
         /* 暗色模式变量 */
@@ -46,12 +47,7 @@
             --text: #e2e8f0;
             --text-muted: #94a3b8;
             --text-faint: #64748b;
-            --link: #60a5fa;
-            --link-hover: #93c5fd;
             --toc-hover-bg: #273449;
-            --toc-active-bg: #1e3a5f;
-            --toc-active-text: #93c5fd;
-            --toc-active-border: #60a5fa;
             --code-bg: #273449;
             --code-text: #e2e8f0;
             --pre-bg: #0b1220;
@@ -62,6 +58,92 @@
             --shadow: rgba(0, 0, 0, 0.3);
             --shadow-sidebar: rgba(0, 0, 0, 0.2);
             --error: #f87171;
+        }
+
+        /* ---------- 7 色主题 ---------- */
+        html[data-accent="blue"] {
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-soft: #eff6ff;
+            --accent-border: #3b82f6;
+        }
+        html[data-theme="dark"][data-accent="blue"] {
+            --accent: #60a5fa;
+            --accent-hover: #93c5fd;
+            --accent-soft: #1e3a5f;
+            --accent-border: #60a5fa;
+        }
+        html[data-accent="red"] {
+            --accent: #dc2626;
+            --accent-hover: #b91c1c;
+            --accent-soft: #fef2f2;
+            --accent-border: #ef4444;
+        }
+        html[data-theme="dark"][data-accent="red"] {
+            --accent: #f87171;
+            --accent-hover: #fca5a5;
+            --accent-soft: #4c1d1d;
+            --accent-border: #f87171;
+        }
+        html[data-accent="green"] {
+            --accent: #16a34a;
+            --accent-hover: #15803d;
+            --accent-soft: #f0fdf4;
+            --accent-border: #22c55e;
+        }
+        html[data-theme="dark"][data-accent="green"] {
+            --accent: #4ade80;
+            --accent-hover: #86efac;
+            --accent-soft: #14432a;
+            --accent-border: #4ade80;
+        }
+        html[data-accent="purple"] {
+            --accent: #7c3aed;
+            --accent-hover: #6d28d9;
+            --accent-soft: #f5f3ff;
+            --accent-border: #8b5cf6;
+        }
+        html[data-theme="dark"][data-accent="purple"] {
+            --accent: #a78bfa;
+            --accent-hover: #c4b5fd;
+            --accent-soft: #2e1f5e;
+            --accent-border: #a78bfa;
+        }
+        html[data-accent="orange"] {
+            --accent: #ea580c;
+            --accent-hover: #c2410c;
+            --accent-soft: #fff7ed;
+            --accent-border: #f97316;
+        }
+        html[data-theme="dark"][data-accent="orange"] {
+            --accent: #fb923c;
+            --accent-hover: #fdba74;
+            --accent-soft: #4a2508;
+            --accent-border: #fb923c;
+        }
+        html[data-accent="pink"] {
+            --accent: #db2777;
+            --accent-hover: #be185d;
+            --accent-soft: #fdf2f8;
+            --accent-border: #ec4899;
+        }
+        html[data-theme="dark"][data-accent="pink"] {
+            --accent: #f472b6;
+            --accent-hover: #f9a8d4;
+            --accent-soft: #4a1530;
+            --accent-border: #f472b6;
+        }
+        html[data-accent="teal"] {
+            --accent: #0d9488;
+            --accent-hover: #0f766e;
+            --accent-soft: #f0fdfa;
+            --accent-border: #14b8a6;
+        }
+        html[data-theme="dark"][data-accent="teal"] {
+            --accent: #2dd4bf;
+            --accent-hover: #5eead4;
+            --accent-soft: #0f3d3a;
+            --accent-border: #2dd4bf;
         }
 
         /* ---------- 全局 ---------- */
@@ -100,6 +182,10 @@
             transition: background-color 0.25s ease, border-color 0.25s ease;
         }
 
+        .sidebar.hidden {
+            display: none;
+        }
+
         .sidebar-header {
             display: flex;
             align-items: center;
@@ -114,8 +200,9 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--text-muted);
+            color: var(--accent);
             margin: 0;
+            word-break: break-word;
         }
 
         /* 主题切换按钮 */
@@ -169,9 +256,9 @@
         }
 
         .toc-list a.active {
-            background-color: var(--toc-active-bg);
-            color: var(--toc-active-text);
-            border-left-color: var(--toc-active-border);
+            background-color: var(--accent-soft);
+            color: var(--accent);
+            border-left-color: var(--accent-border);
             font-weight: 500;
         }
 
@@ -226,13 +313,13 @@
             scroll-margin-top: 20px;
             color: var(--text);
         }
-        #content h1 { font-size: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.3rem; }
+        #content h1 { font-size: 2rem; border-bottom: 2px solid var(--accent-border); padding-bottom: 0.3rem; }
         #content h2 { font-size: 1.6rem; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
         #content h3 { font-size: 1.3rem; }
         #content h4 { font-size: 1.1rem; }
         #content p { margin: 0.8rem 0; }
-        #content a { color: var(--link); text-decoration: none; }
-        #content a:hover { text-decoration: underline; color: var(--link-hover); }
+        #content a { color: var(--accent); text-decoration: none; }
+        #content a:hover { text-decoration: underline; color: var(--accent-hover); }
         #content code {
             background: var(--code-bg);
             padding: 0.2rem 0.4rem;
@@ -256,7 +343,7 @@
             font-size: 0.9em;
         }
         #content blockquote {
-            border-left: 4px solid var(--blockquote-border);
+            border-left: 4px solid var(--accent-border);
             margin: 1rem 0;
             padding: 0.5rem 0 0.5rem 1rem;
             color: var(--blockquote-text);
@@ -289,6 +376,7 @@
         #content th {
             background: var(--surface-2);
         }
+        #content th { border-bottom: 2px solid var(--accent-border); }
 
         /* ---------- 移动端 ---------- */
         @media (max-width: 700px) {
@@ -316,7 +404,7 @@
 <body>
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h3>Table of Contents</h3>
+            <h3 id="toc-title">Table of Contents</h3>
             <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
                 <!-- 图标由 JS 填充 -->
             </button>
@@ -337,43 +425,38 @@
             // ============================================================
             // 0. 主题 (暗色/亮色) 逻辑
             // ============================================================
-            const THEME_KEY = 'qd-theme'; // 存储键
+            const THEME_KEY = 'qd-theme';
             const htmlEl = document.documentElement;
             const themeToggleBtn = document.getElementById('theme-toggle');
+            const tocTitleEl = document.getElementById('toc-title');
+            const sidebarEl = document.getElementById('sidebar');
 
-            // 获取当前应生效的主题
             function getPreferredTheme() {
                 const stored = localStorage.getItem(THEME_KEY);
                 if (stored === 'light' || stored === 'dark') return stored;
-                // 未手动设置过 -> 跟随系统
                 return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
             }
 
-            // 应用主题
             function applyTheme(theme) {
                 htmlEl.setAttribute('data-theme', theme);
-                // 更新按钮图标 (太阳/月亮)
                 if (theme === 'dark') {
-                    themeToggleBtn.innerHTML = '☀️';  // 点击可切到亮色
+                    themeToggleBtn.innerHTML = '☀️';
                     themeToggleBtn.title = 'Switch to light mode';
                 } else {
-                    themeToggleBtn.innerHTML = '🌙';  // 点击可切到暗色
+                    themeToggleBtn.innerHTML = '🌙';
                     themeToggleBtn.title = 'Switch to dark mode';
                 }
             }
 
-            // 初始化主题
             let currentTheme = getPreferredTheme();
             applyTheme(currentTheme);
 
-            // 手动切换
             themeToggleBtn.addEventListener('click', () => {
                 currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
                 applyTheme(currentTheme);
                 localStorage.setItem(THEME_KEY, currentTheme);
             });
 
-            // 跟随系统变化 (仅当用户没手动选过时)
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
                 if (!localStorage.getItem(THEME_KEY)) {
                     currentTheme = e.matches ? 'dark' : 'light';
@@ -382,27 +465,104 @@
             });
 
             // ============================================================
-            // 1. 解析 URL 参数
+            // 1. 解析 URL 参数（支持 ?file&theme=red&sidebar-title=xxx）
             // ============================================================
             const searchStr = window.location.search;
+            const urlParams = {};
             let pageName = 'README';
 
             if (searchStr.length > 1) {
-                pageName = searchStr.substring(1).split('&')[0];
-                if (pageName.includes('=')) {
-                    pageName = pageName.split('=')[1];
+                const raw = searchStr.substring(1);
+                const parts = raw.split('&');
+                parts.forEach((part, idx) => {
+                    if (idx === 0 && !part.includes('=')) {
+                        pageName = part; // 第一个无等号的参数视为文件名
+                    } else if (part.includes('=')) {
+                        const [k, v] = part.split('=');
+                        urlParams[decodeURIComponent(k)] = decodeURIComponent(v);
+                    }
+                });
+            }
+
+            const ACCENTS = ['blue', 'red', 'green', 'purple', 'orange', 'pink', 'teal'];
+
+            // ============================================================
+            // 2. Front-matter 解析（无依赖，宽容解析）
+            // ============================================================
+            function parseFrontMatter(text) {
+                const meta = {};
+                const result = { meta, body: text };
+                // 必须以 --- 开头（允许前面有空白）
+                const trimmed = text.replace(/^\s+/, '');
+                if (!trimmed.startsWith('---')) return result;
+
+                const lines = trimmed.split(/\r?\n/);
+                if (lines[0].trim() !== '---') return result;
+
+                let endIdx = -1;
+                for (let i = 1; i < lines.length; i++) {
+                    if (lines[i].trim() === '---') {
+                        endIdx = i;
+                        break;
+                    }
+                }
+                if (endIdx === -1) return result;
+
+                const metaLines = lines.slice(1, endIdx);
+                metaLines.forEach(line => {
+                    const m = line.match(/^\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
+                    if (m) {
+                        let value = m[2].trim();
+                        // 去掉首尾引号
+                        if ((value.startsWith('"') && value.endsWith('"')) ||
+                            (value.startsWith("'") && value.endsWith("'"))) {
+                            value = value.slice(1, -1);
+                        }
+                        meta[m[1]] = value;
+                    }
+                });
+
+                result.body = lines.slice(endIdx + 1).join('\n');
+                return result;
+            }
+
+            // 应用 front-matter / URL 参数
+            function applyMeta(meta) {
+                // 主题色
+                const theme = urlParams['theme'] || meta['theme'];
+                if (theme && ACCENTS.includes(theme)) {
+                    htmlEl.setAttribute('data-accent', theme);
+                } else {
+                    htmlEl.setAttribute('data-accent', 'blue');
+                }
+
+                // 侧边栏标题
+                const sidebarTitle = urlParams['sidebar-title'] || meta['sidebar-title'];
+                if (sidebarTitle) {
+                    tocTitleEl.textContent = sidebarTitle;
+                }
+
+                // 页面标题
+                const docTitle = urlParams['doc-title'] || meta['doc-title'];
+                document.title = docTitle
+                    ? `${docTitle} - Quick Documentation`
+                    : `${pageName} - Quick Documentation`;
+
+                // 隐藏目录
+                const hideToc = urlParams['hide-toc'] || meta['hide-toc'];
+                if (hideToc === 'true' || hideToc === '1') {
+                    sidebarEl.classList.add('hidden');
                 }
             }
 
             document.title = `${pageName} - Quick Documentation`;
 
             const fetchUrl = `${pageName}.md?t=${new Date().getTime()}`;
-
             const contentEl = document.getElementById('content');
             const tocListEl = document.getElementById('toc-list');
 
             // ============================================================
-            // 2. 生成目录 (TOC)
+            // 3. 生成目录 (TOC)
             // ============================================================
             function generateTOC() {
                 const headings = contentEl.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -461,7 +621,7 @@
             }
 
             // ============================================================
-            // 3. 滚动监听高亮
+            // 4. 滚动监听高亮
             // ============================================================
             function setupScrollSpy(headings) {
                 if (headings.length === 0) return;
@@ -504,7 +664,7 @@
             }
 
             // ============================================================
-            // 4. 加载并渲染 Markdown
+            // 5. 加载并渲染 Markdown
             // ============================================================
             fetch(fetchUrl)
                 .then(response => {
@@ -512,7 +672,10 @@
                     return response.text();
                 })
                 .then(text => {
-                    contentEl.innerHTML = marked.parse(text);
+                    const { meta, body } = parseFrontMatter(text);
+                    applyMeta(meta);
+
+                    contentEl.innerHTML = marked.parse(body);
                     generateTOC();
 
                     if (window.MathJax && MathJax.typesetPromise) {
