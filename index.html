@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Documentation</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <!-- 修复了 MathJax 的 CDN 路径 es5 -->
+    <!-- 修复了 MathJax 的路径 -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         /* ---------- Base Variables ---------- */
@@ -154,7 +153,7 @@
         /* ---------- Sidebar Home & Notice ---------- */
         .sidebar-home {
             margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
-            display: none; /* 默认隐藏，由 JS 控制 */
+            display: none;
         }
         .sidebar-home.visible { display: block; }
         .sidebar-home a.home-btn {
@@ -301,7 +300,6 @@
             <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme"></button>
         </div>
         
-        <!-- 静态的 Home 和公告容器 -->
         <div class="sidebar-home" id="sidebar-home">
             <a href="./" class="home-btn">🏠 Home</a>
             <a href="./" class="sidebar-notice" id="sidebar-notice"></a>
@@ -645,4 +643,72 @@
                     }
                     if (queryParams.length > 0) newUrl += `&${queryParams.join('&')}`;
 
-                    a.href
+                    a.href = newUrl;
+                    a.textContent = item.name;
+                    if (item.lang === currentLang) a.classList.add('current');
+                    linksEl.appendChild(a);
+                });
+
+                footerEl.classList.add('visible');
+
+                // 自动弹窗逻辑
+                const browserLang = (navigator.language || navigator.userLanguage).toLowerCase();
+                let preferredLang = 'en';
+                if (browserLang.startsWith('zh')) preferredLang = 'zh';
+                else if (browserLang.startsWith('ja')) preferredLang = 'jp';
+                else if (browserLang.startsWith('ko')) preferredLang = 'kr';
+
+                if (preferredLang !== currentLang) {
+                    const targetVariant = available.find(v => v.lang === preferredLang);
+                    setTimeout(() => {
+                        if (targetVariant) {
+                            const confirmSwitch = confirm(`It looks like you prefer ${targetVariant.name}. Would you like to switch to the ${targetVariant.name} version?`);
+                            if (confirmSwitch) window.location.href = `?${baseName}${targetVariant.suffix}`;
+                        } else {
+                            const confirmEnglish = confirm(`A version in your language is not available. Would you like to switch to the English version?`);
+                            if (confirmEnglish) window.location.href = `?${baseName}`;
+                        }
+                    }, 500);
+                }
+            }
+
+            // 8. 执行加载与渲染
+            fetch(fetchUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return response.text();
+                })
+                .then(text => {
+                    const parsed = parseFrontMatter(text);
+                    applyMeta(parsed.meta);
+                    contentEl.innerHTML = marked.parse(parsed.body);
+                    generateTOC();
+
+                    if (window.MathJax && MathJax.typesetPromise) {
+                        MathJax.typesetPromise([contentEl]).catch((err) => console.warn('MathJax error:', err));
+                    }
+
+                    // 异步执行不阻塞主流程的逻辑
+                    loadGlobalNotice();      
+                    checkLanguageVariants(); 
+                })
+                .catch(err => {
+                    console.error(err);
+                    const is404 = err.message.includes('404');
+                    contentEl.innerHTML = `
+                        <h1 style="color:var(--error); border-bottom-color:var(--error)">Document Not Found</h1>
+                        <div class="error-box">
+                            <h3>${is404 ? 'HTTP 404 — File could not be loaded' : 'Failed to load'}</h3>
+                            <p>
+                                ${is404 
+                                  ? `The file <strong>${pageName}.md</strong> was not found on this server. If you are the author, make sure the file exists and GitHub Pages (Jekyll) is not ignoring it.` 
+                                  : `An unexpected error occurred while fetching the document.`}
+                            </p>
+                        </div>
+                    `;
+                    tocListEl.innerHTML = '<li class="toc-placeholder">Content unavailable</li>';
+                });
+        })();
+    </script>
+</body>
+</html>
