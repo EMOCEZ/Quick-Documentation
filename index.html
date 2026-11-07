@@ -351,12 +351,13 @@
 
             // 2. 动态设置页面语言
             let currentLangCode = 'en';
-            const langMatch = pageName.match(/-(zh|jp|kr)$/i);
+            const langMatch = pageName.match(/-(zh|jp|kr|es)$/i);
             if (langMatch) {
                 const suffix = langMatch[1].toLowerCase();
                 if (suffix === 'zh') currentLangCode = 'zh-CN';
                 else if (suffix === 'jp') currentLangCode = 'ja';
                 else if (suffix === 'kr') currentLangCode = 'ko';
+                else if (suffix === 'es') currentLangCode = 'es';
             }
             document.documentElement.lang = currentLangCode;
 
@@ -566,12 +567,12 @@
             // ============================================================
                         async function loadGlobalNotice() {
                 // 1. 如果是当前看的就是主页本身，就不显示公告
-                const baseName = pageName.replace(/-(zh|jp|kr)$/i, '').toLowerCase();
+                const baseName = pageName.replace(/-(zh|jp|kr|es)$/i, '').toLowerCase();
                 if (baseName === 'readme') return;
 
                 // 2. 判断用哪个文件作为公告（跟随当前语言）
                 let noticeFile = 'README.md';
-                const langMatch = pageName.match(/-(zh|jp|kr)$/i);
+                const langMatch = pageName.match(/-(zh|jp|kr|es)$/i);
                 if (langMatch) {
                     const suffix = langMatch[1].toLowerCase();
                     // 尝试获取对应语言的 README，如果没有会在 catch 里静默失败
@@ -621,7 +622,7 @@
                 let baseName = pageName;
                 let currentLang = 'en';
                 
-                const langRegex = /-(zh|jp|kr)$/i;
+                const langRegex = /-(zh|jp|kr|es)$/i;
                 const match = pageName.match(langRegex);
                 if (match) {
                     currentLang = match[1].toLowerCase();
@@ -632,7 +633,8 @@
                     'en': { suffix: '', name: 'English' },
                     'zh': { suffix: '-zh', name: '中文' },
                     'jp': { suffix: '-jp', name: '日本語' },
-                    'kr': { suffix: '-kr', name: '한국어' }
+                    'kr': { suffix: '-kr', name: '한국어' },
+                    'es': { suffix: '-es', name: 'Español' }
                 };
 
                 const available = [];
@@ -679,6 +681,7 @@
                 if (browserLang.startsWith('zh')) preferredLang = 'zh';
                 else if (browserLang.startsWith('ja')) preferredLang = 'jp';
                 else if (browserLang.startsWith('ko')) preferredLang = 'kr';
+                else if (browserLang.startsWith('es')) preferredLang = 'es';
 
                 if (preferredLang !== currentLang) {
                     const targetVariant = available.find(v => v.lang === preferredLang);
