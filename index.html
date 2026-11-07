@@ -4,53 +4,143 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Documentation</title>
-    <!-- Markdown & MathJax -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* --- 全局样式 --- */
+        /* ---------- 主题变量 ---------- */
+        :root {
+            --bg: #f9fafb;
+            --surface: #ffffff;
+            --surface-2: #f1f5f9;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --text-faint: #94a3b8;
+            --link: #2563eb;
+            --link-hover: #1d4ed8;
+            --toc-hover-bg: #f1f5f9;
+            --toc-active-bg: #eff6ff;
+            --toc-active-text: #1d4ed8;
+            --toc-active-border: #3b82f6;
+            --code-bg: #f1f5f9;
+            --code-text: inherit;
+            --pre-bg: #1e293b;
+            --pre-text: #f8fafc;
+            --blockquote-bg: #f8fafc;
+            --blockquote-border: #cbd5e1;
+            --blockquote-text: #475569;
+            --shadow: rgba(0, 0, 0, 0.03);
+            --shadow-sidebar: rgba(0, 0, 0, 0.02);
+            --error: #b91c1c;
+        }
+
+        /* 暗色模式变量 */
+        html[data-theme="dark"] {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-2: #273449;
+            --border: #334155;
+            --border-strong: #475569;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-faint: #64748b;
+            --link: #60a5fa;
+            --link-hover: #93c5fd;
+            --toc-hover-bg: #273449;
+            --toc-active-bg: #1e3a5f;
+            --toc-active-text: #93c5fd;
+            --toc-active-border: #60a5fa;
+            --code-bg: #273449;
+            --code-text: #e2e8f0;
+            --pre-bg: #0b1220;
+            --pre-text: #e2e8f0;
+            --blockquote-bg: #1e293b;
+            --blockquote-border: #475569;
+            --blockquote-text: #cbd5e1;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-sidebar: rgba(0, 0, 0, 0.2);
+            --error: #f87171;
+        }
+
+        /* ---------- 全局 ---------- */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        html {
+            color-scheme: light dark;
+        }
+
         body {
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
             display: flex;
             min-height: 100vh;
-            background-color: #f9fafb;
-            color: #1e293b;
+            background-color: var(--bg);
+            color: var(--text);
             line-height: 1.6;
+            transition: background-color 0.25s ease, color 0.25s ease;
         }
 
-        /* --- 侧边导航栏 --- */
+        /* ---------- 侧边栏 ---------- */
         .sidebar {
             width: 280px;
             flex-shrink: 0;
-            background-color: #ffffff;
-            border-right: 1px solid #e2e8f0;
+            background-color: var(--surface);
+            border-right: 1px solid var(--border);
             padding: 1.5rem 1rem;
             overflow-y: auto;
             height: 100vh;
             position: sticky;
             top: 0;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.02);
-            transition: all 0.2s ease;
+            box-shadow: 2px 0 8px var(--shadow-sidebar);
+            transition: background-color 0.25s ease, border-color 0.25s ease;
         }
 
-        .sidebar h3 {
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-header h3 {
             font-size: 1.1rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #64748b;
-            margin-bottom: 1.25rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e2e8f0;
+            color: var(--text-muted);
+            margin: 0;
         }
 
+        /* 主题切换按钮 */
+        .theme-toggle {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            background: var(--toc-hover-bg);
+            color: var(--text);
+        }
+
+        /* 目录 */
         .toc-list {
             list-style: none;
             padding-left: 0;
@@ -64,28 +154,27 @@
         .toc-list a {
             display: block;
             padding: 0.35rem 0.5rem;
-            color: #334155;
+            color: var(--text);
             text-decoration: none;
             border-radius: 6px;
             font-size: 0.9rem;
-            transition: background 0.15s, color 0.15s;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
             word-break: break-word;
             border-left: 3px solid transparent;
         }
 
         .toc-list a:hover {
-            background-color: #f1f5f9;
-            color: #0f172a;
+            background-color: var(--toc-hover-bg);
+            color: var(--text);
         }
 
         .toc-list a.active {
-            background-color: #eff6ff;
-            color: #1d4ed8;
-            border-left-color: #3b82f6;
+            background-color: var(--toc-active-bg);
+            color: var(--toc-active-text);
+            border-left-color: var(--toc-active-border);
             font-weight: 500;
         }
 
-        /* 不同标题级别的缩进与字号 */
         .toc-level-1 a { font-weight: 600; font-size: 0.95rem; padding-left: 0.5rem; }
         .toc-level-2 a { padding-left: 1.25rem; }
         .toc-level-3 a { padding-left: 2rem; font-size: 0.85rem; }
@@ -93,7 +182,13 @@
         .toc-level-5 a { padding-left: 3.5rem; font-size: 0.8rem; }
         .toc-level-6 a { padding-left: 4.25rem; font-size: 0.75rem; }
 
-        /* --- 主要内容区域 --- */
+        .toc-placeholder {
+            color: var(--text-faint);
+            font-size: 0.85rem;
+            padding-left: 0.5rem;
+        }
+
+        /* ---------- 主内容 ---------- */
         .main-content {
             flex: 1;
             padding: 2rem 2.5rem;
@@ -103,49 +198,52 @@
         }
 
         #content {
-            background: #ffffff;
+            background: var(--surface);
             border-radius: 12px;
             padding: 2rem 2.5rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            border: 1px solid #e9eef3;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 1px solid var(--border);
             min-height: 200px;
+            transition: background-color 0.25s ease, border-color 0.25s ease;
         }
 
-        /* 加载与错误状态 */
-        .loading, .error {
-            color: #64748b;
+        .loading {
+            color: var(--text-muted);
             font-style: italic;
             padding: 1rem 0;
         }
+
         .error {
-            color: #b91c1c;
+            color: var(--error);
         }
 
-        /* Markdown 基础样式 (简易优化) */
+        /* Markdown 样式 */
         #content h1, #content h2, #content h3, #content h4, #content h5, #content h6 {
             margin-top: 1.5em;
             margin-bottom: 0.6em;
             font-weight: 600;
             line-height: 1.3;
-            scroll-margin-top: 20px;  /* 锚点偏移 */
+            scroll-margin-top: 20px;
+            color: var(--text);
         }
-        #content h1 { font-size: 2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
-        #content h2 { font-size: 1.6rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.2rem; }
+        #content h1 { font-size: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.3rem; }
+        #content h2 { font-size: 1.6rem; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
         #content h3 { font-size: 1.3rem; }
         #content h4 { font-size: 1.1rem; }
         #content p { margin: 0.8rem 0; }
-        #content a { color: #2563eb; text-decoration: none; }
-        #content a:hover { text-decoration: underline; }
+        #content a { color: var(--link); text-decoration: none; }
+        #content a:hover { text-decoration: underline; color: var(--link-hover); }
         #content code {
-            background: #f1f5f9;
+            background: var(--code-bg);
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
             font-size: 0.9em;
             font-family: 'SF Mono', 'Fira Code', monospace;
+            color: var(--code-text);
         }
         #content pre {
-            background: #1e293b;
-            color: #f8fafc;
+            background: var(--pre-bg);
+            color: var(--pre-text);
             padding: 1rem;
             border-radius: 8px;
             overflow-x: auto;
@@ -158,11 +256,11 @@
             font-size: 0.9em;
         }
         #content blockquote {
-            border-left: 4px solid #cbd5e1;
+            border-left: 4px solid var(--blockquote-border);
             margin: 1rem 0;
             padding: 0.5rem 0 0.5rem 1rem;
-            color: #475569;
-            background: #f8fafc;
+            color: var(--blockquote-text);
+            background: var(--blockquote-bg);
             border-radius: 0 6px 6px 0;
         }
         #content ul, #content ol {
@@ -175,11 +273,24 @@
         }
         #content hr {
             border: none;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid var(--border);
             margin: 1.5rem 0;
         }
+        #content table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1rem 0;
+        }
+        #content th, #content td {
+            border: 1px solid var(--border);
+            padding: 0.5rem 0.75rem;
+            text-align: left;
+        }
+        #content th {
+            background: var(--surface-2);
+        }
 
-        /* 移动端响应 */
+        /* ---------- 移动端 ---------- */
         @media (max-width: 700px) {
             body {
                 flex-direction: column;
@@ -190,7 +301,7 @@
                 max-height: 220px;
                 position: relative;
                 border-right: none;
-                border-bottom: 1px solid #e2e8f0;
+                border-bottom: 1px solid var(--border);
                 padding: 1rem;
             }
             .main-content {
@@ -203,15 +314,18 @@
     </style>
 </head>
 <body>
-    <!-- 侧边导航栏 (英文) -->
     <aside class="sidebar" id="sidebar">
-        <h3>Table of Contents</h3>
+        <div class="sidebar-header">
+            <h3>Table of Contents</h3>
+            <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+                <!-- 图标由 JS 填充 -->
+            </button>
+        </div>
         <ul class="toc-list" id="toc-list">
-            <li style="color:#94a3b8; font-size:0.85rem; padding-left:0.5rem;">No headings yet</li>
+            <li class="toc-placeholder">No headings yet</li>
         </ul>
     </aside>
 
-    <!-- 主内容区 -->
     <div class="main-content">
         <main id="content">
             <p class="loading">loading...</p>
@@ -220,49 +334,91 @@
 
     <script>
         (function() {
-            // ---------- 1. 解析 URL 参数 ----------
+            // ============================================================
+            // 0. 主题 (暗色/亮色) 逻辑
+            // ============================================================
+            const THEME_KEY = 'qd-theme'; // 存储键
+            const htmlEl = document.documentElement;
+            const themeToggleBtn = document.getElementById('theme-toggle');
+
+            // 获取当前应生效的主题
+            function getPreferredTheme() {
+                const stored = localStorage.getItem(THEME_KEY);
+                if (stored === 'light' || stored === 'dark') return stored;
+                // 未手动设置过 -> 跟随系统
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+
+            // 应用主题
+            function applyTheme(theme) {
+                htmlEl.setAttribute('data-theme', theme);
+                // 更新按钮图标 (太阳/月亮)
+                if (theme === 'dark') {
+                    themeToggleBtn.innerHTML = '☀️';  // 点击可切到亮色
+                    themeToggleBtn.title = 'Switch to light mode';
+                } else {
+                    themeToggleBtn.innerHTML = '🌙';  // 点击可切到暗色
+                    themeToggleBtn.title = 'Switch to dark mode';
+                }
+            }
+
+            // 初始化主题
+            let currentTheme = getPreferredTheme();
+            applyTheme(currentTheme);
+
+            // 手动切换
+            themeToggleBtn.addEventListener('click', () => {
+                currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(currentTheme);
+                localStorage.setItem(THEME_KEY, currentTheme);
+            });
+
+            // 跟随系统变化 (仅当用户没手动选过时)
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem(THEME_KEY)) {
+                    currentTheme = e.matches ? 'dark' : 'light';
+                    applyTheme(currentTheme);
+                }
+            });
+
+            // ============================================================
+            // 1. 解析 URL 参数
+            // ============================================================
             const searchStr = window.location.search;
-            let pageName = 'README'; // default page
+            let pageName = 'README';
 
             if (searchStr.length > 1) {
-                // 去掉开头的问号，用 & 分割
                 pageName = searchStr.substring(1).split('&')[0];
-                // 处理 ?name=value 的形式
                 if (pageName.includes('=')) {
                     pageName = pageName.split('=')[1];
                 }
             }
 
-            // 设置页面标题
             document.title = `${pageName} - Quick Documentation`;
 
-            // 强制不使用缓存
             const fetchUrl = `${pageName}.md?t=${new Date().getTime()}`;
 
-            // 获取 DOM 元素
             const contentEl = document.getElementById('content');
             const tocListEl = document.getElementById('toc-list');
 
-            // ---------- 2. 生成目录 (TOC) ----------
+            // ============================================================
+            // 2. 生成目录 (TOC)
+            // ============================================================
             function generateTOC() {
-                // 从渲染后的内容中提取所有标题 (h1-h6)
                 const headings = contentEl.querySelectorAll('h1, h2, h3, h4, h5, h6');
                 if (headings.length === 0) {
-                    tocListEl.innerHTML = '<li style="color:#94a3b8; font-size:0.85rem; padding-left:0.5rem;">No headings found</li>';
+                    tocListEl.innerHTML = '<li class="toc-placeholder">No headings found</li>';
                     return;
                 }
 
                 const tocItems = [];
 
-                // 遍历标题，分配 id 并构建目录项
                 headings.forEach((heading, index) => {
-                    // 如果标题没有 id，则生成一个唯一的 id
                     if (!heading.id) {
-                        // 基于文本内容生成 slug，并加上索引防止重复
                         const text = heading.textContent.trim().toLowerCase()
-                            .replace(/[^a-z0-9\s-]/g, '')  // 移除特殊字符
-                            .replace(/\s+/g, '-')          // 空格转连字符
-                            .replace(/-+/g, '-');           // 合并多个连字符
+                            .replace(/[^a-z0-9\s-]/g, '')
+                            .replace(/\s+/g, '-')
+                            .replace(/-+/g, '-');
                         const baseId = text || `heading-${index}`;
                         let uniqueId = baseId;
                         let counter = 1;
@@ -273,11 +429,10 @@
                         heading.id = uniqueId;
                     }
 
-                    const level = parseInt(heading.tagName.substring(1)); // H1 -> 1
+                    const level = parseInt(heading.tagName.substring(1));
                     const id = heading.id;
                     const text = heading.textContent.trim();
 
-                    // 构造列表项
                     tocItems.push(`
                         <li class="toc-level-${level}">
                             <a href="#${id}" data-target="${id}">${text}</a>
@@ -285,10 +440,8 @@
                     `);
                 });
 
-                // 插入到侧边栏
                 tocListEl.innerHTML = tocItems.join('');
 
-                // 为目录链接添加平滑滚动 + 激活状态 (可选)
                 const tocLinks = tocListEl.querySelectorAll('a');
                 tocLinks.forEach(link => {
                     link.addEventListener('click', function(e) {
@@ -297,46 +450,40 @@
                         const targetEl = document.getElementById(targetId);
                         if (targetEl) {
                             targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            // 更新浏览器 hash 但不跳转
                             history.pushState(null, null, `#${targetId}`);
-                            // 移除其他 active，添加当前 active
                             tocLinks.forEach(l => l.classList.remove('active'));
                             this.classList.add('active');
                         }
                     });
                 });
 
-                // 监听滚动，自动高亮当前标题 (可选，体验更好)
-                // 使用 Intersection Observer 或者简单滚动检查
                 setupScrollSpy(headings);
             }
 
-            // ---------- 滚动监听，高亮当前标题所在目录 ----------
+            // ============================================================
+            // 3. 滚动监听高亮
+            // ============================================================
             function setupScrollSpy(headings) {
                 if (headings.length === 0) return;
 
                 const tocLinks = tocListEl.querySelectorAll('a');
                 const linkMap = new Map();
                 tocLinks.forEach(link => {
-                    const id = link.dataset.target;
-                    linkMap.set(id, link);
+                    linkMap.set(link.dataset.target, link);
                 });
 
-                // 使用 Intersection Observer 检测哪个标题在视口中
                 const observerOptions = {
                     root: null,
-                    rootMargin: '0px 0px -20% 0px', // 调整偏移，让高亮更自然
+                    rootMargin: '0px 0px -20% 0px',
                     threshold: 0.1
                 };
 
                 let activeId = null;
 
                 const observer = new IntersectionObserver((entries) => {
-                    // 收集当前所有可见的标题
                     const visibleEntries = entries.filter(entry => entry.isIntersecting);
                     if (visibleEntries.length === 0) return;
 
-                    // 取最靠上的一个 (按 top 排序)
                     let topEntry = visibleEntries[0];
                     visibleEntries.forEach(entry => {
                         if (entry.boundingClientRect.top < topEntry.boundingClientRect.top) {
@@ -347,34 +494,27 @@
                     const newActiveId = topEntry.target.id;
                     if (newActiveId !== activeId) {
                         activeId = newActiveId;
-                        // 更新 active 类
                         tocLinks.forEach(link => link.classList.remove('active'));
                         const activeLink = linkMap.get(activeId);
-                        if (activeLink) {
-                            activeLink.classList.add('active');
-                            // 让侧边栏滚动到激活项 (可选)
-                            // activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-                        }
+                        if (activeLink) activeLink.classList.add('active');
                     }
                 }, observerOptions);
 
                 headings.forEach(heading => observer.observe(heading));
             }
 
-            // ---------- 3. 加载并渲染 Markdown ----------
+            // ============================================================
+            // 4. 加载并渲染 Markdown
+            // ============================================================
             fetch(fetchUrl)
                 .then(response => {
                     if (!response.ok) throw new Error('File not found');
                     return response.text();
                 })
                 .then(text => {
-                    // 使用 marked 渲染
                     contentEl.innerHTML = marked.parse(text);
-
-                    // 渲染后生成目录
                     generateTOC();
 
-                    // 可选：重新触发 MathJax 渲染 (如果包含公式)
                     if (window.MathJax && MathJax.typesetPromise) {
                         MathJax.typesetPromise([contentEl]).catch((err) => console.warn('MathJax error:', err));
                     }
@@ -385,7 +525,7 @@
                         <h1>404 Not Found</h1>
                         <p class="error">Unable to load document: <code>${pageName}.md</code></p>
                     `;
-                    tocListEl.innerHTML = '<li style="color:#94a3b8; font-size:0.85rem; padding-left:0.5rem;">Content unavailable</li>';
+                    tocListEl.innerHTML = '<li class="toc-placeholder">Content unavailable</li>';
                 });
         })();
     </script>
