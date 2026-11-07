@@ -8,9 +8,14 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* ---------- Theme variables ---------- */
+        /* ---------- Base Variables ---------- */
         :root {
-            --bg: #f9fafb;
+            --shadow: rgba(0, 0, 0, 0.04);
+            --shadow-sidebar: rgba(0, 0, 0, 0.02);
+            --error: #b91c1c;
+            
+            /* Base colors that will be overridden by accents */
+            --bg: #f8fafc;
             --surface: #ffffff;
             --surface-2: #f1f5f9;
             --border: #e2e8f0;
@@ -19,174 +24,110 @@
             --text-muted: #64748b;
             --text-faint: #94a3b8;
             --toc-hover-bg: #f1f5f9;
-            --code-bg: #f1f5f9;
-            --code-text: inherit;
+            
+            /* Transparent overlays for code and quotes */
+            --code-bg: rgba(0, 0, 0, 0.05);
             --pre-bg: #1e293b;
             --pre-text: #f8fafc;
-            --blockquote-bg: #f8fafc;
-            --blockquote-border: #cbd5e1;
+            --blockquote-bg: rgba(0, 0, 0, 0.02);
             --blockquote-text: #475569;
-            --shadow: rgba(0, 0, 0, 0.03);
-            --shadow-sidebar: rgba(0, 0, 0, 0.02);
-            --error: #b91c1c;
-
-            /* Accent (default: blue) */
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --accent-soft: #eff6ff;
-            --accent-border: #3b82f6;
         }
 
-        /* Dark mode variables */
+        /* ---------- Base Dark Mode ---------- */
         html[data-theme="dark"] {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --surface-2: #273449;
-            --border: #334155;
-            --border-strong: #475569;
-            --text: #e2e8f0;
-            --text-muted: #94a3b8;
-            --text-faint: #64748b;
-            --toc-hover-bg: #273449;
-            --code-bg: #273449;
-            --code-text: #e2e8f0;
-            --pre-bg: #0b1220;
-            --pre-text: #e2e8f0;
-            --blockquote-bg: #1e293b;
-            --blockquote-border: #475569;
-            --blockquote-text: #cbd5e1;
             --shadow: rgba(0, 0, 0, 0.3);
             --shadow-sidebar: rgba(0, 0, 0, 0.2);
             --error: #f87171;
+            
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-faint: #64748b;
+            --toc-hover-bg: rgba(255, 255, 255, 0.05);
+            
+            --code-bg: rgba(255, 255, 255, 0.1);
+            --pre-bg: #0b1220;
+            --pre-text: #e2e8f0;
+            --blockquote-bg: rgba(255, 255, 255, 0.03);
+            --blockquote-text: #cbd5e1;
         }
 
-               /* ---------- 7 accent colors (with tinted dark mode) ---------- */
+        /* ---------- 7 Accent Colors (Light & Dark) ---------- */
         
         /* Blue (Default) */
         html[data-accent="blue"] {
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --accent-soft: #eff6ff;
-            --accent-border: #3b82f6;
+            --bg: #f8fafc; --surface: #ffffff; --surface-2: #f1f5f9;
+            --border: #e2e8f0; --border-strong: #cbd5e1;
+            --accent: #2563eb; --accent-hover: #1d4ed8; --accent-soft: #eff6ff; --accent-border: #3b82f6;
         }
         html[data-theme="dark"][data-accent="blue"] {
-            --bg: #0b1120;         /* 深蓝黑 */
-            --surface: #111a2e;
-            --surface-2: #1b263e;
-            --border: #2a3b5c;
-            --accent: #60a5fa;
-            --accent-hover: #93c5fd;
-            --accent-soft: #1e3a5f;
-            --accent-border: #60a5fa;
+            --bg: #0b1120; --surface: #111a2e; --surface-2: #1b263e; --border: #2a3b5c;
+            --accent: #60a5fa; --accent-hover: #93c5fd; --accent-soft: #1e3a5f; --accent-border: #60a5fa;
         }
 
         /* Red */
         html[data-accent="red"] {
-            --accent: #dc2626;
-            --accent-hover: #b91c1c;
-            --accent-soft: #fef2f2;
-            --accent-border: #ef4444;
+            --bg: #fefafa; --surface: #ffffff; --surface-2: #fef2f2;
+            --border: #fee2e2; --border-strong: #fca5a5;
+            --accent: #dc2626; --accent-hover: #b91c1c; --accent-soft: #fef2f2; --accent-border: #ef4444;
         }
         html[data-theme="dark"][data-accent="red"] {
-            --bg: #140b0b;         /* 极暗的暖红黑 */
-            --surface: #1f1010;    /* 暗红色表面 */
-            --surface-2: #2c1515;
-            --border: #4a2222;
-            --accent: #f87171;
-            --accent-hover: #fca5a5;
-            --accent-soft: #4c1d1d;
-            --accent-border: #f87171;
+            --bg: #140b0b; --surface: #1f1010; --surface-2: #2c1515; --border: #4a2222;
+            --accent: #f87171; --accent-hover: #fca5a5; --accent-soft: #4c1d1d; --accent-border: #f87171;
         }
 
         /* Green */
         html[data-accent="green"] {
-            --accent: #16a34a;
-            --accent-hover: #15803d;
-            --accent-soft: #f0fdf4;
-            --accent-border: #22c55e;
+            --bg: #f9fdfa; --surface: #ffffff; --surface-2: #f0fdf4;
+            --border: #dcfce7; --border-strong: #86efac;
+            --accent: #16a34a; --accent-hover: #15803d; --accent-soft: #f0fdf4; --accent-border: #22c55e;
         }
         html[data-theme="dark"][data-accent="green"] {
-            --bg: #0a140e;         /* 极暗的墨绿黑 */
-            --surface: #101f15;
-            --surface-2: #182e1f;
-            --border: #264d33;
-            --accent: #4ade80;
-            --accent-hover: #86efac;
-            --accent-soft: #14432a;
-            --accent-border: #4ade80;
+            --bg: #0a140e; --surface: #101f15; --surface-2: #182e1f; --border: #264d33;
+            --accent: #4ade80; --accent-hover: #86efac; --accent-soft: #14432a; --accent-border: #4ade80;
         }
 
         /* Purple */
         html[data-accent="purple"] {
-            --accent: #7c3aed;
-            --accent-hover: #6d28d9;
-            --accent-soft: #f5f3ff;
-            --accent-border: #8b5cf6;
+            --bg: #fcfbfe; --surface: #ffffff; --surface-2: #f5f3ff;
+            --border: #ede9fe; --border-strong: #c4b5fd;
+            --accent: #7c3aed; --accent-hover: #6d28d9; --accent-soft: #f5f3ff; --accent-border: #8b5cf6;
         }
         html[data-theme="dark"][data-accent="purple"] {
-            --bg: #100a1c;         /* 极暗的紫黑 */
-            --surface: #181026;
-            --surface-2: #221736;
-            --border: #38265c;
-            --accent: #a78bfa;
-            --accent-hover: #c4b5fd;
-            --accent-soft: #2e1f5e;
-            --accent-border: #a78bfa;
+            --bg: #100a1c; --surface: #181026; --surface-2: #221736; --border: #38265c;
+            --accent: #a78bfa; --accent-hover: #c4b5fd; --accent-soft: #2e1f5e; --accent-border: #a78bfa;
         }
 
         /* Orange */
         html[data-accent="orange"] {
-            --accent: #ea580c;
-            --accent-hover: #c2410c;
-            --accent-soft: #fff7ed;
-            --accent-border: #f97316;
+            --bg: #fffaf7; --surface: #ffffff; --surface-2: #fff7ed;
+            --border: #ffedd5; --border-strong: #fdba74;
+            --accent: #ea580c; --accent-hover: #c2410c; --accent-soft: #fff7ed; --accent-border: #f97316;
         }
         html[data-theme="dark"][data-accent="orange"] {
-            --bg: #150d08;         /* 极暗的橘黑 */
-            --surface: #20140d;
-            --surface-2: #2e1c12;
-            --border: #4a2c1c;
-            --accent: #fb923c;
-            --accent-hover: #fdba74;
-            --accent-soft: #4a2508;
-            --accent-border: #fb923c;
+            --bg: #150d08; --surface: #20140d; --surface-2: #2e1c12; --border: #4a2c1c;
+            --accent: #fb923c; --accent-hover: #fdba74; --accent-soft: #4a2508; --accent-border: #fb923c;
         }
 
         /* Pink */
         html[data-accent="pink"] {
-            --accent: #db2777;
-            --accent-hover: #be185d;
-            --accent-soft: #fdf2f8;
-            --accent-border: #ec4899;
+            --bg: #fffbfd; --surface: #ffffff; --surface-2: #fdf2f8;
+            --border: #fce7f3; --border-strong: #f9a8d4;
+            --accent: #db2777; --accent-hover: #be185d; --accent-soft: #fdf2f8; --accent-border: #ec4899;
         }
         html[data-theme="dark"][data-accent="pink"] {
-            --bg: #140a10;         /* 极暗的粉紫黑 */
-            --surface: #1f101a;
-            --surface-2: #2e1626;
-            --border: #4a233d;
-            --accent: #f472b6;
-            --accent-hover: #f9a8d4;
-            --accent-soft: #4a1530;
-            --accent-border: #f472b6;
+            --bg: #140a10; --surface: #1f101a; --surface-2: #2e1626; --border: #4a233d;
+            --accent: #f472b6; --accent-hover: #f9a8d4; --accent-soft: #4a1530; --accent-border: #f472b6;
         }
 
         /* Teal */
         html[data-accent="teal"] {
-            --accent: #0d9488;
-            --accent-hover: #0f766e;
-            --accent-soft: #f0fdfa;
-            --accent-border: #14b8a6;
+            --bg: #f8fdfc; --surface: #ffffff; --surface-2: #f0fdfa;
+            --border: #ccfbf1; --border-strong: #5eead4;
+            --accent: #0d9488; --accent-hover: #0f766e; --accent-soft: #f0fdfa; --accent-border: #14b8a6;
         }
         html[data-theme="dark"][data-accent="teal"] {
-            --bg: #081413;         /* 极暗的青黑 */
-            --surface: #0d1f1e;
-            --surface-2: #142e2d;
-            --border: #1f4a47;
-            --accent: #2dd4bf;
-            --accent-hover: #5eead4;
-            --accent-soft: #0f3d3a;
-            --accent-border: #2dd4bf;
-        }
+            --bg: #081413; --surface: #0d1f1e; --surface-2: #142e2d; --border: #1f4a47;
+            --accent: #2dd4bf; --accent-hover: #5eead4; --accent-soft: #0f3d3a; --accent-border: #2dd4bf;
         }
 
         /* ---------- Global ---------- */
@@ -317,7 +258,7 @@
             padding-left: 0.5rem;
         }
 
-        /* ---------- Main content ---------- */
+        /* ---------- Main Content ---------- */
         .main-content {
             flex: 1;
             padding: 2rem 2.5rem;
@@ -346,7 +287,7 @@
             color: var(--error);
         }
 
-        /* Markdown styles */
+        /* Markdown Styles */
         #content h1, #content h2, #content h3, #content h4, #content h5, #content h6 {
             margin-top: 1.5em;
             margin-bottom: 0.6em;
@@ -362,14 +303,16 @@
         #content p { margin: 0.8rem 0; }
         #content a { color: var(--accent); text-decoration: none; }
         #content a:hover { text-decoration: underline; color: var(--accent-hover); }
+        
         #content code {
             background: var(--code-bg);
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
             font-size: 0.9em;
             font-family: 'SF Mono', 'Fira Code', monospace;
-            color: var(--code-text);
+            color: var(--text);
         }
+        
         #content pre {
             background: var(--pre-bg);
             color: var(--pre-text);
@@ -378,12 +321,14 @@
             overflow-x: auto;
             margin: 1rem 0;
         }
+        
         #content pre code {
             background: transparent;
             padding: 0;
             color: inherit;
             font-size: 0.9em;
         }
+        
         #content blockquote {
             border-left: 4px solid var(--accent-border);
             margin: 1rem 0;
@@ -417,38 +362,27 @@
         }
         #content th {
             background: var(--surface-2);
+            border-bottom: 2px solid var(--accent-border);
         }
-        #content th { border-bottom: 2px solid var(--accent-border); }
 
-        /* Debug panel */
-        .debug-box {
+        /* ---------- Error Box ---------- */
+        .error-box {
             background: var(--surface-2);
             border: 1px solid var(--border-strong);
-            border-radius: 8px;
+            border-left: 4px solid var(--error);
+            border-radius: 6px;
             padding: 1rem 1.25rem;
             margin-top: 1rem;
         }
-        .debug-box h3 {
+        .error-box h3 {
             margin-top: 0 !important;
-            font-size: 1rem !important;
+            font-size: 1.1rem !important;
             color: var(--error);
             border: none !important;
         }
-        .debug-box .kv {
-            display: flex;
-            gap: 0.5rem;
-            margin: 0.35rem 0;
-            font-size: 0.9rem;
-            word-break: break-all;
-        }
-        .debug-box .kv strong {
-            flex-shrink: 0;
+        .error-box p {
+            font-size: 0.95rem;
             color: var(--text-muted);
-            min-width: 8em;
-        }
-        .debug-box pre {
-            margin-top: 0.75rem;
-            font-size: 0.8rem;
         }
 
         /* ---------- Mobile ---------- */
@@ -543,25 +477,20 @@
             const searchStr = window.location.search;
             const urlParams = {};
             let pageName = 'README';
-            let urlParseError = null;
 
             if (searchStr.length > 1) {
-                try {
-                    const raw = searchStr.substring(1);
-                    const parts = raw.split('&');
-                    parts.forEach((part, idx) => {
-                        if (idx === 0 && !part.includes('=')) {
-                            pageName = decodeURIComponent(part);
-                        } else if (part.includes('=')) {
-                            const eq = part.indexOf('=');
-                            const k = part.slice(0, eq);
-                            const v = part.slice(eq + 1);
-                            urlParams[decodeURIComponent(k)] = decodeURIComponent(v);
-                        }
-                    });
-                } catch (e) {
-                    urlParseError = e;
-                }
+                const raw = searchStr.substring(1);
+                const parts = raw.split('&');
+                parts.forEach((part, idx) => {
+                    if (idx === 0 && !part.includes('=')) {
+                        pageName = decodeURIComponent(part);
+                    } else if (part.includes('=')) {
+                        const eq = part.indexOf('=');
+                        const k = part.slice(0, eq);
+                        const v = part.slice(eq + 1);
+                        urlParams[decodeURIComponent(k)] = decodeURIComponent(v);
+                    }
+                });
             }
 
             const ACCENTS = ['blue', 'red', 'green', 'purple', 'orange', 'pink', 'teal'];
@@ -573,11 +502,11 @@
             const tocListEl = document.getElementById('toc-list');
 
             // ============================================================
-            // 2. Front-matter parsing (no dependency, lenient)
+            // 2. Front-matter parsing
             // ============================================================
             function parseFrontMatter(text) {
                 const meta = {};
-                const result = { meta, body: text, rawFrontMatter: null };
+                const result = { meta, body: text };
                 const trimmed = text.replace(/^\uFEFF/, '').replace(/^\s+/, '');
                 if (!trimmed.startsWith('---')) return result;
 
@@ -592,8 +521,6 @@
                     }
                 }
                 if (endIdx === -1) return result;
-
-                result.rawFrontMatter = lines.slice(0, endIdx + 1).join('\n');
 
                 const metaLines = lines.slice(1, endIdx);
                 metaLines.forEach(line => {
@@ -739,154 +666,38 @@
             }
 
             // ============================================================
-            // 5. Staged error handling + detailed debug output
+            // 5. Load and Render
             // ============================================================
-            function showDebugPanel(info) {
-                const rows = Object.entries(info).map(([k, v]) =>
-                    `<div class="kv"><strong>${k}</strong><span>${String(v)}</span></div>`
-                ).join('');
-
-                return `
-                    <div class="debug-box">
-                        <h3>⚠ Failed to load — Debug info</h3>
-                        ${rows}
-                    </div>
-                `;
-            }
-
-            let stage = 'init';
-            let rawText = null;
-            let parsed = null;
-
-            if (urlParseError) {
-                stage = 'url-parse';
-                contentEl.innerHTML = `<h1>Failed to parse URL parameters</h1>` + showDebugPanel({
-                    'Error': urlParseError.message || String(urlParseError),
-                    'Search': searchStr
-                });
-                tocListEl.innerHTML = '<li class="toc-placeholder">Content unavailable</li>';
-                return;
-            }
-
-            stage = 'fetch';
             fetch(fetchUrl)
                 .then(response => {
                     if (!response.ok) {
-                        const e = new Error(`File not found (HTTP ${response.status} ${response.statusText})`);
-                        e.stage = 'http';
-                        e.status = response.status;
-                        e.url = response.url;
-                        throw e;
+                        throw new Error(`HTTP ${response.status}`);
                     }
-                    stage = 'read-text';
                     return response.text();
                 })
                 .then(text => {
-                    rawText = text;
-                    stage = 'front-matter';
-                    try {
-                        parsed = parseFrontMatter(text);
-                    } catch (e) {
-                        e.stage = 'front-matter';
-                        throw e;
-                    }
-
-                    stage = 'apply-meta';
-                    try {
-                        applyMeta(parsed.meta);
-                    } catch (e) {
-                        e.stage = 'apply-meta';
-                        throw e;
-                    }
-
-                    stage = 'marked-parse';
-                    let html;
-                    try {
-                        if (typeof marked === 'undefined' || !marked.parse) {
-                            throw new Error('marked library not loaded (CDN blocked or network issue)');
-                        }
-                        html = marked.parse(parsed.body);
-                    } catch (e) {
-                        e.stage = 'marked-parse';
-                        throw e;
-                    }
-
-                    stage = 'render';
-                    try {
-                        contentEl.innerHTML = html;
-                    } catch (e) {
-                        e.stage = 'render';
-                        throw e;
-                    }
-
-                    stage = 'toc';
-                    try {
-                        generateTOC();
-                    } catch (e) {
-                        console.warn('TOC generation failed (content still displayed):', e);
-                    }
-
-                    stage = 'done';
+                    const parsed = parseFrontMatter(text);
+                    applyMeta(parsed.meta);
+                    contentEl.innerHTML = marked.parse(parsed.body);
+                    generateTOC();
 
                     if (window.MathJax && MathJax.typesetPromise) {
                         MathJax.typesetPromise([contentEl]).catch((err) => console.warn('MathJax error:', err));
                     }
                 })
                 .catch(err => {
-                    console.error('[QD] load failed at stage:', stage, err);
-
-                    const msg = (err && (err.message || String(err))) || 'Unknown error';
-                    const isFetchTypeError = err instanceof TypeError;
-                    const isHttp = err.stage === 'http' || /HTTP \d+/.test(msg);
-
-                    let title, hint;
-                    if (isFetchTypeError && stage === 'fetch') {
-                        title = 'Network request failed (fetch threw TypeError)';
-                        hint = 'fetch itself failed: wrong path, CORS, offline, or cross-origin under file://.';
-                    } else if (isHttp) {
-                        title = `File not found or not served (HTTP ${err.status || '?'})`;
-                        hint = 'Server returned a non-2xx status. Check the file was uploaded, the path/case, or whether GitHub Pages (Jekyll) is ignoring it. Visit the URL below to verify.';
-                    } else if (stage === 'front-matter') {
-                        title = 'Front-matter parsing failed';
-                        hint = 'Error while parsing the leading --- block. Check for invisible characters or malformed syntax.';
-                    } else if (stage === 'apply-meta') {
-                        title = 'Failed to apply front-matter metadata';
-                        hint = 'Error while handling theme / sidebar-title / doc-title / hide-toc.';
-                    } else if (stage === 'marked-parse') {
-                        title = 'Markdown rendering failed (marked.parse)';
-                        hint = 'Error while rendering the body with marked. The library may not have loaded, or the body contains problematic content.';
-                    } else if (stage === 'render') {
-                        title = 'DOM render failed';
-                        hint = 'Error while writing HTML into the page.';
-                    } else {
-                        title = 'Unknown error stage';
-                        hint = 'See the stack trace below.';
-                    }
-
-                    const debugInfo = {
-                        'Stage': stage,
-                        'Error type': err && err.name ? err.name : typeof err,
-                        'Error message': msg,
-                        'Request URL': fetchUrl,
-                        'Page param': pageName,
-                        'HTTP status': err && err.status ? err.status : 'N/A',
-                        'Raw text length': rawText ? rawText.length : 'N/A',
-                        'Raw text first 80 chars': rawText ? JSON.stringify(rawText.slice(0, 80)) : 'N/A',
-                        'Front-matter raw': parsed && parsed.rawFrontMatter
-                            ? JSON.stringify(parsed.rawFrontMatter)
-                            : 'N/A',
-                        'Parsed meta': parsed ? JSON.stringify(parsed.meta) : 'N/A',
-                        'Body first 80 chars': parsed ? JSON.stringify(parsed.body.slice(0, 80)) : 'N/A'
-                    };
-
+                    console.error(err);
+                    const is404 = err.message.includes('404');
                     contentEl.innerHTML = `
-                        <h1 style="color:var(--error)">${title}</h1>
-                        <p style="color:var(--error)"><strong>Hint:</strong> ${hint}</p>
-                        ${showDebugPanel(debugInfo)}
-                        <details style="margin-top:1rem">
-                            <summary style="cursor:pointer;color:var(--text-muted)">Original stack trace</summary>
-                            <pre style="white-space:pre-wrap;font-size:0.8em">${(err && err.stack) || msg}</pre>
-                        </details>
+                        <h1 style="color:var(--error); border-bottom-color:var(--error)">Document Not Found</h1>
+                        <div class="error-box">
+                            <h3>${is404 ? 'HTTP 404 — File could not be loaded' : 'Failed to load'}</h3>
+                            <p>
+                                ${is404 
+                                  ? `The file <strong>${pageName}.md</strong> was not found on this server. If you are the author, make sure the file exists and GitHub Pages (Jekyll) is not ignoring it.` 
+                                  : `An unexpected error occurred while fetching the document.`}
+                            </p>
+                        </div>
                     `;
                     tocListEl.innerHTML = '<li class="toc-placeholder">Content unavailable</li>';
                 });
