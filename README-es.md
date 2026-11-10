@@ -40,23 +40,18 @@ pi | Introducción a pi | ?pi | 🧊🧊🧊
 ## Advertencias
 
 > [!WARNING]
-
 > Ataque de Stick Mother
 
 > [!TIP]
-
 > Ataque de Stick Mother
 
 > [!NOTE]
-
 > Ataque de Stick Mother
 
 > [!DANGER]
-
 > Ataque de Stick Mother
 
 > [!INFO]
-
 > Ataque de Stick Mother
 
 ## Referencias
