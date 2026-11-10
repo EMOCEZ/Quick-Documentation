@@ -347,6 +347,113 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
+
+        /* ---------- Author Components ---------- */
+/* 1) 卡片网格 */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+.doc-card {
+    display: block; padding: 1rem 1.1rem; border-radius: 10px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    color: var(--text) !important; text-decoration: none !important;
+    transition: transform .15s, border-color .15s, box-shadow .15s;
+}
+.doc-card:hover { transform: translateY(-2px); border-color: var(--accent-border); box-shadow: 0 6px 18px var(--shadow); }
+.doc-card .dc-title { font-weight: 600; font-size: 1.02rem; color: var(--accent); margin-bottom: .3rem; }
+.doc-card .dc-desc { font-size: .88rem; color: var(--text-muted); line-height: 1.5; }
+.doc-card .dc-icon { font-size: 1.3rem; margin-bottom: .4rem; display: block; }
+
+/* 2) 内嵌文档引用 */
+.doc-embed {
+    margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 10px;
+    overflow: hidden; background: var(--surface-2);
+}
+.doc-embed .de-head {
+    display: flex; align-items: center; gap: .5rem; padding: .55rem .9rem;
+    font-size: .85rem; color: var(--text-muted); border-bottom: 1px solid var(--border);
+    background: var(--surface);
+}
+.doc-embed .de-head a { color: var(--accent); }
+.doc-embed .de-body { padding: .2rem 1rem; max-height: 420px; overflow: auto; }
+.doc-embed .de-body > :first-child { margin-top: .6rem; }
+.doc-embed .de-body > :last-child { margin-bottom: .6rem; }
+
+/* 3) 提示框 / 警告框 */
+.callout {
+    margin: 1.1rem 0; padding: .85rem 1rem .85rem 1.05rem;
+    border-radius: 8px; border-left: 4px solid var(--accent-border);
+    background: var(--accent-soft); color: var(--text);
+}
+.callout .co-title { font-weight: 600; margin-bottom: .3rem; display: flex; align-items: center; gap: .4rem; }
+.callout > :last-child { margin-bottom: 0; }
+.callout > :first-child { margin-top: 0; }
+.callout.info    { border-left-color: var(--accent-border); background: var(--accent-soft); }
+.callout.tip     { border-left-color: #16a34a; background: rgba(22,163,74,.10); }
+.callout.warning { border-left-color: #d97706; background: rgba(217,119,6,.12); }
+.callout.danger  { border-left-color: var(--error); background: rgba(185,28,28,.10); }
+.callout.note    { border-left-color: var(--text-muted); background: var(--blockquote-bg); }
+
+/* 4) 折叠块 */
+details.fold {
+    margin: 1rem 0; border: 1px solid var(--border); border-radius: 8px;
+    background: var(--surface-2); padding: 0 .9rem;
+}
+details.fold > summary {
+    cursor: pointer; padding: .7rem 0; font-weight: 600; color: var(--text);
+    list-style: none; display: flex; align-items: center; gap: .5rem;
+}
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary::before { content: "▸"; color: var(--accent); transition: transform .15s; }
+details.fold[open] > summary::before { transform: rotate(90deg); }
+details.fold > *:not(summary) { margin-bottom: .8rem; }
+
+/* 5) 可点击弹窗（dialog） */
+.md-dialog {
+    border: 1px solid var(--border); border-radius: 12px; padding: 0;
+    background: var(--surface); color: var(--text);
+    max-width: min(560px, 90vw); width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+.md-dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(2px); }
+.md-dialog .dg-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: .8rem 1.1rem; border-bottom: 1px solid var(--border); font-weight: 600;
+}
+.md-dialog .dg-close {
+    background: var(--surface-2); border: 1px solid var(--border); color: var(--text-muted);
+    border-radius: 6px; width: 28px; height: 28px; cursor: pointer; line-height: 1;
+}
+.md-dialog .dg-body { padding: 1rem 1.1rem; max-height: 60vh; overflow: auto; }
+.dialog-trigger {
+    display: inline-block; cursor: pointer; color: var(--accent);
+    border-bottom: 1px dashed var(--accent-border);
+}
+
+/* 6) 行内徽章 / 键帽 */
+.badge {
+    display: inline-block; padding: .05rem .45rem; border-radius: 999px;
+    font-size: .78em; font-weight: 600; border: 1px solid var(--accent-border);
+    background: var(--accent-soft); color: var(--accent); vertical-align: 1px;
+}
+kbd {
+    display: inline-block; padding: .1rem .4rem; font-size: .82em;
+    border: 1px solid var(--border-strong); border-bottom-width: 2px;
+    border-radius: 5px; background: var(--surface-2);
+    font-family: 'SF Mono','Fira Code',monospace;
+}
+
+/* 7) 步骤条 */
+.steps { counter-reset: step; margin: 1.2rem 0; padding-left: 0; list-style: none; }
+.steps > li { position: relative; padding-left: 2.4rem; margin: .9rem 0; }
+.steps > li::before {
+    counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: 0; width: 1.7rem; height: 1.7rem;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; background: var(--accent); color: #fff; font-size: .85rem; font-weight: 600;
+}
+
+/* 8) 属性表（metadata pill 行） */
+.prop-row { display: flex; flex-wrap: wrap; gap: .4rem; margin: .8rem 0; }
+.prop-row .badge { font-weight: 500; }
     </style>
 </head>
 <body>
@@ -887,6 +994,199 @@
                 }
             }
 
+            /* ============================================================
+   Author Components 渲染器
+   在 marked 输出 DOM 后，把特定的 fenced code / 纯文本语法升级成组件。
+   全部基于 DOM 操作，不依赖额外库。
+   ============================================================ */
+async function renderAuthorComponents(root) {
+    // ---- 1. 卡片网格：```cards 内每行 "title | desc | url | icon(可选)" ----
+    root.querySelectorAll('pre > code').forEach(codeEl => {
+        const pre = codeEl.parentElement;
+        const cls = codeEl.className || '';
+        const lang = (cls.match(/language-(\w+)/) || [])[1];
+
+        if (lang === 'cards') {
+            const lines = codeEl.textContent.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+            const grid = document.createElement('div');
+            grid.className = 'card-grid';
+            lines.forEach(line => {
+                const [title, desc = '', url = '#', icon = ''] = line.split('|').map(s => s.trim());
+                if (!title) return;
+                const a = document.createElement('a');
+                a.className = 'doc-card';
+                a.href = url;
+                a.innerHTML = `${icon ? `<span class="dc-icon">${icon}</span>` : ''}
+                    <div class="dc-title">${title}</div>
+                    ${desc ? `<div class="dc-desc">${desc}</div>` : ''}`;
+                grid.appendChild(a);
+            });
+            pre.replaceWith(grid);
+        }
+
+        if (lang === 'embed') {
+            // ---- 2. 引用其他文档：```embed\n文件名.md\n``` ----
+            const target = codeEl.textContent.trim().split(/\s+/)[0];
+            const wrap = document.createElement('div');
+            wrap.className = 'doc-embed';
+            wrap.innerHTML = `<div class="de-head">📄 <a href="?${encodeURIComponent(target.replace(/\.md$/, ''))}">${target}</a></div><div class="de-body loading">loading…</div>`;
+            pre.replaceWith(wrap);
+            fetch(`${target}?t=${Date.now()}`)
+                .then(r => r.ok ? r.text() : Promise.reject(r.status))
+                .then(t => {
+                    const body = parseFrontMatter(t).body;
+                    wrap.querySelector('.de-body').innerHTML = marked.parse(body);
+                    wrap.querySelector('.de-body').classList.remove('loading');
+                    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([wrap]).catch(() => {});
+                })
+                .catch(() => {
+                    const b = wrap.querySelector('.de-body');
+                    b.classList.remove('loading');
+                    b.innerHTML = `<p style="color:var(--error)">⚠️ 无法加载 ${target}</p>`;
+                });
+        }
+    });
+
+    // ---- 3. 提示框：纯文本 [!TYPE] Title 后接正文，位于 blockquote 内 ----
+    root.querySelectorAll('blockquote').forEach(bq => {
+        const first = bq.firstElementChild;
+        if (!first || first.tagName !== 'P') return;
+        const m = first.textContent.match(/^\[!(\w+)\]\s*(.*)$/);
+        if (!m) return;
+        const type = m[1].toLowerCase();
+        const title = m[2] || '';
+        const allowed = ['info', 'tip', 'warning', 'danger', 'note'];
+        const kind = allowed.includes(type) ? type : 'note';
+        const icons = { info: 'ℹ️', tip: '💡', warning: '⚠️', danger: '⛔', note: '📝' };
+
+        const box = document.createElement('div');
+        box.className = `callout ${kind}`;
+        if (title) {
+            const t = document.createElement('div');
+            t.className = 'co-title';
+            t.textContent = `${icons[kind]} ${title}`;
+            box.appendChild(t);
+        }
+        // 把首段之后的兄弟节点搬进 callout
+        const siblings = [];
+        let n = first.nextElementSibling;
+        while (n) { siblings.push(n); n = n.nextElementSibling; }
+        siblings.forEach(s => box.appendChild(s));
+        bq.replaceWith(box);
+    });
+
+    // ---- 4. 折叠块：> 里用 [details] 语法（见下方语法说明） ----
+    // 由 markdown 渲染成 <p>[details] 标题</p> + 后续内容，这里转 <details>
+    root.querySelectorAll('p').forEach(p => {
+        const m = p.textContent.match(/^\[details\]\s*(.+)$/);
+        if (!m) return;
+        const details = document.createElement('details');
+        details.className = 'fold';
+        const summary = document.createElement('summary');
+        summary.textContent = m[1];
+        details.appendChild(summary);
+        let n = p.nextElementSibling;
+        while (n && n.tagName !== 'P') { // 收集连续内容
+            const next = n.nextElementSibling;
+            details.appendChild(n);
+            n = next;
+        }
+        // 如果下一段也属于本折叠块（简单起见只吃到下一个 details 前）
+        p.replaceWith(details);
+    });
+
+    // ---- 5. 弹窗：[dlg:标题] 触发文字 后的内容作为弹窗体 ----
+    // 语法见下方；这里把 <p>[dlg]...</p> 转为按钮 + <dialog>
+    let dlgIndex = 0;
+    root.querySelectorAll('p').forEach(p => {
+        const m = p.textContent.match(/^\[dlg\]\s*(.+?)\s*\|\s*(.+)$/);
+        if (!m) return;
+        const title = m[1].trim();
+        const triggerText = m[2].trim();
+        // 收集后续兄弟到 <dialog>
+        const bodyNodes = [];
+        let n = p.nextElementSibling;
+        while (n) {
+            const next = n.nextElementSibling;
+            bodyNodes.push(n);
+            n = next;
+        }
+        if (bodyNodes.length === 0) return;
+
+        const id = `md-dlg-${dlgIndex++}`;
+        const trigger = document.createElement('span');
+        trigger.className = 'dialog-trigger';
+        trigger.textContent = triggerText;
+        trigger.dataset.dialog = id;
+
+        const dlg = document.createElement('dialog');
+        dlg.className = 'md-dialog';
+        dlg.id = id;
+        dlg.innerHTML = `<div class="dg-head"><span>${title}</span><button class="dg-close" aria-label="Close">✕</button></div><div class="dg-body"></div>`;
+        bodyNodes.forEach(node => dlg.querySelector('.dg-body').appendChild(node));
+
+        p.replaceWith(trigger);
+        trigger.after(dlg);
+    });
+
+    // 统一绑定弹窗事件
+    root.querySelectorAll('.dialog-trigger').forEach(t => {
+        t.addEventListener('click', () => {
+            const d = document.getElementById(t.dataset.dialog);
+            if (d && d.showModal) d.showModal();
+        });
+    });
+    root.querySelectorAll('.md-dialog').forEach(d => {
+        d.querySelector('.dg-close').addEventListener('click', () => d.close());
+        d.addEventListener('click', e => { if (e.target === d) d.close(); });
+    });
+
+    // ---- 6. 步骤条：```steps 每行一个步骤 ----
+    root.querySelectorAll('pre > code.language-steps').forEach(codeEl => {
+        const ol = document.createElement('ol');
+        ol.className = 'steps';
+        codeEl.textContent.split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach(line => {
+            const li = document.createElement('li');
+            li.textContent = line;
+            ol.appendChild(li);
+        });
+        codeEl.parentElement.replaceWith(ol);
+    });
+
+    // ---- 7. 行内徽章：{{badge:文字}} 与键帽 [[Ctrl+C]] ----
+    // 在文本节点上做替换，避免破坏已生成的 HTML
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach(tn => {
+        if (!tn.nodeValue || (!tn.nodeValue.includes('{{badge:') && !tn.nodeValue.includes('[['))) return;
+        const parent = tn.parentElement;
+        if (!parent || /^(CODE|PRE|SCRIPT|STYLE)$/.test(parent.tagName)) return;
+
+        const frag = document.createDocumentFragment();
+        let rest = tn.nodeValue;
+        // badge
+        rest = rest.replace(/\{\{badge:([^}]+)\}\}/g, (_, txt) => `\u0001BADGE:${txt}\u0001`);
+        rest = rest.replace(/\[\[([^\]]+)\]\]/g, (_, txt) => `\u0001KBD:${txt}\u0001`);
+        const parts = rest.split('\u0001');
+        parts.forEach(part => {
+            if (part.startsWith('BADGE:')) {
+                const span = document.createElement('span');
+                span.className = 'badge';
+                span.textContent = part.slice(6);
+                frag.appendChild(span);
+            } else if (part.startsWith('KBD:')) {
+                const k = document.createElement('kbd');
+                k.textContent = part.slice(4);
+                frag.appendChild(k);
+            } else if (part) {
+                frag.appendChild(document.createTextNode(part));
+            }
+        });
+        tn.parentNode.replaceChild(frag, tn);
+    });
+}
+            
             // ============================================================
             // 7. 语言变种探测与自动提示
             // ============================================================
@@ -981,6 +1281,9 @@
                     const parsed = parseFrontMatter(text);
                     applyMeta(parsed.meta);
                     contentEl.innerHTML = marked.parse(parsed.body);
+
+                    renderAuthorComponents(contentEl);   // ← 新增这一行
+
                     generateTOC();
 
                     if (window.MathJax && MathJax.typesetPromise) {
