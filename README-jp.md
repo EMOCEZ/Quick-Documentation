@@ -1,7 +1,7 @@
 # Quick-Documentation（クイック・ドキュメンテーション）
 ドキュメントの作成は、本当に面倒な作業ですよね。
 
-本プロジェクトでは、人工知能（AI）を活用してドキュメント作成をサポートしています。
+このプロジェクトの制作にはAIが使用されています。
 
 [プレビュー](https://emocez.github.io/Quick-Documentation/?README)
 
