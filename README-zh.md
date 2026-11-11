@@ -82,3 +82,5 @@ good job
 <a href="#" data-window="1">危险弹窗</a>
 
 <a href="#" data-window="2">普通弹窗</a>
+
+<button data-window="2">按钮也可以触发弹窗</button>
