@@ -67,3 +67,18 @@ APIキーの設定
 現在のバージョン {{badge:666}}
 
 保存は [[Ctrl+S]]、取り消し（アンドゥ）は [[Ctrl+Z]] を押してください。
+
+## ウィンドウの定義とポップアップ
+```windoww
+# oh no
+that bad
+```
+```windowt
+# oh yes
+good job
+```
+<a href="#" data-window="1">危険なポップアップ</a>
+
+<a href="#" data-window="2">通常のポップアップ</a>
+
+<button data-window="2">ボタンからもポップアップを表示できます</button>
