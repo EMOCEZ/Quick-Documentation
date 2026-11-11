@@ -194,14 +194,75 @@
         .prop-row { display: flex; flex-wrap: wrap; gap: .4rem; margin: .8rem 0; }
         .prop-row .badge { font-weight: 500; }
 
-        /* Window Dialog */
-        .qd-window-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 1rem; }
-        .qd-window { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-top: 4px solid var(--accent); border-radius: 10px; box-shadow: 0 12px 40px var(--shadow); max-width: 640px; width: 100%; max-height: 80vh; overflow-y: auto; position: relative; padding: 1.25rem 1.5rem; transition: border-color 0.2s ease; }
-        .qd-window-close { position: absolute; top: 0.5rem; right: 0.5rem; width: 30px; height: 30px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text-muted); border-radius: 6px; cursor: pointer; font-size: 1.1rem; line-height: 1; }
-        .qd-window-close:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-border); }
-        .qd-window-content > :first-child { margin-top: 0; }
-        .qd-window-content > :last-child { margin-bottom: 0; }
-        qd-window-def { display: none; }
+        /* ---------- Window Dialog ---------- */
+.qd-window-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1rem;
+    pointer-events: none; /* 动画时防止误触 */
+    transition: background-color 0.25s ease;
+}
+
+/* 弹窗打开时的状态 */
+.qd-window-overlay.active {
+    background: rgba(0, 0, 0, 0.45);
+    pointer-events: auto;
+}
+
+.qd-window {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 10px;
+    box-shadow: 0 12px 40px var(--shadow);
+    max-width: 640px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 1.25rem 1.5rem;
+    
+    /* 初始状态：缩小并透明 */
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 弹窗打开时的状态：放大并显现 */
+.qd-window-overlay.active .qd-window {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.qd-window-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-muted);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+.qd-window-close:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: var(--accent-border);
+}
+
+.qd-window-content > :first-child { margin-top: 0; }
+.qd-window-content > :last-child { margin-bottom: 0; }
+qd-window-def { display: none; }
     </style>
 </head>
 <body>
@@ -821,41 +882,62 @@
 
             let activeWindow = null;
 
-            function closeWindow() {
+                        function closeWindow() {
                 if (!activeWindow) return;
                 const { overlay, prevAccent } = activeWindow;
-                overlay.remove();
+                
+                // 1. 移除 active 类，触发 CSS 过渡动画（变透明、缩小）
+                overlay.classList.remove('active');
+                
+                // 2. 等动画播放完（250ms）再移除 DOM
+                setTimeout(() => {
+                    overlay.remove();
+                }, 250);
+
+                // 恢复主题色
                 document.documentElement.setAttribute('data-accent', prevAccent);
                 document.removeEventListener('keydown', escCloseWindow);
+                
+                // 立即清空引用，防止连点报错
                 activeWindow = null;
-            }
-
-            function escCloseWindow(e) {
-                if (e.key === 'Escape') closeWindow();
             }
 
             function openWindow(type, contentHtml) {
                 closeWindow();
+                
                 const prevAccent = htmlEl.getAttribute('data-accent') || 'blue';
                 const tempAccent = type === 'w' ? (prevAccent === 'red' ? 'orange' : 'red') : prevAccent;
                 htmlEl.setAttribute('data-accent', tempAccent);
 
                 const overlay = document.createElement('div');
-                overlay.className = 'qd-window-overlay';
+                overlay.className = 'qd-window-overlay'; // 注意这里不直接给 active
                 overlay.innerHTML = `
                     <div class="qd-window" role="dialog" aria-modal="true">
                         <button class="qd-window-close" aria-label="Close">×</button>
                         <div class="qd-window-content">${contentHtml}</div>
                     </div>
                 `;
+                
                 overlay.addEventListener('click', (e) => { if (e.target === overlay) closeWindow(); });
                 overlay.querySelector('.qd-window-close').addEventListener('click', closeWindow);
                 document.addEventListener('keydown', escCloseWindow);
+                
                 document.body.appendChild(overlay);
                 activeWindow = { overlay, prevAccent };
+                
+                // 强制浏览器重绘 (Reflow) 以确保初始状态生效
+                overlay.offsetWidth; 
+
+                // 加上 active 类，触发平滑展开动画
+                overlay.classList.add('active');
+
                 if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([overlay]).catch(() => {});
             }
 
+            function escCloseWindow(e) {
+                if (e.key === 'Escape') closeWindow();
+            }
+            
             function bindWindowTriggers() {
                 contentEl.querySelectorAll('[data-window]').forEach(el => {
                     if (el.dataset.windowBound) return;
