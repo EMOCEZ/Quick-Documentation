@@ -70,17 +70,17 @@ pi.md
 
 保存请按 [[Ctrl+S]]，撤销按 [[Ctrl+Z]]。
 
-## Window Definition and Pop-ups
+## 窗口定义与弹窗
 ```windoww
-# oh no
-that bad
+# 糟糕
+情况不妙
 ```
 ```windowt
-# oh yes
-good job
+# 太好了
+干得漂亮
 ```
-<a href="#" data-window="1">Dangerous Pop-up</a>
+<a href="#" data-window="1">危险弹窗</a>
 
-<a href="#" data-window="2">Standard Pop-up</a>
+<a href="#" data-window="2">标准弹窗</a>
 
-<button data-window="2">Buttons can also trigger pop-ups</button>
+<button data-window="2">按钮也可以触发弹窗</button>
