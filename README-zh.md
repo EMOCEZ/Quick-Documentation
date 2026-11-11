@@ -69,3 +69,18 @@ pi.md
 当前版本 {{badge:666}}
 
 保存请按 [[Ctrl+S]]，撤销按 [[Ctrl+Z]]。
+
+## 窗口定义和弹出
+```windoww
+<!---win-danger--->
+# oh no
+that bad
+```
+```windowt
+<!---win-ok--->
+# oh yes
+good job
+```
+<a data-window="win-danger">危险弹窗</a>
+
+<a data-window="win-ok">普通弹窗</a>
