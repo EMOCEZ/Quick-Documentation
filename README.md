@@ -67,3 +67,18 @@ Open your browser to verify
 Current version {{badge:666}}
 
 Press [[Ctrl+S]] to save, or [[Ctrl+Z]] to undo.
+
+## Window Definition and Pop-ups
+```windoww
+# oh no
+that bad
+```
+```windowt
+# oh yes
+good job
+```
+<a href="#" data-window="1">Dangerous Pop-up</a>
+
+<a href="#" data-window="2">Standard Pop-up</a>
+
+<button data-window="2">Buttons can also trigger pop-ups</button>
