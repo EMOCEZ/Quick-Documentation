@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Documentation</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         :root {
             --shadow: rgba(0, 0, 0, 0.04);
@@ -350,41 +349,42 @@ window.MathJax = {
 </script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
-        // 2. 保护公式的 markdown 解析
-function parseMarkdown(text) {
-    const store = [];
-    const protect = (m) => { store.push(m); return `@@MATH${store.length - 1}@@`; };
-    let t = text
-        .replace(/\\\[([\s\S]*?)\\\]/g, protect)
-        .replace(/\\\(([\s\S]*?)\\\)/g, protect)
-        .replace(/\$\$([\s\S]*?)\$\$/g, protect)
-        .replace(/\$([^$\n]+?)\$/g, protect);
-    let html = marked.parse(t);
-    return html.replace(/@@MATH(\d+)@@/g, (_, i) => store[+i]);
-}
+        // 保护公式不被 marked 吃掉反斜杠
+        function parseMarkdown(text) {
+            const store = [];
+            const protect = (m) => { store.push(m); return `@@MATH${store.length - 1}@@`; };
+            let t = text
+                .replace(/\\\[([\s\S]*?)\\\]/g, protect)
+                .replace(/\\\(([\s\S]*?)\\\)/g, protect)
+                .replace(/\$\$([\s\S]*?)\$\$/g, protect)
+                .replace(/\$([^$\n]+?)\$/g, protect);
+            let html = marked.parse(t);
+            return html.replace(/@@MATH(\d+)@@/g, (_, i) => store[+i]);
+        }
 
-// 3. 等 MathJax 就绪的 typeset
-function typeset(el) {
-    if (window.MathJax && MathJax.typesetPromise) {
-        return MathJax.typesetPromise([el]).catch(e => console.warn('MathJax:', e));
-    }
-    if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
-        return MathJax.startup.promise.then(() => MathJax.typesetPromise([el])).catch(e => console.warn('MathJax:', e));
-    }
-    return new Promise(resolve => {
-        let n = 0;
-        const timer = setInterval(() => {
+        // 等 MathJax 就绪再排版
+        function typeset(el) {
             if (window.MathJax && MathJax.typesetPromise) {
-                clearInterval(timer);
-                MathJax.typesetPromise([el]).then(resolve).catch(() => resolve());
-            } else if (++n > 100) {
-                clearInterval(timer);
-                console.warn('MathJax 加载失败');
-                resolve();
+                return MathJax.typesetPromise([el]).catch(e => console.warn('MathJax:', e));
             }
-        }, 100);
-    });
-}
+            if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+                return MathJax.startup.promise.then(() => MathJax.typesetPromise([el])).catch(e => console.warn('MathJax:', e));
+            }
+            return new Promise(resolve => {
+                let n = 0;
+                const timer = setInterval(() => {
+                    if (window.MathJax && MathJax.typesetPromise) {
+                        clearInterval(timer);
+                        MathJax.typesetPromise([el]).then(resolve).catch(() => resolve());
+                    } else if (++n > 100) {
+                        clearInterval(timer);
+                        console.warn('MathJax 加载失败');
+                        resolve();
+                    }
+                }, 100);
+            });
+        }
+
         (function() {
             const searchStr = window.location.search;
             const urlParams = {};
@@ -811,9 +811,9 @@ function typeset(el) {
                             .then(r => r.ok ? r.text() : Promise.reject(r.status))
                             .then(t => {
                                 const body = parseFrontMatter(t).body;
-                                wrap.querySelector('.de-body').innerHTML = marked.parse(body);
+                                wrap.querySelector('.de-body').innerHTML = parseMarkdown(body);
                                 wrap.querySelector('.de-body').classList.remove('loading');
-                                if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([wrap]).catch(() => {});
+                                typeset(wrap);
                             })
                             .catch(() => {
                                 const b = wrap.querySelector('.de-body');
@@ -967,67 +967,63 @@ function typeset(el) {
                 windows.forEach(win => {
                     const defEl = contentEl.querySelector(`qd-window-def[data-window-id="${cssEscape(win.id)}"]`);
                     if (!defEl) return;
-                    defEl.innerHTML = marked.parse(win.content);
+                    defEl.innerHTML = parseMarkdown(win.content);
                 });
             }
 
             let activeWindow = null;
 
-                        function closeWindow() {
+            function closeWindow() {
                 if (!activeWindow) return;
                 const { overlay, prevAccent } = activeWindow;
-                
-                // 1. 移除 active 类，触发 CSS 过渡动画（变透明、缩小）
+
                 overlay.classList.remove('active');
-                
-                // 2. 等动画播放完（250ms）再移除 DOM
+
                 setTimeout(() => {
                     overlay.remove();
                 }, 250);
 
-                // 恢复主题色
                 document.documentElement.setAttribute('data-accent', prevAccent);
                 document.removeEventListener('keydown', escCloseWindow);
-                
-                // 立即清空引用，防止连点报错
+
                 activeWindow = null;
             }
 
-function openWindow(type, contentHtml) {
-    closeWindow();
+            function openWindow(type, contentHtml) {
+                closeWindow();
 
-    const prevAccent = htmlEl.getAttribute('data-accent') || 'blue';
-    const tempAccent = type === 'w' ? (prevAccent === 'red' ? 'orange' : 'red') : prevAccent;
-    htmlEl.setAttribute('data-accent', tempAccent);
+                const prevAccent = htmlEl.getAttribute('data-accent') || 'blue';
+                const tempAccent = type === 'w' ? (prevAccent === 'red' ? 'orange' : 'red') : prevAccent;
+                htmlEl.setAttribute('data-accent', tempAccent);
 
-    const overlay = document.createElement('div');
-    overlay.className = 'qd-window-overlay';
-    if (type === 'w') overlay.classList.add('qd-window-overlay-warning'); // 警告弹窗加类
+                const overlay = document.createElement('div');
+                overlay.className = 'qd-window-overlay';
+                if (type === 'w') overlay.classList.add('qd-window-overlay-warning');
 
-    overlay.innerHTML = `
-        <div class="qd-window" role="dialog" aria-modal="true">
-            <button class="qd-window-close" aria-label="Close">×</button>
-            <div class="qd-window-content">${contentHtml}</div>
-        </div>
-    `;
+                overlay.innerHTML = `
+                    <div class="qd-window" role="dialog" aria-modal="true">
+                        <button class="qd-window-close" aria-label="Close">×</button>
+                        <div class="qd-window-content">${contentHtml}</div>
+                    </div>
+                `;
 
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeWindow(); });
-    overlay.querySelector('.qd-window-close').addEventListener('click', closeWindow);
-    document.addEventListener('keydown', escCloseWindow);
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) closeWindow(); });
+                overlay.querySelector('.qd-window-close').addEventListener('click', closeWindow);
+                document.addEventListener('keydown', escCloseWindow);
 
-    document.body.appendChild(overlay);
-    activeWindow = { overlay, prevAccent };
+                document.body.appendChild(overlay);
+                activeWindow = { overlay, prevAccent };
 
-    overlay.offsetWidth; // 强制重绘
-    overlay.classList.add('active');
+                overlay.offsetWidth;
+                overlay.classList.add('active');
 
-    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([overlay]).catch(() => {});
-}
+                typeset(overlay);
+            }
 
             function escCloseWindow(e) {
                 if (e.key === 'Escape') closeWindow();
             }
-            
+
             function bindWindowTriggers() {
                 contentEl.querySelectorAll('[data-window]').forEach(el => {
                     if (el.dataset.windowBound) return;
@@ -1117,7 +1113,7 @@ function openWindow(type, contentHtml) {
                     const parsed = parseFrontMatter(text);
                     const { replaced, windows } = extractWindowBlocks(parsed.body);
                     applyMeta(parsed.meta);
-                    contentEl.innerHTML = marked.parse(replaced);
+                    contentEl.innerHTML = parseMarkdown(replaced);
                     generateTOC();
 
                     // 作者组件
@@ -1127,9 +1123,8 @@ function openWindow(type, contentHtml) {
                     hydrateWindows(windows);
                     bindWindowTriggers();
 
-                    if (window.MathJax && MathJax.typesetPromise) {
-                        MathJax.typesetPromise([contentEl]).catch((err) => console.warn('MathJax error:', err));
-                    }
+                    typeset(contentEl);
+
                     loadGlobalNotice();
                     checkLanguageVariants();
                 })
