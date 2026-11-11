@@ -73,3 +73,19 @@ API 키 구성
 현재 버전 {{badge:666}}
 
 저장하려면 [[Ctrl+S]]를 누르고, 실행 취소하려면 [[Ctrl+Z]]를 누르세요.
+
+## 창 정의 및 팝업
+
+```windoww
+# 안 돼
+앗!
+```
+```windowt
+# 예
+기이
+```
+<a href="#" data-window="1">경고하다</a>
+
+<a href="#" data-window="2">팝업 창</a>
+
+<button data-window="2">팝업 창</button>
