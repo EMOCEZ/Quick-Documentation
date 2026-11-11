@@ -72,15 +72,13 @@ pi.md
 
 ## 窗口定义和弹出
 ```windoww
-<!---win-danger--->
 # oh no
 that bad
 ```
 ```windowt
-<!---win-ok--->
 # oh yes
 good job
 ```
-<a href="#" data-window="win-danger">危险弹窗</a>
+<a href="#" data-window="1">危险弹窗</a>
 
-<a href="#" data-window="win-ok">普通弹窗</a>
+<a href="#" data-window="2">普通弹窗</a>
