@@ -81,6 +81,6 @@ that bad
 # oh yes
 good job
 ```
-<a data-window="win-danger">危险弹窗</a>
+<a href="#" data-window="win-danger">危险弹窗</a>
 
-<a data-window="win-ok">普通弹窗</a>
+<a href="#" data-window="win-ok">普通弹窗</a>
