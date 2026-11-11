@@ -948,40 +948,36 @@ button[data-window]:focus-visible {
                 activeWindow = null;
             }
 
-            function openWindow(type, contentHtml) {
-                closeWindow();
+function openWindow(type, contentHtml) {
+    closeWindow();
 
-                const overlay = document.createElement('div');
-                overlay.className = 'qd-window-overlay';
-                if (type === 'w') overlay.classList.add('qd-window-overlay-warning');
-                const prevAccent = htmlEl.getAttribute('data-accent') || 'blue';
-                const tempAccent = type === 'w' ? (prevAccent === 'red' ? 'orange' : 'red') : prevAccent;
-                htmlEl.setAttribute('data-accent', tempAccent);
+    const prevAccent = htmlEl.getAttribute('data-accent') || 'blue';
+    const tempAccent = type === 'w' ? (prevAccent === 'red' ? 'orange' : 'red') : prevAccent;
+    htmlEl.setAttribute('data-accent', tempAccent);
 
-                const overlay = document.createElement('div');
-                overlay.className = 'qd-window-overlay'; // 注意这里不直接给 active
-                overlay.innerHTML = `
-                    <div class="qd-window" role="dialog" aria-modal="true">
-                        <button class="qd-window-close" aria-label="Close">×</button>
-                        <div class="qd-window-content">${contentHtml}</div>
-                    </div>
-                `;
-                
-                overlay.addEventListener('click', (e) => { if (e.target === overlay) closeWindow(); });
-                overlay.querySelector('.qd-window-close').addEventListener('click', closeWindow);
-                document.addEventListener('keydown', escCloseWindow);
-                
-                document.body.appendChild(overlay);
-                activeWindow = { overlay, prevAccent };
-                
-                // 强制浏览器重绘 (Reflow) 以确保初始状态生效
-                overlay.offsetWidth; 
+    const overlay = document.createElement('div');
+    overlay.className = 'qd-window-overlay';
+    if (type === 'w') overlay.classList.add('qd-window-overlay-warning'); // 警告弹窗加类
 
-                // 加上 active 类，触发平滑展开动画
-                overlay.classList.add('active');
+    overlay.innerHTML = `
+        <div class="qd-window" role="dialog" aria-modal="true">
+            <button class="qd-window-close" aria-label="Close">×</button>
+            <div class="qd-window-content">${contentHtml}</div>
+        </div>
+    `;
 
-                if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([overlay]).catch(() => {});
-            }
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeWindow(); });
+    overlay.querySelector('.qd-window-close').addEventListener('click', closeWindow);
+    document.addEventListener('keydown', escCloseWindow);
+
+    document.body.appendChild(overlay);
+    activeWindow = { overlay, prevAccent };
+
+    overlay.offsetWidth; // 强制重绘
+    overlay.classList.add('active');
+
+    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([overlay]).catch(() => {});
+}
 
             function escCloseWindow(e) {
                 if (e.key === 'Escape') closeWindow();
