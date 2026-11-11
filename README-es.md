@@ -68,3 +68,23 @@ Instalar dependencias Configurar clave API Ejecutar script de ejemplo Abrir nave
 Versión actual {{badge:666}}
 
 Para guardar, pulsa [[Ctrl+S]]; para deshacer, pulsa [[Ctrl+Z]].
+
+## Definición de ventanas y ventanas emergentes
+
+```windoww
+
+# ¡Oh, no!
+
+Qué mal
+```
+```windowt
+
+# ¡Oh, sí!
+
+Buen trabajo
+```
+<a href="#" data-window="1">Ventana emergente peligrosa</a>
+
+<a href="#" data-window="2">Ventana emergente normal</a>
+
+<button data-window="2">Los botones también pueden activar ventanas emergentes</button>
