@@ -305,6 +305,10 @@ button[data-window]:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
+
+        .qd-window-overlay.active.qd-window-overlay-warning {
+    background: rgba(185, 28, 28, 0.45); /* 警告弹窗红色遮罩 */
+}
     </style>
 </head>
 <body>
@@ -946,7 +950,10 @@ button[data-window]:focus-visible {
 
             function openWindow(type, contentHtml) {
                 closeWindow();
-                
+
+                const overlay = document.createElement('div');
+                overlay.className = 'qd-window-overlay';
+                if (type === 'w') overlay.classList.add('qd-window-overlay-warning');
                 const prevAccent = htmlEl.getAttribute('data-accent') || 'blue';
                 const tempAccent = type === 'w' ? (prevAccent === 'red' ? 'orange' : 'red') : prevAccent;
                 htmlEl.setAttribute('data-accent', tempAccent);
