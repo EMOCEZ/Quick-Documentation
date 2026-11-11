@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Documentation</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- 修复了 MathJax 的路径 -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        /* ---------- Base Variables ---------- */
         :root {
             --shadow: rgba(0, 0, 0, 0.04);
             --shadow-sidebar: rgba(0, 0, 0, 0.02);
             --error: #b91c1c;
-            
             --bg: #f8fafc;
             --surface: #ffffff;
             --surface-2: #f1f5f9;
@@ -23,7 +20,6 @@
             --text-muted: #64748b;
             --text-faint: #94a3b8;
             --toc-hover-bg: #f1f5f9;
-            
             --code-bg: rgba(0, 0, 0, 0.05);
             --pre-bg: #1e293b;
             --pre-text: #f8fafc;
@@ -33,18 +29,14 @@
             --glass-bg: rgba(255, 255, 255, 0.55);
             --glass-border: rgba(255, 255, 255, 0.55);
         }
-
-        /* ---------- Base Dark Mode ---------- */
         html[data-theme="dark"] {
             --shadow: rgba(0, 0, 0, 0.3);
             --shadow-sidebar: rgba(0, 0, 0, 0.2);
             --error: #f87171;
-            
             --text: #e2e8f0;
             --text-muted: #94a3b8;
             --text-faint: #64748b;
             --toc-hover-bg: rgba(255, 255, 255, 0.05);
-            
             --code-bg: rgba(255, 255, 255, 0.1);
             --pre-bg: #0b1220;
             --pre-text: #e2e8f0;
@@ -53,153 +45,47 @@
             --glass-bg: rgba(17, 26, 46, 0.55);
             --glass-border: rgba(255, 255, 255, 0.12);
         }
+        html[data-accent="blue"] { --bg:#f8fafc; --surface:#ffffff; --surface-2:#f1f5f9; --border:#e2e8f0; --border-strong:#cbd5e1; --accent:#2563eb; --accent-hover:#1d4ed8; --accent-soft:#eff6ff; --accent-border:#3b82f6; }
+        html[data-theme="dark"][data-accent="blue"] { --bg:#0b1120; --surface:#111a2e; --surface-2:#1b263e; --border:#2a3b5c; --accent:#60a5fa; --accent-hover:#93c5fd; --accent-soft:#1e3a5f; --accent-border:#60a5fa; }
+        html[data-accent="red"] { --bg:#fefafa; --surface:#ffffff; --surface-2:#fef2f2; --border:#fee2e2; --border-strong:#fca5a5; --accent:#dc2626; --accent-hover:#b91c1c; --accent-soft:#fef2f2; --accent-border:#ef4444; }
+        html[data-theme="dark"][data-accent="red"] { --bg:#140b0b; --surface:#1f1010; --surface-2:#2c1515; --border:#4a2222; --accent:#f87171; --accent-hover:#fca5a5; --accent-soft:#4c1d1d; --accent-border:#f87171; }
+        html[data-accent="green"] { --bg:#f9fdfa; --surface:#ffffff; --surface-2:#f0fdf4; --border:#dcfce7; --border-strong:#86efac; --accent:#16a34a; --accent-hover:#15803d; --accent-soft:#f0fdf4; --accent-border:#22c55e; }
+        html[data-theme="dark"][data-accent="green"] { --bg:#0a140e; --surface:#101f15; --surface-2:#182e1f; --border:#264d33; --accent:#4ade80; --accent-hover:#86efac; --accent-soft:#14432a; --accent-border:#4ade80; }
+        html[data-accent="purple"] { --bg:#fcfbfe; --surface:#ffffff; --surface-2:#f5f3ff; --border:#ede9fe; --border-strong:#c4b5fd; --accent:#7c3aed; --accent-hover:#6d28d9; --accent-soft:#f5f3ff; --accent-border:#8b5cf6; }
+        html[data-theme="dark"][data-accent="purple"] { --bg:#100a1c; --surface:#181026; --surface-2:#221736; --border:#38265c; --accent:#a78bfa; --accent-hover:#c4b5fd; --accent-soft:#2e1f5e; --accent-border:#a78bfa; }
+        html[data-accent="orange"] { --bg:#fffaf7; --surface:#ffffff; --surface-2:#fff7ed; --border:#ffedd5; --border-strong:#fdba74; --accent:#ea580c; --accent-hover:#c2410c; --accent-soft:#fff7ed; --accent-border:#f97316; }
+        html[data-theme="dark"][data-accent="orange"] { --bg:#150d08; --surface:#20140d; --surface-2:#2e1c12; --border:#4a2c1c; --accent:#fb923c; --accent-hover:#fdba74; --accent-soft:#4a2508; --accent-border:#fb923c; }
+        html[data-accent="pink"] { --bg:#fffbfd; --surface:#ffffff; --surface-2:#fdf2f8; --border:#fce7f3; --border-strong:#f9a8d4; --accent:#db2777; --accent-hover:#be185d; --accent-soft:#fdf2f8; --accent-border:#ec4899; }
+        html[data-theme="dark"][data-accent="pink"] { --bg:#140a10; --surface:#1f101a; --surface-2:#2e1626; --border:#4a233d; --accent:#f472b6; --accent-hover:#f9a8d4; --accent-soft:#4a1530; --accent-border:#f472b6; }
+        html[data-accent="teal"] { --bg:#f8fdfc; --surface:#ffffff; --surface-2:#f0fdfa; --border:#ccfbf1; --border-strong:#5eead4; --accent:#0d9488; --accent-hover:#0f766e; --accent-soft:#f0fdfa; --accent-border:#14b8a6; }
+        html[data-theme="dark"][data-accent="teal"] { --bg:#081413; --surface:#0d1f1e; --surface-2:#142e2d; --border:#1f4a47; --accent:#2dd4bf; --accent-hover:#5eead4; --accent-soft:#0f3d3a; --accent-border:#2dd4bf; }
 
-        /* ---------- 7 Accent Colors ---------- */
-        html[data-accent="blue"] {
-            --bg: #f8fafc; --surface: #ffffff; --surface-2: #f1f5f9;
-            --border: #e2e8f0; --border-strong: #cbd5e1;
-            --accent: #2563eb; --accent-hover: #1d4ed8; --accent-soft: #eff6ff; --accent-border: #3b82f6;
-        }
-        html[data-theme="dark"][data-accent="blue"] {
-            --bg: #0b1120; --surface: #111a2e; --surface-2: #1b263e; --border: #2a3b5c;
-            --accent: #60a5fa; --accent-hover: #93c5fd; --accent-soft: #1e3a5f; --accent-border: #60a5fa;
-        }
-        html[data-accent="red"] {
-            --bg: #fefafa; --surface: #ffffff; --surface-2: #fef2f2;
-            --border: #fee2e2; --border-strong: #fca5a5;
-            --accent: #dc2626; --accent-hover: #b91c1c; --accent-soft: #fef2f2; --accent-border: #ef4444;
-        }
-        html[data-theme="dark"][data-accent="red"] {
-            --bg: #140b0b; --surface: #1f1010; --surface-2: #2c1515; --border: #4a2222;
-            --accent: #f87171; --accent-hover: #fca5a5; --accent-soft: #4c1d1d; --accent-border: #f87171;
-        }
-        html[data-accent="green"] {
-            --bg: #f9fdfa; --surface: #ffffff; --surface-2: #f0fdf4;
-            --border: #dcfce7; --border-strong: #86efac;
-            --accent: #16a34a; --accent-hover: #15803d; --accent-soft: #f0fdf4; --accent-border: #22c55e;
-        }
-        html[data-theme="dark"][data-accent="green"] {
-            --bg: #0a140e; --surface: #101f15; --surface-2: #182e1f; --border: #264d33;
-            --accent: #4ade80; --accent-hover: #86efac; --accent-soft: #14432a; --accent-border: #4ade80;
-        }
-        html[data-accent="purple"] {
-            --bg: #fcfbfe; --surface: #ffffff; --surface-2: #f5f3ff;
-            --border: #ede9fe; --border-strong: #c4b5fd;
-            --accent: #7c3aed; --accent-hover: #6d28d9; --accent-soft: #f5f3ff; --accent-border: #8b5cf6;
-        }
-        html[data-theme="dark"][data-accent="purple"] {
-            --bg: #100a1c; --surface: #181026; --surface-2: #221736; --border: #38265c;
-            --accent: #a78bfa; --accent-hover: #c4b5fd; --accent-soft: #2e1f5e; --accent-border: #a78bfa;
-        }
-        html[data-accent="orange"] {
-            --bg: #fffaf7; --surface: #ffffff; --surface-2: #fff7ed;
-            --border: #ffedd5; --border-strong: #fdba74;
-            --accent: #ea580c; --accent-hover: #c2410c; --accent-soft: #fff7ed; --accent-border: #f97316;
-        }
-        html[data-theme="dark"][data-accent="orange"] {
-            --bg: #150d08; --surface: #20140d; --surface-2: #2e1c12; --border: #4a2c1c;
-            --accent: #fb923c; --accent-hover: #fdba74; --accent-soft: #4a2508; --accent-border: #fb923c;
-        }
-        html[data-accent="pink"] {
-            --bg: #fffbfd; --surface: #ffffff; --surface-2: #fdf2f8;
-            --border: #fce7f3; --border-strong: #f9a8d4;
-            --accent: #db2777; --accent-hover: #be185d; --accent-soft: #fdf2f8; --accent-border: #ec4899;
-        }
-        html[data-theme="dark"][data-accent="pink"] {
-            --bg: #140a10; --surface: #1f101a; --surface-2: #2e1626; --border: #4a233d;
-            --accent: #f472b6; --accent-hover: #f9a8d4; --accent-soft: #4a1530; --accent-border: #f472b6;
-        }
-        html[data-accent="teal"] {
-            --bg: #f8fdfc; --surface: #ffffff; --surface-2: #f0fdfa;
-            --border: #ccfbf1; --border-strong: #5eead4;
-            --accent: #0d9488; --accent-hover: #0f766e; --accent-soft: #f0fdfa; --accent-border: #14b8a6;
-        }
-        html[data-theme="dark"][data-accent="teal"] {
-            --bg: #081413; --surface: #0d1f1e; --surface-2: #142e2d; --border: #1f4a47;
-            --accent: #2dd4bf; --accent-hover: #5eead4; --accent-soft: #0f3d3a; --accent-border: #2dd4bf;
-        }
-
-        /* ---------- Global ---------- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { color-scheme: light dark; }
-        body {
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            display: flex; min-height: 100vh; background-color: var(--bg); color: var(--text);
-            line-height: 1.6; transition: background-color 0.25s ease, color 0.25s ease;
-        }
+        body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; display: flex; min-height: 100vh; background-color: var(--bg); color: var(--text); line-height: 1.6; transition: background-color 0.25s ease, color 0.25s ease; }
 
-        /* ---------- Sidebar ---------- */
-        .sidebar {
-            width: 280px; flex-shrink: 0; background-color: var(--surface);
-            border-right: 1px solid var(--border); padding: 1.5rem 1rem;
-            overflow-y: auto; height: 100vh; position: sticky; top: 0;
-            box-shadow: 2px 0 8px var(--shadow-sidebar);
-            transition: background-color 0.25s ease, border-color 0.25s ease;
-            display: flex; flex-direction: column;
-        }
+        .sidebar { width: 280px; flex-shrink: 0; background-color: var(--surface); border-right: 1px solid var(--border); padding: 1.5rem 1rem; overflow-y: auto; height: 100vh; position: sticky; top: 0; box-shadow: 2px 0 8px var(--shadow-sidebar); transition: background-color 0.25s ease, border-color 0.25s ease; display: flex; flex-direction: column; }
         .sidebar.hidden { display: none; }
-
-        .sidebar-header {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
-        }
-        .sidebar-header h3 {
-            font-size: 1.1rem; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.5px; color: var(--accent); margin: 0; word-break: break-word;
-        }
-        .theme-toggle {
-            background: var(--surface-2); border: 1px solid var(--border);
-            color: var(--text-muted); width: 34px; height: 34px; border-radius: 8px;
-            cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
-            font-size: 1.1rem; transition: background 0.15s, border-color 0.15s, color 0.15s; flex-shrink: 0;
-        }
+        .sidebar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+        .sidebar-header h3 { font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent); margin: 0; word-break: break-word; }
+        .theme-toggle { background: var(--surface-2); border: 1px solid var(--border); color: var(--text-muted); width: 34px; height: 34px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: background 0.15s, border-color 0.15s, color 0.15s; flex-shrink: 0; }
         .theme-toggle:hover { background: var(--toc-hover-bg); color: var(--text); }
 
-        /* ---------- Sidebar Home & Notice ---------- */
-        .sidebar-home {
-            margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
-            display: none;
-        }
+        .sidebar-home { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); display: none; }
         .sidebar-home.visible { display: block; }
-        .sidebar-home a.home-btn {
-            display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.6rem;
-            color: var(--text); text-decoration: none; font-weight: 600; font-size: 0.95rem;
-            border-radius: 6px; transition: background 0.15s, color 0.15s;
-            background: var(--surface-2); border: 1px solid var(--border);
-        }
-        .sidebar-home a.home-btn:hover {
-            background: var(--accent-soft); color: var(--accent); border-color: var(--accent-border);
-        }
-        .sidebar-notice {
-            margin-top: 0.8rem; padding: 0.6rem 0.75rem;
-            background: rgba(255, 200, 0, 0.1); border-left: 3px solid #eab308;
-            border-radius: 4px; font-size: 0.85rem; color: var(--text);
-            text-decoration: none; display: none; transition: background 0.15s;
-            line-height: 1.4; word-break: break-word;
-        }
+        .sidebar-home a.home-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.6rem; color: var(--text); text-decoration: none; font-weight: 600; font-size: 0.95rem; border-radius: 6px; transition: background 0.15s, color 0.15s; background: var(--surface-2); border: 1px solid var(--border); }
+        .sidebar-home a.home-btn:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-border); }
+        .sidebar-notice { margin-top: 0.8rem; padding: 0.6rem 0.75rem; background: rgba(255, 200, 0, 0.1); border-left: 3px solid #eab308; border-radius: 4px; font-size: 0.85rem; color: var(--text); text-decoration: none; display: none; transition: background 0.15s; line-height: 1.4; word-break: break-word; }
         .sidebar-notice.visible { display: block; }
         .sidebar-notice:hover { background: rgba(255, 200, 0, 0.2); }
-        html[data-theme="dark"] .sidebar-notice {
-            background: rgba(234, 179, 8, 0.15); border-left-color: #facc15;
-        }
-        html[data-theme="dark"] .sidebar-notice:hover {
-            background: rgba(234, 179, 8, 0.25);
-        }
+        html[data-theme="dark"] .sidebar-notice { background: rgba(234, 179, 8, 0.15); border-left-color: #facc15; }
+        html[data-theme="dark"] .sidebar-notice:hover { background: rgba(234, 179, 8, 0.25); }
 
-        /* TOC */
         .toc-list { list-style: none; padding-left: 0; margin: 0; flex: 1; }
         .toc-list li { margin: 0.3rem 0; }
-        .toc-list a {
-            display: block; padding: 0.35rem 0.5rem; color: var(--text);
-            text-decoration: none; border-radius: 6px; font-size: 0.9rem;
-            transition: background 0.15s, color 0.15s, border-color 0.15s;
-            word-break: break-word; border-left: 3px solid transparent;
-        }
+        .toc-list a { display: block; padding: 0.35rem 0.5rem; color: var(--text); text-decoration: none; border-radius: 6px; font-size: 0.9rem; transition: background 0.15s, color 0.15s, border-color 0.15s; word-break: break-word; border-left: 3px solid transparent; }
         .toc-list a:hover { background-color: var(--toc-hover-bg); color: var(--text); }
-        .toc-list a.active {
-            background-color: var(--accent-soft); color: var(--accent);
-            border-left-color: var(--accent-border); font-weight: 500;
-        }
+        .toc-list a.active { background-color: var(--accent-soft); color: var(--accent); border-left-color: var(--accent-border); font-weight: 500; }
         .toc-level-1 a { font-weight: 600; font-size: 0.95rem; padding-left: 0.5rem; }
         .toc-level-2 a { padding-left: 1.25rem; }
         .toc-level-3 a { padding-left: 2rem; font-size: 0.85rem; }
@@ -208,32 +94,15 @@
         .toc-level-6 a { padding-left: 4.25rem; font-size: 0.75rem; }
         .toc-placeholder { color: var(--text-faint); font-size: 0.85rem; padding-left: 0.5rem; }
 
-        /* ---------- Main Content ---------- */
-        .main-content {
-            flex: 1; padding: 2rem 2.5rem; max-width: 1000px; margin: 0 auto;
-            overflow-x: auto; display: flex; flex-direction: column; justify-content: center; 
-        }
-        #content {
-            background: var(--surface); border-radius: 12px; padding: 2rem 2.5rem;
-            box-shadow: 0 4px 12px var(--shadow); border: 1px solid var(--border);
-            min-height: 200px; transition: background-color 0.25s ease, border-color 0.25s ease;
-        }
+        .main-content { flex: 1; padding: 2rem 2.5rem; max-width: 1000px; margin: 0 auto; overflow-x: auto; display: flex; flex-direction: column; justify-content: center; }
+        #content { background: var(--surface); border-radius: 12px; padding: 2rem 2.5rem; box-shadow: 0 4px 12px var(--shadow); border: 1px solid var(--border); min-height: 200px; transition: background-color 0.25s ease, border-color 0.25s ease; }
         .loading { color: var(--text-muted); font-style: italic; padding: 1rem 0; }
 
-        /* ---------- Error Box ---------- */
-        .error-box {
-            background: var(--surface-2); border: 1px solid var(--border-strong);
-            border-left: 4px solid var(--error); border-radius: 6px;
-            padding: 1rem 1.25rem; margin-top: 1rem;
-        }
+        .error-box { background: var(--surface-2); border: 1px solid var(--border-strong); border-left: 4px solid var(--error); border-radius: 6px; padding: 1rem 1.25rem; margin-top: 1rem; }
         .error-box h3 { margin-top: 0 !important; font-size: 1.1rem !important; color: var(--error); border: none !important; }
         .error-box p { font-size: 0.95rem; color: var(--text-muted); }
 
-        /* ---------- Markdown Styles ---------- */
-        #content h1, #content h2, #content h3, #content h4, #content h5, #content h6 {
-            margin-top: 1.5em; margin-bottom: 0.6em;
-            font-weight: 600; line-height: 1.3; scroll-margin-top: 20px; color: var(--text);
-        }
+        #content h1, #content h2, #content h3, #content h4, #content h5, #content h6 { margin-top: 1.5em; margin-bottom: 0.6em; font-weight: 600; line-height: 1.3; scroll-margin-top: 20px; color: var(--text); }
         #content h1 { font-size: 2rem; border-bottom: 2px solid var(--accent-border); padding-bottom: 0.3rem; }
         #content h2 { font-size: 1.6rem; border-bottom: 1px solid var(--border); padding-bottom: 0.2rem; }
         #content h3 { font-size: 1.3rem; }
@@ -241,20 +110,10 @@
         #content p { margin: 0.8rem 0; }
         #content a { color: var(--accent); text-decoration: none; }
         #content a:hover { text-decoration: underline; color: var(--accent-hover); }
-        #content code {
-            background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 4px;
-            font-size: 0.9em; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--text);
-        }
-        #content pre {
-            background: var(--pre-bg); color: var(--pre-text); padding: 1rem;
-            border-radius: 8px; overflow-x: auto; margin: 1rem 0;
-        }
+        #content code { background: var(--code-bg); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--text); }
+        #content pre { background: var(--pre-bg); color: var(--pre-text); padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; }
         #content pre code { background: transparent; padding: 0; color: inherit; font-size: 0.9em; }
-        #content blockquote {
-            border-left: 4px solid var(--accent-border); margin: 1rem 0;
-            padding: 0.5rem 0 0.5rem 1rem; color: var(--blockquote-text);
-            background: var(--blockquote-bg); border-radius: 0 6px 6px 0;
-        }
+        #content blockquote { border-left: 4px solid var(--accent-border); margin: 1rem 0; padding: 0.5rem 0 0.5rem 1rem; color: var(--blockquote-text); background: var(--blockquote-bg); border-radius: 0 6px 6px 0; }
         #content ul, #content ol { padding-left: 1.8rem; margin: 0.8rem 0; }
         #content img { max-width: 100%; border-radius: 6px; }
         #content hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
@@ -262,251 +121,87 @@
         #content th, #content td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
         #content th { background: var(--surface-2); border-bottom: 2px solid var(--accent-border); }
 
-        /* ---------- Language Selector ---------- */
-        .lang-footer {
-            margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border);
-            display: none; 
-        }
+        .lang-footer { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); display: none; }
         .lang-footer.visible { display: block; }
-        .lang-footer-title {
-            font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
+        .lang-footer-title { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
         .lang-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .lang-links a {
-            display: inline-block; padding: 0.3rem 0.8rem; background: var(--surface-2);
-            border: 1px solid var(--border); border-radius: 20px; font-size: 0.85rem;
-            color: var(--text); text-decoration: none; transition: all 0.15s;
-        }
-        .lang-links a:hover {
-            background: var(--accent-soft); border-color: var(--accent-border); color: var(--accent);
-        }
-        .lang-links a.current {
-            background: var(--accent); border-color: var(--accent); color: #fff; pointer-events: none;
-        }
+        .lang-links a { display: inline-block; padding: 0.3rem 0.8rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 20px; font-size: 0.85rem; color: var(--text); text-decoration: none; transition: all 0.15s; }
+        .lang-links a:hover { background: var(--accent-soft); border-color: var(--accent-border); color: var(--accent); }
+        .lang-links a.current { background: var(--accent); border-color: var(--accent); color: #fff; pointer-events: none; }
 
-        /* ---------- Mobile ---------- */
         @media (max-width: 700px) {
             body { flex-direction: column; }
-            .sidebar {
-                width: 100%; height: auto; max-height: 220px;
-                position: relative; border-right: none;
-                border-bottom: 1px solid var(--border); padding: 1rem;
-            }
+            .sidebar { width: 100%; height: auto; max-height: 220px; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 1rem; }
             .main-content { padding: 1rem; justify-content: flex-start; }
             #content { padding: 1.5rem; }
         }
 
-                /* ---------- Background Image + Glass UI ---------- */
-        body.has-bg {
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-        }
+        body.has-bg { background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; }
+        html[data-glass="on"] .sidebar, html[data-glass="on"] #content { background: var(--glass-bg) !important; -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%); backdrop-filter: blur(var(--glass-blur)) saturate(140%); border-color: var(--glass-border) !important; }
+        html[data-glass="on"] .sidebar { box-shadow: 2px 0 8px rgba(0,0,0,0.08); }
+        html[data-glass="on"] #content { box-shadow: 0 4px 24px rgba(0,0,0,0.12); }
+        html[data-glass="on"] #content pre { background: var(--pre-bg) !important; }
 
-        /* 让侧边栏和内容卡片变毛玻璃 */
-        html[data-glass="on"] .sidebar,
-        html[data-glass="on"] #content {
-            background: var(--glass-bg) !important;
-            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-            backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-            border-color: var(--glass-border) !important;
-        }
-        html[data-glass="on"] .sidebar {
-            box-shadow: 2px 0 8px rgba(0,0,0,0.08);
-        }
-        html[data-glass="on"] #content {
-            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-        }
+        .bg-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(12px); background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 999px; padding: 0.5rem 1rem; font-size: 0.85rem; box-shadow: 0 6px 20px var(--shadow); opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; z-index: 9999; }
+        .bg-toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* 背景开启时，避免 pre/code 过于透明影响可读性 */
-        html[data-glass="on"] #content pre {
-            background: var(--pre-bg) !important;
-        }
+        /* Author Components */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+        .doc-card { display: block; padding: 1rem 1.1rem; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text) !important; text-decoration: none !important; transition: transform .15s, border-color .15s, box-shadow .15s; }
+        .doc-card:hover { transform: translateY(-2px); border-color: var(--accent-border); box-shadow: 0 6px 18px var(--shadow); }
+        .doc-card .dc-title { font-weight: 600; font-size: 1.02rem; color: var(--accent); margin-bottom: .3rem; }
+        .doc-card .dc-desc { font-size: .88rem; color: var(--text-muted); line-height: 1.5; }
+        .doc-card .dc-icon { font-size: 1.3rem; margin-bottom: .4rem; display: block; }
 
-        /* 上传中提示 */
-        .bg-toast {
-            position: fixed;
-            left: 50%;
-            bottom: 24px;
-            transform: translateX(-50%) translateY(12px);
-            background: var(--surface);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
-            box-shadow: 0 6px 20px var(--shadow);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s, transform 0.2s;
-            z-index: 9999;
-        }
-        .bg-toast.visible {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        .doc-embed { margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--surface-2); }
+        .doc-embed .de-head { display: flex; align-items: center; gap: .5rem; padding: .55rem .9rem; font-size: .85rem; color: var(--text-muted); border-bottom: 1px solid var(--border); background: var(--surface); }
+        .doc-embed .de-head a { color: var(--accent); }
+        .doc-embed .de-body { padding: .2rem 1rem; max-height: 420px; overflow: auto; }
+        .doc-embed .de-body > :first-child { margin-top: .6rem; }
+        .doc-embed .de-body > :last-child { margin-bottom: .6rem; }
 
-        /* ---------- Author Components ---------- */
-/* 1) 卡片网格 */
-.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
-.doc-card {
-    display: block; padding: 1rem 1.1rem; border-radius: 10px;
-    background: var(--surface-2); border: 1px solid var(--border);
-    color: var(--text) !important; text-decoration: none !important;
-    transition: transform .15s, border-color .15s, box-shadow .15s;
-}
-.doc-card:hover { transform: translateY(-2px); border-color: var(--accent-border); box-shadow: 0 6px 18px var(--shadow); }
-.doc-card .dc-title { font-weight: 600; font-size: 1.02rem; color: var(--accent); margin-bottom: .3rem; }
-.doc-card .dc-desc { font-size: .88rem; color: var(--text-muted); line-height: 1.5; }
-.doc-card .dc-icon { font-size: 1.3rem; margin-bottom: .4rem; display: block; }
+        .callout { margin: 1.1rem 0; padding: .85rem 1rem .85rem 1.05rem; border-radius: 8px; border-left: 4px solid var(--accent-border); background: var(--accent-soft); color: var(--text); }
+        .callout .co-title { font-weight: 600; margin-bottom: .3rem; display: flex; align-items: center; gap: .4rem; }
+        .callout > :last-child { margin-bottom: 0; }
+        .callout > :first-child { margin-top: 0; }
+        .callout.info { border-left-color: var(--accent-border); background: var(--accent-soft); }
+        .callout.tip { border-left-color: #16a34a; background: rgba(22,163,74,.10); }
+        .callout.warning { border-left-color: #d97706; background: rgba(217,119,6,.12); }
+        .callout.danger { border-left-color: var(--error); background: rgba(185,28,28,.10); }
+        .callout.note { border-left-color: var(--text-muted); background: var(--blockquote-bg); }
 
-/* 2) 内嵌文档引用 */
-.doc-embed {
-    margin: 1.25rem 0; border: 1px solid var(--border); border-radius: 10px;
-    overflow: hidden; background: var(--surface-2);
-}
-.doc-embed .de-head {
-    display: flex; align-items: center; gap: .5rem; padding: .55rem .9rem;
-    font-size: .85rem; color: var(--text-muted); border-bottom: 1px solid var(--border);
-    background: var(--surface);
-}
-.doc-embed .de-head a { color: var(--accent); }
-.doc-embed .de-body { padding: .2rem 1rem; max-height: 420px; overflow: auto; }
-.doc-embed .de-body > :first-child { margin-top: .6rem; }
-.doc-embed .de-body > :last-child { margin-bottom: .6rem; }
+        details.fold { margin: 1rem 0; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2); padding: 0 .9rem; }
+        details.fold > summary { cursor: pointer; padding: .7rem 0; font-weight: 600; color: var(--text); list-style: none; display: flex; align-items: center; gap: .5rem; }
+        details.fold > summary::-webkit-details-marker { display: none; }
+        details.fold > summary::before { content: "▸"; color: var(--accent); transition: transform .15s; }
+        details.fold[open] > summary::before { transform: rotate(90deg); }
+        details.fold > *:not(summary) { margin-bottom: .8rem; }
 
-/* 3) 提示框 / 警告框 */
-.callout {
-    margin: 1.1rem 0; padding: .85rem 1rem .85rem 1.05rem;
-    border-radius: 8px; border-left: 4px solid var(--accent-border);
-    background: var(--accent-soft); color: var(--text);
-}
-.callout .co-title { font-weight: 600; margin-bottom: .3rem; display: flex; align-items: center; gap: .4rem; }
-.callout > :last-child { margin-bottom: 0; }
-.callout > :first-child { margin-top: 0; }
-.callout.info    { border-left-color: var(--accent-border); background: var(--accent-soft); }
-.callout.tip     { border-left-color: #16a34a; background: rgba(22,163,74,.10); }
-.callout.warning { border-left-color: #d97706; background: rgba(217,119,6,.12); }
-.callout.danger  { border-left-color: var(--error); background: rgba(185,28,28,.10); }
-.callout.note    { border-left-color: var(--text-muted); background: var(--blockquote-bg); }
+        .md-dialog { border: 1px solid var(--border); border-radius: 12px; padding: 0; background: var(--surface); color: var(--text); max-width: min(560px, 90vw); width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+        .md-dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(2px); }
+        .md-dialog .dg-head { display: flex; justify-content: space-between; align-items: center; padding: .8rem 1.1rem; border-bottom: 1px solid var(--border); font-weight: 600; }
+        .md-dialog .dg-close { background: var(--surface-2); border: 1px solid var(--border); color: var(--text-muted); border-radius: 6px; width: 28px; height: 28px; cursor: pointer; line-height: 1; }
+        .md-dialog .dg-body { padding: 1rem 1.1rem; max-height: 60vh; overflow: auto; }
+        .dialog-trigger { display: inline-block; cursor: pointer; color: var(--accent); border-bottom: 1px dashed var(--accent-border); }
 
-/* 4) 折叠块 */
-details.fold {
-    margin: 1rem 0; border: 1px solid var(--border); border-radius: 8px;
-    background: var(--surface-2); padding: 0 .9rem;
-}
-details.fold > summary {
-    cursor: pointer; padding: .7rem 0; font-weight: 600; color: var(--text);
-    list-style: none; display: flex; align-items: center; gap: .5rem;
-}
-details.fold > summary::-webkit-details-marker { display: none; }
-details.fold > summary::before { content: "▸"; color: var(--accent); transition: transform .15s; }
-details.fold[open] > summary::before { transform: rotate(90deg); }
-details.fold > *:not(summary) { margin-bottom: .8rem; }
+        .badge { display: inline-block; padding: .05rem .45rem; border-radius: 999px; font-size: .78em; font-weight: 600; border: 1px solid var(--accent-border); background: var(--accent-soft); color: var(--accent); vertical-align: 1px; }
+        kbd { display: inline-block; padding: .1rem .4rem; font-size: .82em; border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 5px; background: var(--surface-2); font-family: 'SF Mono','Fira Code',monospace; }
 
-/* 5) 可点击弹窗（dialog） */
-.md-dialog {
-    border: 1px solid var(--border); border-radius: 12px; padding: 0;
-    background: var(--surface); color: var(--text);
-    max-width: min(560px, 90vw); width: 100%;
-    box-shadow: 0 20px 60px rgba(0,0,0,.35);
-}
-.md-dialog::backdrop { background: rgba(0,0,0,.45); backdrop-filter: blur(2px); }
-.md-dialog .dg-head {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: .8rem 1.1rem; border-bottom: 1px solid var(--border); font-weight: 600;
-}
-.md-dialog .dg-close {
-    background: var(--surface-2); border: 1px solid var(--border); color: var(--text-muted);
-    border-radius: 6px; width: 28px; height: 28px; cursor: pointer; line-height: 1;
-}
-.md-dialog .dg-body { padding: 1rem 1.1rem; max-height: 60vh; overflow: auto; }
-.dialog-trigger {
-    display: inline-block; cursor: pointer; color: var(--accent);
-    border-bottom: 1px dashed var(--accent-border);
-}
+        .steps { counter-reset: step; margin: 1.2rem 0; padding-left: 0; list-style: none; }
+        .steps > li { position: relative; padding-left: 2.4rem; margin: .9rem 0; }
+        .steps > li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: 0; width: 1.7rem; height: 1.7rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--accent); color: #fff; font-size: .85rem; font-weight: 600; }
 
-/* 6) 行内徽章 / 键帽 */
-.badge {
-    display: inline-block; padding: .05rem .45rem; border-radius: 999px;
-    font-size: .78em; font-weight: 600; border: 1px solid var(--accent-border);
-    background: var(--accent-soft); color: var(--accent); vertical-align: 1px;
-}
-kbd {
-    display: inline-block; padding: .1rem .4rem; font-size: .82em;
-    border: 1px solid var(--border-strong); border-bottom-width: 2px;
-    border-radius: 5px; background: var(--surface-2);
-    font-family: 'SF Mono','Fira Code',monospace;
-}
+        .prop-row { display: flex; flex-wrap: wrap; gap: .4rem; margin: .8rem 0; }
+        .prop-row .badge { font-weight: 500; }
 
-/* 7) 步骤条 */
-.steps { counter-reset: step; margin: 1.2rem 0; padding-left: 0; list-style: none; }
-.steps > li { position: relative; padding-left: 2.4rem; margin: .9rem 0; }
-.steps > li::before {
-    counter-increment: step; content: counter(step);
-    position: absolute; left: 0; top: 0; width: 1.7rem; height: 1.7rem;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%; background: var(--accent); color: #fff; font-size: .85rem; font-weight: 600;
-}
-
-/* 8) 属性表（metadata pill 行） */
-.prop-row { display: flex; flex-wrap: wrap; gap: .4rem; margin: .8rem 0; }
-.prop-row .badge { font-weight: 500; }
-
-        /* ---------- Window Dialog ---------- */
-.qd-window-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    padding: 1rem;
-}
-
-.qd-window {
-    background: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-top: 4px solid var(--accent);
-    border-radius: 10px;
-    box-shadow: 0 12px 40px var(--shadow);
-    max-width: 640px;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-    padding: 1.25rem 1.5rem;
-    transition: border-color 0.2s ease;
-}
-
-.qd-window-close {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--border);
-    background: var(--surface-2);
-    color: var(--text-muted);
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    line-height: 1;
-}
-.qd-window-close:hover {
-    background: var(--accent-soft);
-    color: var(--accent);
-    border-color: var(--accent-border);
-}
-
-.qd-window-content > :first-child { margin-top: 0; }
-.qd-window-content > :last-child { margin-bottom: 0; }
-
-qd-window-def { display: none; }
+        /* Window Dialog */
+        .qd-window-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 1rem; }
+        .qd-window { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-top: 4px solid var(--accent); border-radius: 10px; box-shadow: 0 12px 40px var(--shadow); max-width: 640px; width: 100%; max-height: 80vh; overflow-y: auto; position: relative; padding: 1.25rem 1.5rem; transition: border-color 0.2s ease; }
+        .qd-window-close { position: absolute; top: 0.5rem; right: 0.5rem; width: 30px; height: 30px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text-muted); border-radius: 6px; cursor: pointer; font-size: 1.1rem; line-height: 1; }
+        .qd-window-close:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent-border); }
+        .qd-window-content > :first-child { margin-top: 0; }
+        .qd-window-content > :last-child { margin-bottom: 0; }
+        qd-window-def { display: none; }
     </style>
 </head>
 <body>
@@ -515,12 +210,10 @@ qd-window-def { display: none; }
             <h3 id="toc-title">Table of Contents</h3>
             <button class="theme-toggle" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme"></button>
         </div>
-        
         <div class="sidebar-home" id="sidebar-home">
             <a href="./" class="home-btn">🏠 Home</a>
             <a href="./" class="sidebar-notice" id="sidebar-notice"></a>
         </div>
-
         <ul class="toc-list" id="toc-list">
             <li class="toc-placeholder">No headings yet</li>
         </ul>
@@ -533,7 +226,6 @@ qd-window-def { display: none; }
         <main id="content">
             <p class="loading">loading...</p>
         </main>
-        
         <div class="lang-footer" id="lang-footer">
             <div class="lang-footer-title">Available Languages</div>
             <div class="lang-links" id="lang-links"></div>
@@ -542,15 +234,13 @@ qd-window-def { display: none; }
 
     <script>
         (function() {
-            // 1. 解析 URL 参数
             const searchStr = window.location.search;
             const urlParams = {};
-                        let pageName = 'README';
+            let pageName = 'README';
 
-            // 如果网址里没有问号（或者问号后面是空的），自动加上 ?README 并刷新
             if (searchStr.length <= 1) {
                 window.location.search = '?README';
-                return; // 终止后续执行，等待跳转
+                return;
             }
 
             if (searchStr.length > 1) {
@@ -568,7 +258,6 @@ qd-window-def { display: none; }
                 });
             }
 
-            // 2. 动态设置页面语言
             let currentLangCode = 'en';
             const langMatch = pageName.match(/-(zh|jp|kr|es)$/i);
             if (langMatch) {
@@ -581,8 +270,6 @@ qd-window-def { display: none; }
             document.documentElement.lang = currentLangCode;
 
             const ACCENTS = ['blue', 'red', 'green', 'purple', 'orange', 'pink', 'teal'];
-
-            // 3. 主题逻辑
             const THEME_KEY = 'qd-theme';
             const htmlEl = document.documentElement;
             const themeToggleBtn = document.getElementById('theme-toggle');
@@ -616,13 +303,10 @@ qd-window-def { display: none; }
             let currentTheme = getPreferredTheme();
             applyTheme(currentTheme);
 
-            // ============================================================
-            // 主题按钮：点击切换明暗；长按上传背景图；有背景时点击只关闭/再长按替换
-            // ============================================================
             const BG_DB_NAME = 'qd-bg-db';
             const BG_STORE = 'bg';
             const BG_KEY = 'current';
-            const GLASS_KEY = 'qd-glass';      // 'on' / 'off'
+            const GLASS_KEY = 'qd-glass';
             const bgFileInput = document.getElementById('bg-file-input');
             const bgToast = document.getElementById('bg-toast');
 
@@ -660,16 +344,6 @@ qd-window-def { display: none; }
                 });
             }
 
-            async function deleteBgBlob() {
-                const db = await openBgDB();
-                return new Promise((resolve, reject) => {
-                    const tx = db.transaction(BG_STORE, 'readwrite');
-                    tx.objectStore(BG_STORE).delete(BG_KEY);
-                    tx.oncomplete = () => resolve();
-                    tx.onerror = () => reject(tx.error);
-                });
-            }
-
             function showBgToast(msg) {
                 bgToast.textContent = msg;
                 bgToast.classList.add('visible');
@@ -684,12 +358,9 @@ qd-window-def { display: none; }
                 document.body.classList.add('has-bg');
                 htmlEl.setAttribute('data-glass', 'on');
                 localStorage.setItem(GLASS_KEY, 'on');
-
-                // 有背景时强制暗色（亮色毛玻璃不好看）
                 currentTheme = 'dark';
                 applyTheme('dark');
                 localStorage.setItem(THEME_KEY, 'dark');
-                // 记录“进入背景前”的主题，关闭背景时恢复
                 if (!localStorage.getItem('qd-theme-before-bg')) {
                     localStorage.setItem('qd-theme-before-bg', getPreferredTheme() === 'dark' ? 'light' : getPreferredTheme());
                 }
@@ -704,8 +375,6 @@ qd-window-def { display: none; }
                 document.body.classList.remove('has-bg');
                 htmlEl.setAttribute('data-glass', 'off');
                 localStorage.setItem(GLASS_KEY, 'off');
-
-                // 恢复进入背景前的主题偏好
                 const prev = localStorage.getItem('qd-theme-before-bg');
                 if (prev === 'light' || prev === 'dark') {
                     currentTheme = prev;
@@ -715,17 +384,13 @@ qd-window-def { display: none; }
                 }
             }
 
-            // 页面加载时恢复
             (async function restoreBackground() {
                 try {
                     const blob = await loadBgBlob();
-                    if (blob && localStorage.getItem(GLASS_KEY) === 'on') {
-                        applyBackground(blob);
-                    }
-                } catch (e) { /* 忽略 */ }
+                    if (blob && localStorage.getItem(GLASS_KEY) === 'on') applyBackground(blob);
+                } catch (e) {}
             })();
 
-            // 点击 vs 长按
             let pressTimer = null;
             let longPressed = false;
             const LONG_PRESS_MS = 550;
@@ -735,14 +400,11 @@ qd-window-def { display: none; }
                 clearTimeout(pressTimer);
                 pressTimer = setTimeout(() => {
                     longPressed = true;
-                    // 长按：打开文件选择
                     bgFileInput.value = '';
                     bgFileInput.click();
                 }, LONG_PRESS_MS);
             }
-            function cancelPress() {
-                clearTimeout(pressTimer);
-            }
+            function cancelPress() { clearTimeout(pressTimer); }
 
             themeToggleBtn.addEventListener('pointerdown', (e) => {
                 if (e.button !== undefined && e.button !== 0) return;
@@ -751,17 +413,14 @@ qd-window-def { display: none; }
             themeToggleBtn.addEventListener('pointerup', cancelPress);
             themeToggleBtn.addEventListener('pointerleave', cancelPress);
             themeToggleBtn.addEventListener('pointercancel', cancelPress);
-            // 阻止长按触发右键菜单/选择
             themeToggleBtn.addEventListener('contextmenu', (e) => e.preventDefault());
 
             themeToggleBtn.addEventListener('click', (e) => {
                 if (longPressed) {
-                    // 长按已处理，忽略这次 click
                     longPressed = false;
                     e.preventDefault();
                     return;
                 }
-                // 原有切换明暗逻辑；但如果当前有背景，则点击优先关闭背景
                 if (document.body.classList.contains('has-bg')) {
                     clearBackground();
                     showBgToast('background:off');
@@ -772,7 +431,6 @@ qd-window-def { display: none; }
                 localStorage.setItem(THEME_KEY, currentTheme);
             });
 
-            // 文件选择后处理
             bgFileInput.addEventListener('change', async () => {
                 const file = bgFileInput.files && bgFileInput.files[0];
                 if (!file) return;
@@ -782,7 +440,6 @@ qd-window-def { display: none; }
                 }
                 showBgToast('saveing...');
                 try {
-                    // 可选：压缩过大图片
                     const blob = await maybeCompressImage(file);
                     await saveBgBlob(blob);
                     applyBackground(blob);
@@ -793,29 +450,24 @@ qd-window-def { display: none; }
                 }
             });
 
-            // 简单压缩：超过 4MB 或超大尺寸时缩放
             async function maybeCompressImage(file) {
                 const MAX_BYTES = 4 * 1024 * 1024;
                 const MAX_DIM = 2560;
                 if (file.size <= MAX_BYTES) {
-                    // 也检查尺寸
                     const dim = await getImageSize(file).catch(() => null);
                     if (!dim || (dim.w <= MAX_DIM && dim.h <= MAX_DIM)) return file;
                 }
                 const dim = await getImageSize(file).catch(() => null);
                 if (!dim) return file;
-
                 const scale = Math.min(1, MAX_DIM / Math.max(dim.w, dim.h));
                 const w = Math.round(dim.w * scale);
                 const h = Math.round(dim.h * scale);
-
                 const bitmap = await createImageBitmap(file);
                 const canvas = document.createElement('canvas');
                 canvas.width = w; canvas.height = h;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(bitmap, 0, 0, w, h);
                 bitmap.close && bitmap.close();
-
                 const type = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
                 const blob = await new Promise(res => canvas.toBlob(res, type, 0.88));
                 return blob || file;
@@ -825,14 +477,8 @@ qd-window-def { display: none; }
                 return new Promise((resolve, reject) => {
                     const url = URL.createObjectURL(file);
                     const img = new Image();
-                    img.onload = () => {
-                        URL.revokeObjectURL(url);
-                        resolve({ w: img.naturalWidth, h: img.naturalHeight });
-                    };
-                    img.onerror = () => {
-                        URL.revokeObjectURL(url);
-                        reject(new Error('Failed to load'));
-                    };
+                    img.onload = () => { URL.revokeObjectURL(url); resolve({ w: img.naturalWidth, h: img.naturalHeight }); };
+                    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Failed to load')); };
                     img.src = url;
                 });
             }
@@ -846,108 +492,68 @@ qd-window-def { display: none; }
 
             document.title = `${pageName} - Quick Documentation`;
             const fetchUrl = `${pageName}.md?t=${new Date().getTime()}`;
-
             const contentEl = document.getElementById('content');
             const tocListEl = document.getElementById('toc-list');
 
-            // 4. Front-matter 解析
             function parseFrontMatter(text) {
                 const meta = {};
                 const result = { meta, body: text };
                 const trimmed = text.replace(/^\uFEFF/, '').replace(/^\s+/, '');
                 if (!trimmed.startsWith('---')) return result;
-
                 const lines = trimmed.split(/\r?\n/);
                 if (lines[0].trim() !== '---') return result;
-
                 let endIdx = -1;
                 for (let i = 1; i < lines.length; i++) {
-                    if (lines[i].trim() === '---') {
-                        endIdx = i;
-                        break;
-                    }
+                    if (lines[i].trim() === '---') { endIdx = i; break; }
                 }
                 if (endIdx === -1) return result;
-
-                const metaLines = lines.slice(1, endIdx);
-                metaLines.forEach(line => {
+                lines.slice(1, endIdx).forEach(line => {
                     const m = line.match(/^\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
                     if (m) {
                         let value = m[2].trim();
-                        if ((value.startsWith('"') && value.endsWith('"')) ||
-                            (value.startsWith("'") && value.endsWith("'"))) {
-                            value = value.slice(1, -1);
-                        }
+                        if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) value = value.slice(1, -1);
                         meta[m[1]] = value;
                     }
                 });
-
                 result.body = lines.slice(endIdx + 1).join('\n');
                 return result;
             }
 
             function applyMeta(meta) {
                 const theme = urlParams['theme'] || meta['theme'];
-                if (theme && ACCENTS.includes(theme)) {
-                    htmlEl.setAttribute('data-accent', theme);
-                } else {
-                    htmlEl.setAttribute('data-accent', 'blue');
-                }
+                if (theme && ACCENTS.includes(theme)) htmlEl.setAttribute('data-accent', theme);
+                else htmlEl.setAttribute('data-accent', 'blue');
 
                 const sidebarTitle = urlParams['sidebar-title'] || meta['sidebar-title'];
-                if (sidebarTitle) {
-                    tocTitleEl.textContent = sidebarTitle;
-                }
+                if (sidebarTitle) tocTitleEl.textContent = sidebarTitle;
 
                 const docTitle = urlParams['doc-title'] || meta['doc-title'];
-                document.title = docTitle
-                    ? `${docTitle} - Quick Documentation`
-                    : `${pageName} - Quick Documentation`;
+                document.title = docTitle ? `${docTitle} - Quick Documentation` : `${pageName} - Quick Documentation`;
 
                 const hideToc = urlParams['hide-toc'] || meta['hide-toc'];
-                if (hideToc === 'true' || hideToc === '1') {
-                    sidebarEl.classList.add('hidden');
-                }
+                if (hideToc === 'true' || hideToc === '1') sidebarEl.classList.add('hidden');
             }
 
-            // 5. TOC 逻辑
             function generateTOC() {
                 const headings = contentEl.querySelectorAll('h1, h2, h3, h4, h5, h6');
                 if (headings.length === 0) {
                     tocListEl.innerHTML = '<li class="toc-placeholder">No headings found</li>';
                     return;
                 }
-
                 const tocItems = [];
                 headings.forEach((heading, index) => {
                     if (!heading.id) {
-                        const text = heading.textContent.trim().toLowerCase()
-                            .replace(/[^a-z0-9\s-]/g, '')
-                            .replace(/\s+/g, '-')
-                            .replace(/-+/g, '-');
+                        const text = heading.textContent.trim().toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
                         const baseId = text || `heading-${index}`;
                         let uniqueId = baseId;
                         let counter = 1;
-                        while (document.getElementById(uniqueId)) {
-                            uniqueId = `${baseId}-${counter}`;
-                            counter++;
-                        }
+                        while (document.getElementById(uniqueId)) { uniqueId = `${baseId}-${counter}`; counter++; }
                         heading.id = uniqueId;
                     }
-
                     const level = parseInt(heading.tagName.substring(1));
-                    const id = heading.id;
-                    const text = heading.textContent.trim();
-
-                    tocItems.push(`
-                        <li class="toc-level-${level}">
-                            <a href="#${id}" data-target="${id}">${text}</a>
-                        </li>
-                    `);
+                    tocItems.push(`<li class="toc-level-${level}"><a href="#${heading.id}" data-target="${heading.id}">${heading.textContent.trim()}</a></li>`);
                 });
-
                 tocListEl.innerHTML = tocItems.join('');
-
                 const tocLinks = tocListEl.querySelectorAll('a');
                 tocLinks.forEach(link => {
                     link.addEventListener('click', function(e) {
@@ -962,7 +568,6 @@ qd-window-def { display: none; }
                         }
                     });
                 });
-
                 setupScrollSpy(headings);
             }
 
@@ -971,19 +576,13 @@ qd-window-def { display: none; }
                 const tocLinks = tocListEl.querySelectorAll('a');
                 const linkMap = new Map();
                 tocLinks.forEach(link => linkMap.set(link.dataset.target, link));
-
                 const observerOptions = { root: null, rootMargin: '0px 0px -20% 0px', threshold: 0.1 };
                 let activeId = null;
-
                 const observer = new IntersectionObserver((entries) => {
                     const visibleEntries = entries.filter(entry => entry.isIntersecting);
                     if (visibleEntries.length === 0) return;
-
                     let topEntry = visibleEntries[0];
-                    visibleEntries.forEach(entry => {
-                        if (entry.boundingClientRect.top < topEntry.boundingClientRect.top) topEntry = entry;
-                    });
-
+                    visibleEntries.forEach(entry => { if (entry.boundingClientRect.top < topEntry.boundingClientRect.top) topEntry = entry; });
                     const newActiveId = topEntry.target.id;
                     if (newActiveId !== activeId) {
                         activeId = newActiveId;
@@ -992,370 +591,292 @@ qd-window-def { display: none; }
                         if (activeLink) activeLink.classList.add('active');
                     }
                 }, observerOptions);
-
                 headings.forEach(heading => observer.observe(heading));
             }
 
-            // ============================================================
-            // 6. 获取 README 公告并展示在侧边栏
-            // ============================================================
-                        async function loadGlobalNotice() {
-                // 1. 如果是当前看的就是主页本身，就不显示公告
+            async function loadGlobalNotice() {
                 const baseName = pageName.replace(/-(zh|jp|kr|es)$/i, '').toLowerCase();
                 if (baseName === 'readme') return;
-
-                // 2. 判断用哪个文件作为公告（跟随当前语言）
                 let noticeFile = 'README.md';
-                const langMatch = pageName.match(/-(zh|jp|kr|es)$/i);
-                if (langMatch) {
-                    const suffix = langMatch[1].toLowerCase();
-                    // 尝试获取对应语言的 README，如果没有会在 catch 里静默失败
-                    noticeFile = `README-${suffix}.md`; 
-                }
-
+                const lm = pageName.match(/-(zh|jp|kr|es)$/i);
+                if (lm) noticeFile = `README-${lm[1].toLowerCase()}.md`;
                 try {
                     let res = await fetch(noticeFile);
-                    // 如果对应语言的 README 不存在，回退到英文 README
-                    if (!res.ok && noticeFile !== 'README.md') {
-                        res = await fetch('README.md');
-                    }
+                    if (!res.ok && noticeFile !== 'README.md') res = await fetch('README.md');
                     if (!res.ok) return;
-                    
                     const text = await res.text();
                     const { body } = parseFrontMatter(text);
-                    
                     const lines = body.split(/\r?\n/);
                     let noticeText = '';
                     for (const line of lines) {
                         const cleanLine = line.trim();
-                        if (cleanLine) {
-                            noticeText = cleanLine.replace(/^#+\s*/, '');
-                            break;
-                        }
+                        if (cleanLine) { noticeText = cleanLine.replace(/^#+\s*/, ''); break; }
                     }
-
                     if (noticeText) {
                         const homeContainer = document.getElementById('sidebar-home');
                         const noticeEl = document.getElementById('sidebar-notice');
-                        
                         noticeEl.textContent = noticeText.length > 80 ? noticeText.slice(0, 80) + '...' : noticeText;
                         noticeEl.classList.add('visible');
                         homeContainer.classList.add('visible');
                     }
-                } catch (e) {
-                    // 静默忽略
-                }
+                } catch (e) {}
             }
 
             /* ============================================================
-   Author Components 渲染器
-   在 marked 输出 DOM 后，把特定的 fenced code / 纯文本语法升级成组件。
-   全部基于 DOM 操作，不依赖额外库。
-   ============================================================ */
-async function renderAuthorComponents(root) {
-    // ---- 1. 卡片网格：```cards 内每行 "title | desc | url | icon(可选)" ----
-    root.querySelectorAll('pre > code').forEach(codeEl => {
-        const pre = codeEl.parentElement;
-        const cls = codeEl.className || '';
-        const lang = (cls.match(/language-(\w+)/) || [])[1];
+               Author Components 渲染器
+               ============================================================ */
+            async function renderAuthorComponents(root) {
+                root.querySelectorAll('pre > code').forEach(codeEl => {
+                    const pre = codeEl.parentElement;
+                    const cls = codeEl.className || '';
+                    const lang = (cls.match(/language-(\w+)/) || [])[1];
 
-        if (lang === 'cards') {
-            const lines = codeEl.textContent.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-            const grid = document.createElement('div');
-            grid.className = 'card-grid';
-            lines.forEach(line => {
-                const [title, desc = '', url = '#', icon = ''] = line.split('|').map(s => s.trim());
-                if (!title) return;
-                const a = document.createElement('a');
-                a.className = 'doc-card';
-                a.href = url;
-                a.innerHTML = `${icon ? `<span class="dc-icon">${icon}</span>` : ''}
-                    <div class="dc-title">${title}</div>
-                    ${desc ? `<div class="dc-desc">${desc}</div>` : ''}`;
-                grid.appendChild(a);
-            });
-            pre.replaceWith(grid);
-        }
+                    if (lang === 'cards') {
+                        const lines = codeEl.textContent.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+                        const grid = document.createElement('div');
+                        grid.className = 'card-grid';
+                        lines.forEach(line => {
+                            const [title, desc = '', url = '#', icon = ''] = line.split('|').map(s => s.trim());
+                            if (!title) return;
+                            const a = document.createElement('a');
+                            a.className = 'doc-card';
+                            a.href = url;
+                            a.innerHTML = `${icon ? `<span class="dc-icon">${icon}</span>` : ''}
+                                <div class="dc-title">${title}</div>
+                                ${desc ? `<div class="dc-desc">${desc}</div>` : ''}`;
+                            grid.appendChild(a);
+                        });
+                        pre.replaceWith(grid);
+                    }
 
-        if (lang === 'embed') {
-            // ---- 2. 引用其他文档：```embed\n文件名.md\n``` ----
-            const target = codeEl.textContent.trim().split(/\s+/)[0];
-            const wrap = document.createElement('div');
-            wrap.className = 'doc-embed';
-            wrap.innerHTML = `<div class="de-head">📄 <a href="?${encodeURIComponent(target.replace(/\.md$/, ''))}">${target}</a></div><div class="de-body loading">loading…</div>`;
-            pre.replaceWith(wrap);
-            fetch(`${target}?t=${Date.now()}`)
-                .then(r => r.ok ? r.text() : Promise.reject(r.status))
-                .then(t => {
-                    const body = parseFrontMatter(t).body;
-                    wrap.querySelector('.de-body').innerHTML = marked.parse(body);
-                    wrap.querySelector('.de-body').classList.remove('loading');
-                    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([wrap]).catch(() => {});
-                })
-                .catch(() => {
-                    const b = wrap.querySelector('.de-body');
-                    b.classList.remove('loading');
-                    b.innerHTML = `<p style="color:var(--error)">⚠️ 无法加载 ${target}</p>`;
+                    if (lang === 'embed') {
+                        const target = codeEl.textContent.trim().split(/\s+/)[0];
+                        const wrap = document.createElement('div');
+                        wrap.className = 'doc-embed';
+                        wrap.innerHTML = `<div class="de-head">📄 <a href="?${encodeURIComponent(target.replace(/\.md$/, ''))}">${target}</a></div><div class="de-body loading">loading…</div>`;
+                        pre.replaceWith(wrap);
+                        fetch(`${target}?t=${Date.now()}`)
+                            .then(r => r.ok ? r.text() : Promise.reject(r.status))
+                            .then(t => {
+                                const body = parseFrontMatter(t).body;
+                                wrap.querySelector('.de-body').innerHTML = marked.parse(body);
+                                wrap.querySelector('.de-body').classList.remove('loading');
+                                if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([wrap]).catch(() => {});
+                            })
+                            .catch(() => {
+                                const b = wrap.querySelector('.de-body');
+                                b.classList.remove('loading');
+                                b.innerHTML = `<p style="color:var(--error)">⚠️ 无法加载 ${target}</p>`;
+                            });
+                    }
                 });
-        }
-    });
 
-    // ---- 3. 提示框：纯文本 [!TYPE] Title 后接正文，位于 blockquote 内 ----
-    root.querySelectorAll('blockquote').forEach(bq => {
-        const first = bq.firstElementChild;
-        if (!first || first.tagName !== 'P') return;
-        const m = first.textContent.match(/^\[!(\w+)\]\s*(.*)$/);
-        if (!m) return;
-        const type = m[1].toLowerCase();
-        const title = m[2] || '';
-        const allowed = ['info', 'tip', 'warning', 'danger', 'note'];
-        const kind = allowed.includes(type) ? type : 'note';
-        const icons = { info: 'ℹ️', tip: '💡', warning: '⚠️', danger: '⛔', note: '📝' };
+                root.querySelectorAll('blockquote').forEach(bq => {
+                    const first = bq.firstElementChild;
+                    if (!first || first.tagName !== 'P') return;
+                    const m = first.textContent.match(/^\[!(\w+)\]\s*(.*)$/);
+                    if (!m) return;
+                    const type = m[1].toLowerCase();
+                    const title = m[2] || '';
+                    const allowed = ['info', 'tip', 'warning', 'danger', 'note'];
+                    const kind = allowed.includes(type) ? type : 'note';
+                    const icons = { info: 'ℹ️', tip: '💡', warning: '⚠️', danger: '⛔', note: '📝' };
+                    const box = document.createElement('div');
+                    box.className = `callout ${kind}`;
+                    if (title) {
+                        const t = document.createElement('div');
+                        t.className = 'co-title';
+                        t.textContent = `${icons[kind]} ${title}`;
+                        box.appendChild(t);
+                    }
+                    const siblings = [];
+                    let n = first.nextElementSibling;
+                    while (n) { siblings.push(n); n = n.nextElementSibling; }
+                    siblings.forEach(s => box.appendChild(s));
+                    bq.replaceWith(box);
+                });
 
-        const box = document.createElement('div');
-        box.className = `callout ${kind}`;
-        if (title) {
-            const t = document.createElement('div');
-            t.className = 'co-title';
-            t.textContent = `${icons[kind]} ${title}`;
-            box.appendChild(t);
-        }
-        // 把首段之后的兄弟节点搬进 callout
-        const siblings = [];
-        let n = first.nextElementSibling;
-        while (n) { siblings.push(n); n = n.nextElementSibling; }
-        siblings.forEach(s => box.appendChild(s));
-        bq.replaceWith(box);
-    });
+                root.querySelectorAll('p').forEach(p => {
+                    const m = p.textContent.match(/^\[details\]\s*(.+)$/);
+                    if (!m) return;
+                    const details = document.createElement('details');
+                    details.className = 'fold';
+                    const summary = document.createElement('summary');
+                    summary.textContent = m[1];
+                    details.appendChild(summary);
+                    let n = p.nextElementSibling;
+                    while (n && n.tagName !== 'P') {
+                        const next = n.nextElementSibling;
+                        details.appendChild(n);
+                        n = next;
+                    }
+                    p.replaceWith(details);
+                });
 
-    // ---- 4. 折叠块：> 里用 [details] 语法（见下方语法说明） ----
-    // 由 markdown 渲染成 <p>[details] 标题</p> + 后续内容，这里转 <details>
-    root.querySelectorAll('p').forEach(p => {
-        const m = p.textContent.match(/^\[details\]\s*(.+)$/);
-        if (!m) return;
-        const details = document.createElement('details');
-        details.className = 'fold';
-        const summary = document.createElement('summary');
-        summary.textContent = m[1];
-        details.appendChild(summary);
-        let n = p.nextElementSibling;
-        while (n && n.tagName !== 'P') { // 收集连续内容
-            const next = n.nextElementSibling;
-            details.appendChild(n);
-            n = next;
-        }
-        // 如果下一段也属于本折叠块（简单起见只吃到下一个 details 前）
-        p.replaceWith(details);
-    });
+                root.querySelectorAll('pre > code.language-steps').forEach(codeEl => {
+                    const ol = document.createElement('ol');
+                    ol.className = 'steps';
+                    codeEl.textContent.split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach(line => {
+                        const li = document.createElement('li');
+                        li.textContent = line;
+                        ol.appendChild(li);
+                    });
+                    codeEl.parentElement.replaceWith(ol);
+                });
 
-    // ============================================================
-// 8. Window Dialog
-// ============================================================
-const cssEscape = (s) => (window.CSS && CSS.escape ? CSS.escape(s) : String(s).replace(/["\\]/g, '\\$&'));
-
-function extractWindowBlocks(mdText) {
-    const windows = [];
-    const usedIds = new Set();
-    let autoIndex = 0;
-
-    // 先收集所有显式 id，避免数字 id 撞车
-    const preRegex = /```window[wt][ \t]*\r?\n([\s\S]*?)```/g;
-    let preMatch;
-    while ((preMatch = preRegex.exec(mdText)) !== null) {
-        const body = preMatch[1];
-        const firstLine = body.split(/\r?\n/)[0] || '';
-        const idMatch = firstLine.match(/^<!---\s*([A-Za-z0-9_-]+)\s*--->\s*$/);
-        if (idMatch) usedIds.add(idMatch[1]);
-    }
-
-    const regex = /```(window[wt])[ \t]*\r?\n([\s\S]*?)```/g;
-    const replaced = mdText.replace(regex, (match, lang, body) => {
-        const type = lang.endsWith('w') ? 'w' : 't';
-        const lines = body.split(/\r?\n/);
-
-        let id = null;
-        let contentLines = lines;
-
-        const firstLine = lines[0] || '';
-        const idMatch = firstLine.match(/^<!---\s*([A-Za-z0-9_-]+)\s*--->\s*$/);
-        if (idMatch) {
-            const candidate = idMatch[1];
-            if (!usedIds.has(candidate)) {
-                id = candidate;
-                usedIds.add(candidate);
-                contentLines = lines.slice(1);
-            } else {
-                contentLines = lines.slice(1);
+                const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+                const textNodes = [];
+                while (walker.nextNode()) textNodes.push(walker.currentNode);
+                textNodes.forEach(tn => {
+                    if (!tn.nodeValue || (!tn.nodeValue.includes('{{badge:') && !tn.nodeValue.includes('[['))) return;
+                    const parent = tn.parentElement;
+                    if (!parent || /^(CODE|PRE|SCRIPT|STYLE)$/.test(parent.tagName)) return;
+                    const frag = document.createDocumentFragment();
+                    let rest = tn.nodeValue;
+                    rest = rest.replace(/\{\{badge:([^}]+)\}\}/g, (_, txt) => `\u0001BADGE:${txt}\u0001`);
+                    rest = rest.replace(/\[\[([^\]]+)\]\]/g, (_, txt) => `\u0001KBD:${txt}\u0001`);
+                    const parts = rest.split('\u0001');
+                    parts.forEach(part => {
+                        if (part.startsWith('BADGE:')) {
+                            const span = document.createElement('span');
+                            span.className = 'badge';
+                            span.textContent = part.slice(6);
+                            frag.appendChild(span);
+                        } else if (part.startsWith('KBD:')) {
+                            const k = document.createElement('kbd');
+                            k.textContent = part.slice(4);
+                            frag.appendChild(k);
+                        } else if (part) {
+                            frag.appendChild(document.createTextNode(part));
+                        }
+                    });
+                    tn.parentNode.replaceChild(frag, tn);
+                });
             }
-        }
 
-        if (!id) {
-            do {
-                autoIndex++;
-                id = String(autoIndex);
-            } while (usedIds.has(id));
-            usedIds.add(id);
-        }
+            /* ============================================================
+               Window Dialog
+               ============================================================ */
+            const cssEscape = (s) => (window.CSS && CSS.escape ? CSS.escape(s) : String(s).replace(/["\\]/g, '\\$&'));
 
-        // 只取前 3 行源文
-        const content = contentLines.slice(0, 3).join('\n').replace(/^\s*\n/, '');
-
-        windows.push({ id, type, content });
-        return `<qd-window-def data-window-id="${escapeAttr(id)}" data-window-type="${type}" hidden></qd-window-def>`;
-    });
-
-    return { replaced, windows };
-}
-
-function escapeAttr(s) {
-    return String(s)
-        .replace(/&/g, '&amp;')
-        .replace(/"/g, '&quot;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-}
-
-function hydrateWindows(windows) {
-    windows.forEach(win => {
-        const defEl = contentEl.querySelector(
-            `qd-window-def[data-window-id="${cssEscape(win.id)}"]`
-        );
-        if (!defEl) return;
-        defEl.innerHTML = marked.parse(win.content);
-    });
-}
-
-function bindWindowTriggers() {
-    contentEl.querySelectorAll('[data-window]').forEach(el => {
-        if (el.dataset.windowBound) return;
-        el.dataset.windowBound = '1';
-        el.addEventListener('click', (e) => {
-            e.preventDefault();
-            const id = el.getAttribute('data-window');
-            const defEl = contentEl.querySelector(
-                `qd-window-def[data-window-id="${cssEscape(id)}"]`
-            );
-            if (!defEl) {
-                console.warn(`[QD] window id not found: ${id}`);
-                return;
+            function escapeAttr(s) {
+                return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             }
-            const type = defEl.getAttribute('data-window-type') || 't';
-            openWindow(type, defEl.innerHTML);
-        });
-    });
-}
 
-let activeWindow = null;
+            function extractWindowBlocks(mdText) {
+                const windows = [];
+                const usedIds = new Set();
+                let autoIndex = 0;
 
-function openWindow(type, contentHtml) {
-    closeWindow();
+                const preRegex = /```window[wt][ \t]*\r?\n([\s\S]*?)```/g;
+                let preMatch;
+                while ((preMatch = preRegex.exec(mdText)) !== null) {
+                    const body = preMatch[1];
+                    const firstLine = body.split(/\r?\n/)[0] || '';
+                    const idMatch = firstLine.match(/^<!---\s*([A-Za-z0-9_-]+)\s*--->\s*$/);
+                    if (idMatch) usedIds.add(idMatch[1]);
+                }
 
-    const htmlEl = document.documentElement;
-    const prevAccent = htmlEl.getAttribute('data-accent') || 'blue';
-    const tempAccent = type === 'w'
-        ? (prevAccent === 'red' ? 'orange' : 'red')
-        : prevAccent;
+                const regex = /```(window[wt])[ \t]*\r?\n([\s\S]*?)```/g;
+                const replaced = mdText.replace(regex, (match, lang, body) => {
+                    const type = lang.endsWith('w') ? 'w' : 't';
+                    const lines = body.split(/\r?\n/);
+                    let id = null;
+                    let contentLines = lines;
 
-    htmlEl.setAttribute('data-accent', tempAccent);
+                    const firstLine = lines[0] || '';
+                    const idMatch = firstLine.match(/^<!---\s*([A-Za-z0-9_-]+)\s*--->\s*$/);
+                    if (idMatch) {
+                        const candidate = idMatch[1];
+                        if (!usedIds.has(candidate)) {
+                            id = candidate;
+                            usedIds.add(candidate);
+                        }
+                        contentLines = lines.slice(1);
+                    }
 
-    const overlay = document.createElement('div');
-    overlay.className = 'qd-window-overlay';
-    overlay.innerHTML = `
-        <div class="qd-window" role="dialog" aria-modal="true">
-            <button class="qd-window-close" aria-label="Close">×</button>
-            <div class="qd-window-content">${contentHtml}</div>
-        </div>
-    `;
+                    if (!id) {
+                        do {
+                            autoIndex++;
+                            id = String(autoIndex);
+                        } while (usedIds.has(id));
+                        usedIds.add(id);
+                    }
 
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) closeWindow();
-    });
-    overlay.querySelector('.qd-window-close').addEventListener('click', closeWindow);
+                    const content = contentLines.slice(0, 3).join('\n').replace(/^\s*\n/, '');
+                    windows.push({ id, type, content });
+                    return `<qd-window-def data-window-id="${escapeAttr(id)}" data-window-type="${type}" hidden></qd-window-def>`;
+                });
 
-    document.addEventListener('keydown', escCloseWindow);
-
-    document.body.appendChild(overlay);
-    activeWindow = { overlay, prevAccent };
-
-    if (window.MathJax && MathJax.typesetPromise) {
-        MathJax.typesetPromise([overlay]).catch(() => {});
-    }
-}
-
-function closeWindow() {
-    if (!activeWindow) return;
-    const { overlay, prevAccent } = activeWindow;
-    overlay.remove();
-    document.documentElement.setAttribute('data-accent', prevAccent);
-    document.removeEventListener('keydown', escCloseWindow);
-    activeWindow = null;
-}
-
-function escCloseWindow(e) {
-    if (e.key === 'Escape') closeWindow();
-}
-
-    // ---- 6. 步骤条：```steps 每行一个步骤 ----
-    root.querySelectorAll('pre > code.language-steps').forEach(codeEl => {
-        const ol = document.createElement('ol');
-        ol.className = 'steps';
-        codeEl.textContent.split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach(line => {
-            const li = document.createElement('li');
-            li.textContent = line;
-            ol.appendChild(li);
-        });
-        codeEl.parentElement.replaceWith(ol);
-    });
-
-    // ---- 7. 行内徽章：{{badge:文字}} 与键帽 [[Ctrl+C]] ----
-    // 在文本节点上做替换，避免破坏已生成的 HTML
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-    const textNodes = [];
-    while (walker.nextNode()) textNodes.push(walker.currentNode);
-    textNodes.forEach(tn => {
-        if (!tn.nodeValue || (!tn.nodeValue.includes('{{badge:') && !tn.nodeValue.includes('[['))) return;
-        const parent = tn.parentElement;
-        if (!parent || /^(CODE|PRE|SCRIPT|STYLE)$/.test(parent.tagName)) return;
-
-        const frag = document.createDocumentFragment();
-        let rest = tn.nodeValue;
-        // badge
-        rest = rest.replace(/\{\{badge:([^}]+)\}\}/g, (_, txt) => `\u0001BADGE:${txt}\u0001`);
-        rest = rest.replace(/\[\[([^\]]+)\]\]/g, (_, txt) => `\u0001KBD:${txt}\u0001`);
-        const parts = rest.split('\u0001');
-        parts.forEach(part => {
-            if (part.startsWith('BADGE:')) {
-                const span = document.createElement('span');
-                span.className = 'badge';
-                span.textContent = part.slice(6);
-                frag.appendChild(span);
-            } else if (part.startsWith('KBD:')) {
-                const k = document.createElement('kbd');
-                k.textContent = part.slice(4);
-                frag.appendChild(k);
-            } else if (part) {
-                frag.appendChild(document.createTextNode(part));
+                return { replaced, windows };
             }
-        });
-        tn.parentNode.replaceChild(frag, tn);
-    });
-}
-            
-            // ============================================================
-            // 7. 语言变种探测与自动提示
-            // ============================================================
+
+            function hydrateWindows(windows) {
+                windows.forEach(win => {
+                    const defEl = contentEl.querySelector(`qd-window-def[data-window-id="${cssEscape(win.id)}"]`);
+                    if (!defEl) return;
+                    defEl.innerHTML = marked.parse(win.content);
+                });
+            }
+
+            let activeWindow = null;
+
+            function closeWindow() {
+                if (!activeWindow) return;
+                const { overlay, prevAccent } = activeWindow;
+                overlay.remove();
+                document.documentElement.setAttribute('data-accent', prevAccent);
+                document.removeEventListener('keydown', escCloseWindow);
+                activeWindow = null;
+            }
+
+            function escCloseWindow(e) {
+                if (e.key === 'Escape') closeWindow();
+            }
+
+            function openWindow(type, contentHtml) {
+                closeWindow();
+                const prevAccent = htmlEl.getAttribute('data-accent') || 'blue';
+                const tempAccent = type === 'w' ? (prevAccent === 'red' ? 'orange' : 'red') : prevAccent;
+                htmlEl.setAttribute('data-accent', tempAccent);
+
+                const overlay = document.createElement('div');
+                overlay.className = 'qd-window-overlay';
+                overlay.innerHTML = `
+                    <div class="qd-window" role="dialog" aria-modal="true">
+                        <button class="qd-window-close" aria-label="Close">×</button>
+                        <div class="qd-window-content">${contentHtml}</div>
+                    </div>
+                `;
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) closeWindow(); });
+                overlay.querySelector('.qd-window-close').addEventListener('click', closeWindow);
+                document.addEventListener('keydown', escCloseWindow);
+                document.body.appendChild(overlay);
+                activeWindow = { overlay, prevAccent };
+                if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([overlay]).catch(() => {});
+            }
+
+            function bindWindowTriggers() {
+                contentEl.querySelectorAll('[data-window]').forEach(el => {
+                    if (el.dataset.windowBound) return;
+                    el.dataset.windowBound = '1';
+                    el.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const id = el.getAttribute('data-window');
+                        const defEl = contentEl.querySelector(`qd-window-def[data-window-id="${cssEscape(id)}"]`);
+                        if (!defEl) { console.warn(`[QD] window id not found: ${id}`); return; }
+                        const type = defEl.getAttribute('data-window-type') || 't';
+                        openWindow(type, defEl.innerHTML);
+                    });
+                });
+            }
+
             async function checkLanguageVariants() {
-                // 删除了原有的 return 检查，让 README 也参与语言探测
-
                 let baseName = pageName;
                 let currentLang = 'en';
-                
                 const langRegex = /-(zh|jp|kr|es)$/i;
                 const match = pageName.match(langRegex);
-                if (match) {
-                    currentLang = match[1].toLowerCase();
-                    baseName = pageName.replace(langRegex, '');
-                }
+                if (match) { currentLang = match[1].toLowerCase(); baseName = pageName.replace(langRegex, ''); }
 
                 const variants = {
                     'en': { suffix: '', name: 'English' },
@@ -1364,46 +885,34 @@ function escCloseWindow(e) {
                     'kr': { suffix: '-kr', name: '한국어' },
                     'es': { suffix: '-es', name: 'Español' }
                 };
-
                 const available = [];
                 const langKeys = Object.keys(variants);
-                
-                const checks = langKeys.map(async (lang) => {
+                await Promise.all(langKeys.map(async (lang) => {
                     const filename = lang === 'en' ? `${baseName}.md` : `${baseName}${variants[lang].suffix}.md`;
                     try {
                         const res = await fetch(`${filename}?t=${new Date().getTime()}`, { method: 'HEAD' });
                         if (res.ok) available.push({ lang, ...variants[lang], filename });
                     } catch (e) {}
-                });
-
-                await Promise.all(checks);
+                }));
 
                 if (available.length <= 1) return;
-
                 const footerEl = document.getElementById('lang-footer');
                 const linksEl = document.getElementById('lang-links');
                 linksEl.innerHTML = '';
-
                 available.sort((a, b) => langKeys.indexOf(a.lang) - langKeys.indexOf(b.lang));
-
                 available.forEach(item => {
                     const a = document.createElement('a');
                     let newUrl = `?${item.lang === 'en' ? baseName : baseName + item.suffix}`;
                     const queryParams = [];
-                    for (const [k, v] of Object.entries(urlParams)) {
-                        queryParams.push(`${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
-                    }
+                    for (const [k, v] of Object.entries(urlParams)) queryParams.push(`${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
                     if (queryParams.length > 0) newUrl += `&${queryParams.join('&')}`;
-
                     a.href = newUrl;
                     a.textContent = item.name;
                     if (item.lang === currentLang) a.classList.add('current');
                     linksEl.appendChild(a);
                 });
-
                 footerEl.classList.add('visible');
 
-                // 自动弹窗逻辑
                 const browserLang = (navigator.language || navigator.userLanguage).toLowerCase();
                 let preferredLang = 'en';
                 if (browserLang.startsWith('zh')) preferredLang = 'zh';
@@ -1415,43 +924,43 @@ function escCloseWindow(e) {
                     const targetVariant = available.find(v => v.lang === preferredLang);
                     setTimeout(() => {
                         if (targetVariant) {
-                            const confirmSwitch = confirm(`It looks like you prefer ${targetVariant.name}. Would you like to switch to the ${targetVariant.name} version?`);
-                            if (confirmSwitch) window.location.href = `?${baseName}${targetVariant.suffix}`;
+                            if (confirm(`It looks like you prefer ${targetVariant.name}. Would you like to switch to the ${targetVariant.name} version?`)) {
+                                window.location.href = `?${baseName}${targetVariant.suffix}`;
+                            }
                         } else {
-                            const confirmEnglish = confirm(`A version in your language is not available. Would you like to switch to the English version?`);
-                            if (confirmEnglish) window.location.href = `?${baseName}`;
+                            if (confirm(`A version in your language is not available. Would you like to switch to the English version?`)) {
+                                window.location.href = `?${baseName}`;
+                            }
                         }
                     }, 500);
                 }
             }
 
-            // 8. 执行加载与渲染
             fetch(fetchUrl)
-    .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.text();
-    })
-    .then(text => {
-        const parsed = parseFrontMatter(text);
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return response.text();
+                })
+                .then(text => {
+                    const parsed = parseFrontMatter(text);
+                    const { replaced, windows } = extractWindowBlocks(parsed.body);
+                    applyMeta(parsed.meta);
+                    contentEl.innerHTML = marked.parse(replaced);
+                    generateTOC();
 
-        // 1. 抽取 window 定义
-        const { replaced, windows } = extractWindowBlocks(parsed.body);
+                    // 作者组件
+                    renderAuthorComponents(contentEl);
 
-        applyMeta(parsed.meta);
-        contentEl.innerHTML = marked.parse(replaced);
-        generateTOC();
+                    // 弹窗
+                    hydrateWindows(windows);
+                    bindWindowTriggers();
 
-        // 2. 填充 window 定义（隐藏）并绑定触发
-        hydrateWindows(windows);
-        bindWindowTriggers();
-
-        if (window.MathJax && MathJax.typesetPromise) {
-            MathJax.typesetPromise([contentEl]).catch((err) => console.warn('MathJax error:', err));
-        }
-
-        loadGlobalNotice();      
-        checkLanguageVariants(); 
-    })
+                    if (window.MathJax && MathJax.typesetPromise) {
+                        MathJax.typesetPromise([contentEl]).catch((err) => console.warn('MathJax error:', err));
+                    }
+                    loadGlobalNotice();
+                    checkLanguageVariants();
+                })
                 .catch(err => {
                     console.error(err);
                     const is404 = err.message.includes('404');
@@ -1459,11 +968,7 @@ function escCloseWindow(e) {
                         <h1 style="color:var(--error); border-bottom-color:var(--error)">Document Not Found</h1>
                         <div class="error-box">
                             <h3>${is404 ? 'HTTP 404 — File could not be loaded' : 'Failed to load'}</h3>
-                            <p>
-                                ${is404 
-                                  ? `The file <strong>${pageName}.md</strong> was not found on this server. If you are the author, make sure the file exists and GitHub Pages (Jekyll) is not ignoring it.` 
-                                  : `An unexpected error occurred while fetching the document.`}
-                            </p>
+                            <p>${is404 ? `The file <strong>${pageName}.md</strong> was not found on this server.` : `An unexpected error occurred while fetching the document.`}</p>
                         </div>
                     `;
                     tocListEl.innerHTML = '<li class="toc-placeholder">Content unavailable</li>';
