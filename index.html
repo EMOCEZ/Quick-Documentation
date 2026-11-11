@@ -454,6 +454,59 @@ kbd {
 /* 8) 属性表（metadata pill 行） */
 .prop-row { display: flex; flex-wrap: wrap; gap: .4rem; margin: .8rem 0; }
 .prop-row .badge { font-weight: 500; }
+
+        /* ---------- Window Dialog ---------- */
+.qd-window-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1rem;
+}
+
+.qd-window {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 10px;
+    box-shadow: 0 12px 40px var(--shadow);
+    max-width: 640px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 1.25rem 1.5rem;
+    transition: border-color 0.2s ease;
+}
+
+.qd-window-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-muted);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+.qd-window-close:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: var(--accent-border);
+}
+
+.qd-window-content > :first-child { margin-top: 0; }
+.qd-window-content > :last-child { margin-bottom: 0; }
+
+qd-window-def { display: none; }
     </style>
 </head>
 <body>
@@ -1095,51 +1148,152 @@ async function renderAuthorComponents(root) {
         p.replaceWith(details);
     });
 
-    // ---- 5. 弹窗：[dlg:标题] 触发文字 后的内容作为弹窗体 ----
-    // 语法见下方；这里把 <p>[dlg]...</p> 转为按钮 + <dialog>
-    let dlgIndex = 0;
-    root.querySelectorAll('p').forEach(p => {
-        const m = p.textContent.match(/^\[dlg\]\s*(.+?)\s*\|\s*(.+)$/);
-        if (!m) return;
-        const title = m[1].trim();
-        const triggerText = m[2].trim();
-        // 收集后续兄弟到 <dialog>
-        const bodyNodes = [];
-        let n = p.nextElementSibling;
-        while (n) {
-            const next = n.nextElementSibling;
-            bodyNodes.push(n);
-            n = next;
+    // ============================================================
+// 8. Window Dialog
+// ============================================================
+const cssEscape = (s) => (window.CSS && CSS.escape ? CSS.escape(s) : String(s).replace(/["\\]/g, '\\$&'));
+
+function extractWindowBlocks(mdText) {
+    const windows = [];
+    const usedIds = new Set();
+    let autoIndex = 0;
+
+    // 先收集所有显式 id，避免数字 id 撞车
+    const preRegex = /```window[wt][ \t]*\r?\n([\s\S]*?)```/g;
+    let preMatch;
+    while ((preMatch = preRegex.exec(mdText)) !== null) {
+        const body = preMatch[1];
+        const firstLine = body.split(/\r?\n/)[0] || '';
+        const idMatch = firstLine.match(/^<!---\s*([A-Za-z0-9_-]+)\s*--->\s*$/);
+        if (idMatch) usedIds.add(idMatch[1]);
+    }
+
+    const regex = /```(window[wt])[ \t]*\r?\n([\s\S]*?)```/g;
+    const replaced = mdText.replace(regex, (match, lang, body) => {
+        const type = lang.endsWith('w') ? 'w' : 't';
+        const lines = body.split(/\r?\n/);
+
+        let id = null;
+        let contentLines = lines;
+
+        const firstLine = lines[0] || '';
+        const idMatch = firstLine.match(/^<!---\s*([A-Za-z0-9_-]+)\s*--->\s*$/);
+        if (idMatch) {
+            const candidate = idMatch[1];
+            if (!usedIds.has(candidate)) {
+                id = candidate;
+                usedIds.add(candidate);
+                contentLines = lines.slice(1);
+            } else {
+                contentLines = lines.slice(1);
+            }
         }
-        if (bodyNodes.length === 0) return;
 
-        const id = `md-dlg-${dlgIndex++}`;
-        const trigger = document.createElement('span');
-        trigger.className = 'dialog-trigger';
-        trigger.textContent = triggerText;
-        trigger.dataset.dialog = id;
+        if (!id) {
+            do {
+                autoIndex++;
+                id = String(autoIndex);
+            } while (usedIds.has(id));
+            usedIds.add(id);
+        }
 
-        const dlg = document.createElement('dialog');
-        dlg.className = 'md-dialog';
-        dlg.id = id;
-        dlg.innerHTML = `<div class="dg-head"><span>${title}</span><button class="dg-close" aria-label="Close">✕</button></div><div class="dg-body"></div>`;
-        bodyNodes.forEach(node => dlg.querySelector('.dg-body').appendChild(node));
+        // 只取前 3 行源文
+        const content = contentLines.slice(0, 3).join('\n').replace(/^\s*\n/, '');
 
-        p.replaceWith(trigger);
-        trigger.after(dlg);
+        windows.push({ id, type, content });
+        return `<qd-window-def data-window-id="${escapeAttr(id)}" data-window-type="${type}" hidden></qd-window-def>`;
     });
 
-    // 统一绑定弹窗事件
-    root.querySelectorAll('.dialog-trigger').forEach(t => {
-        t.addEventListener('click', () => {
-            const d = document.getElementById(t.dataset.dialog);
-            if (d && d.showModal) d.showModal();
+    return { replaced, windows };
+}
+
+function escapeAttr(s) {
+    return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+function hydrateWindows(windows) {
+    windows.forEach(win => {
+        const defEl = contentEl.querySelector(
+            `qd-window-def[data-window-id="${cssEscape(win.id)}"]`
+        );
+        if (!defEl) return;
+        defEl.innerHTML = marked.parse(win.content);
+    });
+}
+
+function bindWindowTriggers() {
+    contentEl.querySelectorAll('[data-window]').forEach(el => {
+        if (el.dataset.windowBound) return;
+        el.dataset.windowBound = '1';
+        el.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = el.getAttribute('data-window');
+            const defEl = contentEl.querySelector(
+                `qd-window-def[data-window-id="${cssEscape(id)}"]`
+            );
+            if (!defEl) {
+                console.warn(`[QD] window id not found: ${id}`);
+                return;
+            }
+            const type = defEl.getAttribute('data-window-type') || 't';
+            openWindow(type, defEl.innerHTML);
         });
     });
-    root.querySelectorAll('.md-dialog').forEach(d => {
-        d.querySelector('.dg-close').addEventListener('click', () => d.close());
-        d.addEventListener('click', e => { if (e.target === d) d.close(); });
+}
+
+let activeWindow = null;
+
+function openWindow(type, contentHtml) {
+    closeWindow();
+
+    const htmlEl = document.documentElement;
+    const prevAccent = htmlEl.getAttribute('data-accent') || 'blue';
+    const tempAccent = type === 'w'
+        ? (prevAccent === 'red' ? 'orange' : 'red')
+        : prevAccent;
+
+    htmlEl.setAttribute('data-accent', tempAccent);
+
+    const overlay = document.createElement('div');
+    overlay.className = 'qd-window-overlay';
+    overlay.innerHTML = `
+        <div class="qd-window" role="dialog" aria-modal="true">
+            <button class="qd-window-close" aria-label="Close">×</button>
+            <div class="qd-window-content">${contentHtml}</div>
+        </div>
+    `;
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeWindow();
     });
+    overlay.querySelector('.qd-window-close').addEventListener('click', closeWindow);
+
+    document.addEventListener('keydown', escCloseWindow);
+
+    document.body.appendChild(overlay);
+    activeWindow = { overlay, prevAccent };
+
+    if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise([overlay]).catch(() => {});
+    }
+}
+
+function closeWindow() {
+    if (!activeWindow) return;
+    const { overlay, prevAccent } = activeWindow;
+    overlay.remove();
+    document.documentElement.setAttribute('data-accent', prevAccent);
+    document.removeEventListener('keydown', escCloseWindow);
+    activeWindow = null;
+}
+
+function escCloseWindow(e) {
+    if (e.key === 'Escape') closeWindow();
+}
 
     // ---- 6. 步骤条：```steps 每行一个步骤 ----
     root.querySelectorAll('pre > code.language-steps').forEach(codeEl => {
@@ -1273,27 +1427,31 @@ async function renderAuthorComponents(root) {
 
             // 8. 执行加载与渲染
             fetch(fetchUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    return response.text();
-                })
-                .then(text => {
-                    const parsed = parseFrontMatter(text);
-                    applyMeta(parsed.meta);
-                    contentEl.innerHTML = marked.parse(parsed.body);
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.text();
+    })
+    .then(text => {
+        const parsed = parseFrontMatter(text);
 
-                    renderAuthorComponents(contentEl);   // ← 新增这一行
+        // 1. 抽取 window 定义
+        const { replaced, windows } = extractWindowBlocks(parsed.body);
 
-                    generateTOC();
+        applyMeta(parsed.meta);
+        contentEl.innerHTML = marked.parse(replaced);
+        generateTOC();
 
-                    if (window.MathJax && MathJax.typesetPromise) {
-                        MathJax.typesetPromise([contentEl]).catch((err) => console.warn('MathJax error:', err));
-                    }
+        // 2. 填充 window 定义（隐藏）并绑定触发
+        hydrateWindows(windows);
+        bindWindowTriggers();
 
-                    // 异步执行不阻塞主流程的逻辑
-                    loadGlobalNotice();      
-                    checkLanguageVariants(); 
-                })
+        if (window.MathJax && MathJax.typesetPromise) {
+            MathJax.typesetPromise([contentEl]).catch((err) => console.warn('MathJax error:', err));
+        }
+
+        loadGlobalNotice();      
+        checkLanguageVariants(); 
+    })
                 .catch(err => {
                     console.error(err);
                     const is404 = err.message.includes('404');
