@@ -864,7 +864,7 @@ qd-window-def { display: none; }
                         usedIds.add(id);
                     }
 
-                    const content = contentLines.slice(0, 3).join('\n').replace(/^\s*\n/, '');
+                    const content = contentLines.slice(0, 5).join('\n').replace(/^\s*\n/, '');
                     windows.push({ id, type, content });
                     return `<qd-window-def data-window-id="${escapeAttr(id)}" data-window-type="${type}" hidden></qd-window-def>`;
                 });
