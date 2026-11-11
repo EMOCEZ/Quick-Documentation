@@ -338,8 +338,53 @@ button[data-window]:focus-visible {
             <div class="lang-links" id="lang-links"></div>
         </div>
     </div>
-
+    <!-- 1. MathJax 配置，必须在主脚本前，不能 async -->
+<script>
+window.MathJax = {
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    },
+    options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>
+        // 2. 保护公式的 markdown 解析
+function parseMarkdown(text) {
+    const store = [];
+    const protect = (m) => { store.push(m); return `@@MATH${store.length - 1}@@`; };
+    let t = text
+        .replace(/\\\[([\s\S]*?)\\\]/g, protect)
+        .replace(/\\\(([\s\S]*?)\\\)/g, protect)
+        .replace(/\$\$([\s\S]*?)\$\$/g, protect)
+        .replace(/\$([^$\n]+?)\$/g, protect);
+    let html = marked.parse(t);
+    return html.replace(/@@MATH(\d+)@@/g, (_, i) => store[+i]);
+}
+
+// 3. 等 MathJax 就绪的 typeset
+function typeset(el) {
+    if (window.MathJax && MathJax.typesetPromise) {
+        return MathJax.typesetPromise([el]).catch(e => console.warn('MathJax:', e));
+    }
+    if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+        return MathJax.startup.promise.then(() => MathJax.typesetPromise([el])).catch(e => console.warn('MathJax:', e));
+    }
+    return new Promise(resolve => {
+        let n = 0;
+        const timer = setInterval(() => {
+            if (window.MathJax && MathJax.typesetPromise) {
+                clearInterval(timer);
+                MathJax.typesetPromise([el]).then(resolve).catch(() => resolve());
+            } else if (++n > 100) {
+                clearInterval(timer);
+                console.warn('MathJax 加载失败');
+                resolve();
+            }
+        }, 100);
+    });
+}
         (function() {
             const searchStr = window.location.search;
             const urlParams = {};
