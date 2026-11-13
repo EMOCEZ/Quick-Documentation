@@ -13,7 +13,7 @@
 [원주율(pi)](https://emocez.github.io/Quick-Documentation/?pi)
 
 # 편집자
-편집기 [여기](https://emocez.github.io/Quick-Documentation/?qde)를 클릭하여 편집기를 여세요(영어만 지원).
+편집기 [여기](https://emocez.github.io/Quick-Documentation/qde)를 클릭하여 편집기를 여세요(영어만 지원).
 
 # 새로운 문서는 어떻게 제출하나요?
 
