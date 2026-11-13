@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QD Editor — Quick Documentation</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root{
+  --shadow:rgba(0,0,0,.04);--shadow-sidebar:rgba(0,0,0,.02);--error:#b91c1c;
+  --bg:#f8fafc;--surface:#fff;--surface-2:#f1f5f9;--border:#e2e8f0;--border-strong:#cbd5e1;
+  --text:#1e293b;--text-muted:#64748b;--text-faint:#94a3b8;--toc-hover-bg:#f1f5f9;
+  --code-bg:rgba(0,0,0,.05);--pre-bg:#1e293b;--pre-text:#f8fafc;
+  --blockquote-bg:rgba(0,0,0,.02);--blockquote-text:#475569;
+  --glass-blur:14px;--glass-bg:rgba(255,255,255,.55);--glass-border:rgba(255,255,255,.55);
+  --accent:#2563eb;--accent-hover:#1d4ed8;--accent-soft:#eff6ff;--accent-border:#3b82f6;
+}
+html[data-theme="dark"]{
+  --shadow:rgba(0,0,0,.3);--shadow-sidebar:rgba(0,0,0,.2);--error:#f87171;
+  --text:#e2e8f0;--text-muted:#94a3b8;--text-faint:#64748b;--toc-hover-bg:rgba(255,255,255,.05);
+  --code-bg:rgba(255,255,255,.1);--pre-bg:#0b1220;--pre-text:#e2e8f0;
+  --blockquote-bg:rgba(255,255,255,.03);--blockquote-text:#cbd5e1;
+  --glass-bg:rgba(17,26,46,.55);--glass-border:rgba(255,255,255,.12);
+  --accent:#60a5fa;--accent-hover:#93c5fd;--accent-soft:#1e3a5f;--accent-border:#60a5fa;
+}
+html[data-accent="blue"]{--bg:#f8fafc;--surface:#fff;--surface-2:#f1f5f9;--border:#e2e8f0;--border-strong:#cbd5e1;--accent:#2563eb;--accent-hover:#1d4ed8;--accent-soft:#eff6ff;--accent-border:#3b82f6;}
+html[data-theme="dark"][data-accent="blue"]{--bg:#0b1120;--surface:#111a2e;--surface-2:#1b263e;--border:#2a3b5c;--accent:#60a5fa;--accent-hover:#93c5fd;--accent-soft:#1e3a5f;--accent-border:#60a5fa;}
+html[data-accent="red"]{--bg:#fefafa;--surface:#fff;--surface-2:#fef2f2;--border:#fee2e2;--border-strong:#fca5a5;--accent:#dc2626;--accent-hover:#b91c1c;--accent-soft:#fef2f2;--accent-border:#ef4444;}
+html[data-theme="dark"][data-accent="red"]{--bg:#140b0b;--surface:#1f1010;--surface-2:#2c1515;--border:#4a2222;--accent:#f87171;--accent-hover:#fca5a5;--accent-soft:#4c1d1d;--accent-border:#f87171;}
+html[data-accent="green"]{--bg:#f9fdfa;--surface:#fff;--surface-2:#f0fdf4;--border:#dcfce7;--border-strong:#86efac;--accent:#16a34a;--accent-hover:#15803d;--accent-soft:#f0fdf4;--accent-border:#22c55e;}
+html[data-theme="dark"][data-accent="green"]{--bg:#0a140e;--surface:#101f15;--surface-2:#182e1f;--border:#264d33;--accent:#4ade80;--accent-hover:#86efac;--accent-soft:#14432a;--accent-border:#4ade80;}
+html[data-accent="purple"]{--bg:#fcfbfe;--surface:#fff;--surface-2:#f5f3ff;--border:#ede9fe;--border-strong:#c4b5fd;--accent:#7c3aed;--accent-hover:#6d28d9;--accent-soft:#f5f3ff;--accent-border:#8b5cf6;}
+html[data-theme="dark"][data-accent="purple"]{--bg:#100a1c;--surface:#181026;--surface-2:#221736;--border:#38265c;--accent:#a78bfa;--accent-hover:#c4b5fd;--accent-soft:#2e1f5e;--accent-border:#a78bfa;}
+html[data-accent="orange"]{--bg:#fffaf7;--surface:#fff;--surface-2:#fff7ed;--border:#ffedd5;--border-strong:#fdba74;--accent:#ea580c;--accent-hover:#c2410c;--accent-soft:#fff7ed;--accent-border:#f97316;}
+html[data-theme="dark"][data-accent="orange"]{--bg:#150d08;--surface:#20140d;--surface-2:#2e1c12;--border:#4a2c1c;--accent:#fb923c;--accent-hover:#fdba74;--accent-soft:#4a2508;--accent-border:#fb923c;}
+html[data-accent="pink"]{--bg:#fffbfd;--surface:#fff;--surface-2:#fdf2f8;--border:#fce7f3;--border-strong:#f9a8d4;--accent:#db2777;--accent-hover:#be185d;--accent-soft:#fdf2f8;--accent-border:#ec4899;}
+html[data-theme="dark"][data-accent="pink"]{--bg:#140a10;--surface:#1f101a;--surface-2:#2e1626;--border:#4a233d;--accent:#f472b6;--accent-hover:#f9a8d4;--accent-soft:#4a1530;--accent-border:#f472b6;}
+html[data-accent="teal"]{--bg:#f8fdfc;--surface:#fff;--surface-2:#f0fdfa;--border:#ccfbf1;--border-strong:#5eead4;--accent:#0d9488;--accent-hover:#0f766e;--accent-soft:#f0fdfa;--accent-border:#14b8a6;}
+html[data-theme="dark"][data-accent="teal"]{--bg:#081413;--surface:#0d1f1e;--surface-2:#142e2d;--border:#1f4a47;--accent:#2dd4bf;--accent-hover:#5eead4;--accent-soft:#0f3d3a;--accent-border:#2dd4bf;}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{color-scheme:light dark;}
+body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;display:flex;min-height:100vh;background:var(--bg);color:var(--text);line-height:1.6;transition:background-color .25s,color .25s;}
+
+/* ---------- Sidebar (TOC preview) ---------- */
+.sidebar{width:240px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:1.2rem .9rem;overflow-y:auto;height:100vh;position:sticky;top:0;display:flex;flex-direction:column;transition:background-color .25s,border-color .25s;}
+.sidebar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+.sidebar-header h3{font-size:.95rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);word-break:break-word;}
+.toc-list{list-style:none;flex:1;}
+.toc-list li{margin:.25rem 0;}
+.toc-list a{display:block;padding:.3rem .45rem;color:var(--text);text-decoration:none;border-radius:6px;font-size:.85rem;border-left:3px solid transparent;word-break:break-word;}
+.toc-list a:hover{background:var(--toc-hover-bg);}
+.toc-list a.active{background:var(--accent-soft);color:var(--accent);border-left-color:var(--accent-border);font-weight:500;}
+.toc-level-1 a{font-weight:600;font-size:.9rem;}
+.toc-level-2 a{padding-left:1.1rem;}
+.toc-level-3 a{padding-left:1.9rem;font-size:.8rem;}
+.toc-level-4 a{padding-left:2.6rem;font-size:.78rem;}
+.toc-placeholder{color:var(--text-faint);font-size:.8rem;padding-left:.45rem;}
+
+/* ---------- Editor panel ---------- */
+.editor-panel{width:42%;min-width:360px;display:flex;flex-direction:column;border-right:1px solid var(--border);background:var(--surface);height:100vh;position:sticky;top:0;overflow:hidden;}
+.editor-header{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;gap:.5rem;}
+.editor-header h2{font-size:1rem;font-weight:600;color:var(--accent);letter-spacing:.3px;white-space:nowrap;}
+.editor-actions{display:flex;gap:.4rem;align-items:center;}
+.btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:.32rem .75rem;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:.3rem;white-space:nowrap;}
+.btn:hover{background:var(--accent-soft);border-color:var(--accent-border);color:var(--accent);}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.btn.primary:hover{background:var(--accent-hover);border-color:var(--accent-hover);}
+.btn-icon{background:var(--surface-2);border:1px solid var(--border);color:var(--text-muted);width:32px;height:32px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:1rem;transition:all .15s;}
+.btn-icon:hover{background:var(--toc-hover-bg);color:var(--text);}
+
+/* meta bar */
+.meta-bar{display:flex;gap:.5rem;padding:.5rem 1rem;border-bottom:1px solid var(--border);background:var(--surface-2);flex-shrink:0;flex-wrap:wrap;align-items:center;}
+.meta-bar label{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:.3rem;}
+.meta-bar input{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:5px;padding:.25rem .5rem;font-size:.78rem;font-family:inherit;width:130px;outline:none;}
+.meta-bar input:focus{border-color:var(--accent-border);}
+.accent-swatches{display:flex;gap:.25rem;margin-left:auto;}
+.swatch{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:transform .15s,border-color .15s;padding:0;}
+.swatch:hover{transform:scale(1.15);}
+.swatch.active{border-color:var(--text);box-shadow:0 0 0 2px var(--accent-soft);}
+.swatch[data-accent="blue"]{background:#2563eb;}
+.swatch[data-accent="red"]{background:#dc2626;}
+.swatch[data-accent="green"]{background:#16a34a;}
+.swatch[data-accent="purple"]{background:#7c3aed;}
+.swatch[data-accent="orange"]{background:#ea580c;}
+.swatch[data-accent="pink"]{background:#db2777;}
+.swatch[data-accent="teal"]{background:#0d9488;}
+
+/* toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:.2rem;padding:.4rem .6rem;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;}
+.toolbar button{background:transparent;border:1px solid transparent;color:var(--text-muted);border-radius:5px;padding:.28rem .5rem;font-size:.8rem;cursor:pointer;transition:all .12s;font-family:inherit;min-width:28px;display:inline-flex;align-items:center;justify-content:center;}
+.toolbar button:hover{background:var(--toc-hover-bg);color:var(--text);border-color:var(--border);}
+.toolbar button:active{transform:scale(.95);}
+.toolbar .sep{width:1px;background:var(--border);margin:.2rem .3rem;}
+
+#markdownInput{flex:1;width:100%;padding:1rem 1.2rem;font-family:'SF Mono','Fira Code','Cascadia Code',monospace;font-size:.85rem;line-height:1.7;background:var(--surface);color:var(--text);border:none;outline:none;resize:none;tab-size:2;}
+#markdownInput::placeholder{color:var(--text-faint);}
+
+.status-bar{padding:.28rem 1rem;font-size:.72rem;color:var(--text-muted);border-top:1px solid var(--border);background:var(--surface);display:flex;justify-content:space-between;flex-shrink:0;gap:.5rem;}
+.status-bar .dot{color:var(--accent);}
+
+/* ---------- Preview ---------- */
+.preview-panel{flex:1;padding:1.5rem 2rem;overflow-y:auto;max-width:1000px;margin:0 auto;width:100%;}
+#preview{background:var(--surface);border-radius:12px;padding:2rem 2.5rem;box-shadow:0 4px 12px var(--shadow);border:1px solid var(--border);min-height:200px;transition:background-color .25s,border-color .25s;}
+#preview h1,#preview h2,#preview h3,#preview h4,#preview h5,#preview h6{margin-top:1.5em;margin-bottom:.6em;font-weight:600;line-height:1.3;scroll-margin-top:20px;color:var(--text);}
+#preview h1{font-size:2rem;border-bottom:2px solid var(--accent-border);padding-bottom:.3rem;}
+#preview h2{font-size:1.6rem;border-bottom:1px solid var(--border);padding-bottom:.2rem;}
+#preview h3{font-size:1.3rem;}#preview h4{font-size:1.1rem;}
+#preview p{margin:.8rem 0;}
+#preview a{color:var(--accent);text-decoration:none;}#preview a:hover{text-decoration:underline;color:var(--accent-hover);}
+#preview code{background:var(--code-bg);padding:.2rem .4rem;border-radius:4px;font-size:.9em;font-family:'SF Mono','Fira Code',monospace;color:var(--text);}
+#preview pre{background:var(--pre-bg);color:var(--pre-text);padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0;}
+#preview pre code{background:transparent;padding:0;color:inherit;font-size:.9em;}
+#preview blockquote{border-left:4px solid var(--accent-border);margin:1rem 0;padding:.5rem 0 .5rem 1rem;color:var(--blockquote-text);background:var(--blockquote-bg);border-radius:0 6px 6px 0;}
+#preview ul,#preview ol{padding-left:1.8rem;margin:.8rem 0;}
+#preview img{max-width:100%;border-radius:6px;}
+#preview hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+#preview table{border-collapse:collapse;width:100%;margin:1rem 0;}
+#preview th,#preview td{border:1px solid var(--border);padding:.5rem .75rem;text-align:left;}
+#preview th{background:var(--surface-2);border-bottom:2px solid var(--accent-border);}
+#preview input[type="checkbox"]{margin-right:.4rem;}
+
+/* components (same as renderer) */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.25rem 0;}
+.doc-card{display:block;padding:1rem 1.1rem;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);color:var(--text)!important;text-decoration:none!important;transition:transform .15s,border-color .15s,box-shadow .15s;}
+.doc-card:hover{transform:translateY(-2px);border-color:var(--accent-border);box-shadow:0 6px 18px var(--shadow);}
+.doc-card .dc-title{font-weight:600;font-size:1.02rem;color:var(--accent);margin-bottom:.3rem;}
+.doc-card .dc-desc{font-size:.88rem;color:var(--text-muted);line-height:1.5;}
+.doc-card .dc-icon{font-size:1.3rem;margin-bottom:.4rem;display:block;}
+.doc-embed{margin:1.25rem 0;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface-2);}
+.doc-embed .de-head{display:flex;align-items:center;gap:.5rem;padding:.55rem .9rem;font-size:.85rem;color:var(--text-muted);border-bottom:1px solid var(--border);background:var(--surface);}
+.doc-embed .de-head a{color:var(--accent);}
+.doc-embed .de-body{padding:.2rem 1rem;max-height:420px;overflow:auto;}
+.doc-embed .de-body>:first-child{margin-top:.6rem;}.doc-embed .de-body>:last-child{margin-bottom:.6rem;}
+.callout{margin:1.1rem 0;padding:.85rem 1rem .85rem 1.05rem;border-radius:8px;border-left:4px solid var(--accent-border);background:var(--accent-soft);color:var(--text);}
+.callout .co-title{font-weight:600;margin-bottom:.3rem;display:flex;align-items:center;gap:.4rem;}
+.callout>:last-child{margin-bottom:0;}.callout>:first-child{margin-top:0;}
+.callout.info{border-left-color:var(--accent-border);background:var(--accent-soft);}
+.callout.tip{border-left-color:#16a34a;background:rgba(22,163,74,.10);}
+.callout.warning{border-left-color:#d97706;background:rgba(217,119,6,.12);}
+.callout.danger{border-left-color:var(--error);background:rgba(185,28,28,.10);}
+.callout.note{border-left-color:var(--text-muted);background:var(--blockquote-bg);}
+details.fold{margin:1rem 0;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:0 .9rem;}
+details.fold>summary{cursor:pointer;padding:.7rem 0;font-weight:600;color:var(--text);list-style:none;display:flex;align-items:center;gap:.5rem;}
+details.fold>summary::-webkit-details-marker{display:none;}
+details.fold>summary::before{content:"▸";color:var(--accent);transition:transform .15s;}
+details.fold[open]>summary::before{transform:rotate(90deg);}
+details.fold>*:not(summary){margin-bottom:.8rem;}
+.badge{display:inline-block;padding:.05rem .45rem;border-radius:999px;font-size:.78em;font-weight:600;border:1px solid var(--accent-border);background:var(--accent-soft);color:var(--accent);vertical-align:1px;}
+kbd{display:inline-block;padding:.1rem .4rem;font-size:.82em;border:1px solid var(--border-strong);border-bottom-width:2px;border-radius:5px;background:var(--surface-2);font-family:'SF Mono','Fira Code',monospace;}
+.steps{counter-reset:step;margin:1.2rem 0;padding-left:0;list-style:none;}
+.steps>li{position:relative;padding-left:2.4rem;margin:.9rem 0;}
+.steps>li::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:0;width:1.7rem;height:1.7rem;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--accent);color:#fff;font-size:.85rem;font-weight:600;}
+
+/* window dialog */
+.qd-window-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;z-index:9999;padding:1rem;pointer-events:none;transition:background-color .25s;}
+.qd-window-overlay.active{background:rgba(0,0,0,.45);pointer-events:auto;}
+.qd-window-overlay.active.qd-window-overlay-warning{background:rgba(185,28,28,.25);}
+.qd-window{background:var(--surface);color:var(--text);border:1px solid var(--border);border-top:4px solid var(--accent);border-radius:10px;box-shadow:0 12px 40px var(--shadow);max-width:640px;width:100%;max-height:80vh;overflow-y:auto;position:relative;padding:1.25rem 1.5rem;opacity:0;transform:scale(.9);transition:opacity .25s,transform .25s cubic-bezier(.175,.885,.32,1.275);}
+.qd-window-overlay.active .qd-window{opacity:1;transform:scale(1);}
+.qd-window-close{position:absolute;top:.5rem;right:.5rem;width:30px;height:30px;border:1px solid var(--border);background:var(--surface-2);color:var(--text-muted);border-radius:6px;cursor:pointer;font-size:1.1rem;line-height:1;}
+.qd-window-close:hover{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-border);}
+.qd-window-content>:first-child{margin-top:0;}.qd-window-content>:last-child{margin-bottom:0;}
+qd-window-def{display:none;}
+button[data-window],a[data-window]{background:var(--surface-2);border:1px solid var(--border-strong);border-radius:6px;padding:.35rem .85rem;font-size:.9rem;font-weight:500;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin:.2rem .3rem .2rem 0;transition:all .2s cubic-bezier(.175,.885,.32,1.275);text-decoration:none;color:var(--accent);}
+button[data-window]:hover,a[data-window]:hover{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-border);transform:translateY(-1px);box-shadow:0 4px 10px var(--shadow);}
+button[data-window]:active,a[data-window]:active{transform:translateY(1px) scale(.97);box-shadow:none;}
+
+@media(max-width:1100px){.sidebar{display:none;}}
+@media(max-width:900px){
+  body{flex-direction:column;}
+  .editor-panel{width:100%;min-width:unset;height:50vh;position:relative;border-right:none;border-bottom:1px solid var(--border);}
+  .preview-panel{padding:1rem;}
+  #preview{padding:1.5rem;}
+}
+</style>
+</head>
+<body>
+<input type="file" id="fileInput" accept=".md,.markdown,text/markdown,text/plain" hidden>
+
+<!-- TOC preview sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h3 id="tocTitle">Table of Contents</h3>
+  </div>
+  <ul class="toc-list" id="tocList">
+    <li class="toc-placeholder">No headings yet</li>
+  </ul>
+</aside>
+
+<!-- Editor -->
+<div class="editor-panel">
+  <div class="editor-header">
+    <h2>📝 QD Editor</h2>
+    <div class="editor-actions">
+      <button class="btn-icon" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">🌙</button>
+      <button class="btn" id="newBtn" title="New document">＋ New</button>
+      <button class="btn" id="importBtn" title="Open .md file">📂 Open</button>
+      <button class="btn primary" id="exportBtn">⬇ Export .md</button>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <label>Sidebar Title
+      <input type="text" id="sidebarTitleInput" placeholder="Table of Contents">
+    </label>
+    <label>Doc Title
+      <input type="text" id="docTitleInput" placeholder="Untitled">
+    </label>
+    <div class="accent-swatches" id="accentSwatches" title="Accent color">
+      <button class="swatch" data-accent="blue" aria-label="Blue"></button>
+      <button class="swatch" data-accent="red" aria-label="Red"></button>
+      <button class="swatch" data-accent="green" aria-label="Green"></button>
+      <button class="swatch" data-accent="purple" aria-label="Purple"></button>
+      <button class="swatch" data-accent="orange" aria-label="Orange"></button>
+      <button class="swatch" data-accent="pink" aria-label="Pink"></button>
+      <button class="swatch" data-accent="teal" aria-label="Teal"></button>
+    </div>
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <button data-cmd="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+    <button data-cmd="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+    <button data-cmd="strike" title="Strikethrough"><s>S</s></button>
+    <button data-cmd="inlineCode" title="Inline code">`</button>
+    <span class="sep"></span>
+    <button data-cmd="h1" title="Heading 1">H1</button>
+    <button data-cmd="h2" title="Heading 2">H2</button>
+    <button data-cmd="h3" title="Heading 3">H3</button>
+    <span class="sep"></span>
+    <button data-cmd="ul" title="Bullet list">• List</button>
+    <button data-cmd="ol" title="Numbered list">1. List</button>
+    <span class="sep"></span>
+    <button data-cmd="link" title="Link (Ctrl+K)">🔗 Link</button>
+    <button data-cmd="image" title="Image">🖼 Image</button>
+    <button data-cmd="table" title="Table">▦ Table</button>
+    <button data-cmd="code" title="Code block">⌨ Code</button>
+    <button data-cmd="hr" title="Divider">— HR</button>
+    <span class="sep"></span>
+    <button data-cmd="cards" title="Insert cards component">▢ Cards</button>
+    <button data-cmd="callout" title="Insert callout">ℹ️ note</button>
+    <button data-cmd="steps" title="Insert steps">① Steps</button>
+    <button data-cmd="window" title="Insert window dialog">🪟 Window</button>
+  </div>
+
+  <textarea id="markdownInput" placeholder="Start typing Markdown here…&#10;Supports QD creator components: ```cards, ```embed, ```steps, ```windowt, ```windoww, > [!NOTE], [details], {{badge:x}}, [[Ctrl+S]]" spellcheck="false"></textarea>
+
+  <div class="status-bar">
+    <span>QD components · Live preview <span class="dot">●</span></span>
+    <span id="charCount">0 chars · 0 lines</span>
+  </div>
+</div>
+
+<!-- Preview -->
+<div class="preview-panel">
+  <div id="preview"></div>
+</div>
+
+<div id="windowMount"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* =========================================================
+     Theme & Accent
+     ========================================================= */
+  const htmlEl = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const THEME_KEY = 'qd-theme';
+  const ACCENT_KEY = 'qd-accent';
+  const ACCENTS = ['blue','red','green','purple','orange','pink','teal'];
+
+  function getPreferredTheme(){
+    const s = localStorage.getItem(THEME_KEY);
+    if (s === 'light' || s === 'dark') return s;
+    return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function applyTheme(t){
+    htmlEl.setAttribute('data-theme', t);
+    themeToggle.textContent = t === 'dark' ? '☀️' : '🌙';
+    themeToggle.title = t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+  }
+  function applyAccent(a){
+    if (!ACCENTS.includes(a)) a = 'blue';
+    htmlEl.setAttribute('data-accent', a);
+    document.querySelectorAll('.swatch').forEach(s => {
+      s.classList.toggle('active', s.dataset.accent === a);
+    });
+  }
+  let currentTheme = getPreferredTheme();
+  applyTheme(currentTheme);
+  applyAccent(localStorage.getItem(ACCENT_KEY) || 'blue');
+
+  themeToggle.addEventListener('click', () => {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(currentTheme);
+    localStorage.setItem(THEME_KEY, currentTheme);
+  });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem(THEME_KEY)) { currentTheme = e.matches ? 'dark' : 'light'; applyTheme(currentTheme); }
+  });
+  document.querySelectorAll('.swatch').forEach(s => {
+    s.addEventListener('click', () => {
+      applyAccent(s.dataset.accent);
+      localStorage.setItem(ACCENT_KEY, s.dataset.accent);
+    });
+  });
+
+  /* =========================================================
+     Markdown parsing (MathJax-protected, same as renderer)
+     ========================================================= */
+  function parseMarkdown(text){
+    const store = [];
+    const protect = m => { store.push(m); return `@@MATH${store.length-1}@@`; };
+    let t = text
+      .replace(/\\\[([\s\S]*?)\\\]/g, protect)
+      .replace(/\\\(([\s\S]*?)\\\)/g, protect)
+      .replace(/\$\$([\s\S]*?)\$\$/g, protect)
+      .replace(/\$([^$\n]+?)\$/g, protect);
+    let html = marked.parse(t);
+    return html.replace(/@@MATH(\d+)@@/g, (_, i) => store[+i]);
+  }
+  function typeset(el){
+    if (window.MathJax && MathJax.typesetPromise) return MathJax.typesetPromise([el]).catch(()=>{});
+    if (window.MathJax && MathJax.startup && MathJax.startup.promise)
+      return MathJax.startup.promise.then(()=>MathJax.typesetPromise([el])).catch(()=>{});
+    return Promise.resolve();
+  }
+
+  /* =========================================================
+     Front-matter
+     ========================================================= */
+  function parseFrontMatter(text){
+    const meta = {}; const result = { meta, body: text };
+    const trimmed = text.replace(/^\uFEFF/, '').replace(/^\s+/, '');
+    if (!trimmed.startsWith('---')) return result;
+    const lines = trimmed.split(/\r?\n/);
+    if (lines[0].trim() !== '---') return result;
+    let endIdx = -1;
+    for (let i=1;i<lines.length;i++) if (lines[i].trim()==='---'){ endIdx=i; break; }
+    if (endIdx === -1) return result;
+    lines.slice(1,endIdx).forEach(line => {
+      const m = line.match(/^\s*([A-Za-z0-9_-]+)\s*:\s*(.*)$/);
+      if (m){
+        let v = m[2].trim();
+        if ((v.startsWith('"')&&v.endsWith('"'))||(v.startsWith("'")&&v.endsWith("'"))) v = v.slice(1,-1);
+        meta[m[1]] = v;
+      }
+    });
+    result.body = lines.slice(endIdx+1).join('\n');
+    return result;
+  }
+  function buildFrontMatter(meta, body){
+    const keys = Object.keys(meta).filter(k => meta[k] !== '' && meta[k] != null);
+    if (!keys.length) return body;
+    return '---\n' + keys.map(k => `${k}: ${meta[k]}`).join('\n') + '\n---\n' + body;
+  }
+
+  /* =========================================================
+     Window blocks (same as renderer)
+     ========================================================= */
+  const BT = String.fromCharCode(96);
+  const FENCE = BT+BT+BT;
+
+  function extractWindowBlocks(mdText){
+    const windows = []; const usedIds = new Set(); let autoIndex = 0;
+    const esc = BT.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    const preRegex = new RegExp(esc+esc+esc+'window[wt][ \\t]*\\r?\\n([\\s\\S]*?)'+esc+esc+esc,'g');
+    let m;
+    while ((m = preRegex.exec(mdText)) !== null){
+      const firstLine = (m[1].split(/\r?\n/)[0]||'');
+      const idm = firstLine.match(/^<!---\s*([A-Za-z0-9_-]+)\s*--->\s*$/);
+      if (idm) usedIds.add(idm[1]);
+    }
+    const regex = new RegExp(esc+esc+esc+'(window[wt])[ \\t]*\\r?\\n([\\s\\S]*?)'+esc+esc+esc,'g');
+    const replaced = mdText.replace(regex, (match, lang, body) => {
+      const type = lang.endsWith('w') ? 'w' : 't';
+      const lines = body.split(/\r?\n/);
+      let id = null, contentLines = lines;
+      const idm = (lines[0]||'').match(/^<!---\s*([A-Za-z0-9_-]+)\s*--->\s*$/);
+      if (idm){
+        if (!usedIds.has(idm[1])){ id = idm[1]; usedIds.add(id); }
+        contentLines = lines.slice(1);
+      }
+      if (!id){ do { autoIndex++; id = String(autoIndex); } while (usedIds.has(id)); usedIds.add(id); }
+      const content = contentLines.slice(0,5).join('\n').replace(/^\s*\n/,'');
+      windows.push({ id, type, content });
+      return `<qd-window-def data-window-id="${escapeAttr(id)}" data-window-type="${type}" hidden></qd-window-def>`;
+    });
+    return { replaced, windows };
+  }
+  function escapeAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  const cssEscape = s => (window.CSS && CSS.escape ? CSS.escape(s) : String(s).replace(/["\\]/g,'\\$&'));
+
+  /* =========================================================
+     Author components (same as renderer, plus embed fetch)
+     ========================================================= */
+  function renderAuthorComponents(root){
+    root.querySelectorAll('pre > code').forEach(codeEl => {
+      const pre = codeEl.parentElement;
+      const cls = codeEl.className || '';
+      const lang = (cls.match(/language-(\w+)/)||[])[1];
+
+      if (lang === 'cards'){
+        const lines = codeEl.textContent.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+        const grid = document.createElement('div');
+        grid.className = 'card-grid';
+        lines.forEach(line => {
+          const [title, desc='', url='#', icon=''] = line.split('|').map(s=>s.trim());
+          if (!title) return;
+          const a = document.createElement('a');
+          a.className = 'doc-card';
+          a.href = url;
+          a.innerHTML = `${icon?`<span class="dc-icon">${escapeAttr(icon)}</span>`:''}
+            <div class="dc-title">${escapeAttr(title)}</div>
+            ${desc?`<div class="dc-desc">${escapeAttr(desc)}</div>`:''}`;
+          grid.appendChild(a);
+        });
+        pre.replaceWith(grid);
+      }
+
+      if (lang === 'embed'){
+        const target = codeEl.textContent.trim().split(/\s+/)[0];
+        const wrap = document.createElement('div');
+        wrap.className = 'doc-embed';
+        wrap.innerHTML = `<div class="de-head">📄 <a href="?${encodeURIComponent(target.replace(/\.md$/,''))}">${escapeAttr(target)}</a></div><div class="de-body loading">Loading ${escapeAttr(target)}…</div>`;
+        pre.replaceWith(wrap);
+        // In editor, try to fetch same-origin file; if fail, show placeholder
+        fetch(`${target}?t=${Date.now()}`)
+          .then(r => r.ok ? r.text() : Promise.reject(r.status))
+          .then(t => {
+            const body = parseFrontMatter(t).body;
+            const bodyEl = wrap.querySelector('.de-body');
+            bodyEl.classList.remove('loading');
+            bodyEl.innerHTML = parseMarkdown(body);
+            renderAuthorComponents(bodyEl);
+            typeset(bodyEl);
+          })
+          .catch(() => {
+            const b = wrap.querySelector('.de-body');
+            b.classList.remove('loading');
+            b.innerHTML = `<p style="color:var(--text-muted);font-style:italic">Embedded file preview: <code>${escapeAttr(target)}</code> (not fetched in editor — will load in published doc)</p>`;
+          });
+      }
+    });
+
+    root.querySelectorAll('blockquote').forEach(bq => {
+      const first = bq.firstElementChild;
+      if (!first || first.tagName !== 'P') return;
+      const m = first.textContent.match(/^\[!(\w+)\]\s*(.*)$/);
+      if (!m) return;
+      const type = m[1].toLowerCase();
+      const title = m[2] || '';
+      const allowed = ['info','tip','warning','danger','note'];
+      const kind = allowed.includes(type) ? type : 'note';
+      const icons = { info:'ℹ️', tip:'💡', warning:'⚠️', danger:'⛔', note:'📝' };
+      const box = document.createElement('div');
+      box.className = `callout ${kind}`;
+      if (title){
+        const t = document.createElement('div');
+        t.className = 'co-title';
+        t.textContent = `${icons[kind]} ${title}`;
+        box.appendChild(t);
+      }
+      const sibs = [];
+      let n = first.nextElementSibling;
+      while (n){ sibs.push(n); n = n.nextElementSibling; }
+      sibs.forEach(s => box.appendChild(s));
+      bq.replaceWith(box);
+    });
+
+    // 移除 details 折叠块的处理逻辑，避免问题
+
+    root.querySelectorAll('pre > code.language-steps').forEach(codeEl => {
+      const ol = document.createElement('ol');
+      ol.className = 'steps';
+      codeEl.textContent.split(/\r?\n/).map(s=>s.trim()).filter(Boolean).forEach(line => {
+        const li = document.createElement('li');
+        li.textContent = line;
+        ol.appendChild(li);
+      });
+      codeEl.parentElement.replaceWith(ol);
+    });
+
+    // badge / kbd
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach(tn => {
+      if (!tn.nodeValue || (!tn.nodeValue.includes('{{badge:') && !tn.nodeValue.includes('[['))) return;
+      const parent = tn.parentElement;
+      if (!parent || /^(CODE|PRE|SCRIPT|STYLE)$/.test(parent.tagName)) return;
+      const frag = document.createDocumentFragment();
+      let rest = tn.nodeValue;
+      rest = rest.replace(/\{\{badge:([^}]+)\}\}/g, (_,t)=>`\u0001BADGE:${t}\u0001`);
+      rest = rest.replace(/\[\[([^\]]+)\]\]/g, (_,t)=>`\u0001KBD:${t}\u0001`);
+      rest.split('\u0001').forEach(part => {
+        if (part.startsWith('BADGE:')){
+          const s = document.createElement('span'); s.className='badge'; s.textContent = part.slice(6); frag.appendChild(s);
+        } else if (part.startsWith('KBD:')){
+          const k = document.createElement('kbd'); k.textContent = part.slice(4); frag.appendChild(k);
+        } else if (part) {
+          frag.appendChild(document.createTextNode(part));
+        }
+      });
+      tn.parentNode.replaceChild(frag, tn);
+    });
+  }
+
+  /* =========================================================
+     Window dialog
+     ========================================================= */
+  let activeWindow = null;
+  function closeWindow(){
+    if (!activeWindow) return;
+    const { overlay, prevAccent } = activeWindow;
+    overlay.classList.remove('active');
+    setTimeout(()=>overlay.remove(), 250);
+    htmlEl.setAttribute('data-accent', prevAccent);
+    document.removeEventListener('keydown', escCloseWindow);
+    activeWindow = null;
+  }
+  function openWindow(type, contentHtml){
+    closeWindow();
+    const prevAccent = htmlEl.getAttribute('data-accent') || 'blue';
+    const tempAccent = type === 'w' ? (prevAccent === 'red' ? 'orange' : 'red') : prevAccent;
+    htmlEl.setAttribute('data-accent', tempAccent);
+    const overlay = document.createElement('div');
+    overlay.className = 'qd-window-overlay';
+    if (type === 'w') overlay.classList.add('qd-window-overlay-warning');
+    overlay.innerHTML = `
+      <div class="qd-window" role="dialog" aria-modal="true">
+        <button class="qd-window-close" aria-label="Close">×</button>
+        <div class="qd-window-content">${contentHtml}</div>
+      </div>`;
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeWindow(); });
+    overlay.querySelector('.qd-window-close').addEventListener('click', closeWindow);
+    document.addEventListener('keydown', escCloseWindow);
+    document.getElementById('windowMount').appendChild(overlay);
+    activeWindow = { overlay, prevAccent };
+    overlay.offsetWidth;
+    overlay.classList.add('active');
+    typeset(overlay);
+  }
+  function escCloseWindow(e){ if (e.key === 'Escape') closeWindow(); }
+  function bindWindowTriggers(root){
+    root.querySelectorAll('[data-window]').forEach(el => {
+      if (el.dataset.windowBound) return;
+      el.dataset.windowBound = '1';
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        const id = el.getAttribute('data-window');
+        const defEl = document.querySelector(`qd-window-def[data-window-id="${cssEscape(id)}"]`);
+        if (!defEl){ console.warn(`[QD] window id not found: ${id}`); return; }
+        openWindow(defEl.getAttribute('data-window-type') || 't', defEl.innerHTML);
+      });
+    });
+  }
+
+  /* =========================================================
+     TOC
+     ========================================================= */
+  function generateTOC(headings, tocListEl, tocTitleText){
+    document.getElementById('tocTitle').textContent = tocTitleText || 'Table of Contents';
+    if (!headings.length){
+      tocListEl.innerHTML = '<li class="toc-placeholder">No headings yet</li>';
+      return;
+    }
+    const items = [];
+    headings.forEach((h, i) => {
+      if (!h.id){
+        const text = h.textContent.trim().toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-');
+        const base = text || `heading-${i}`;
+        let id = base, c = 1;
+        while (document.getElementById(id)) { id = `${base}-${c}`; c++; }
+        h.id = id;
+      }
+      const lvl = parseInt(h.tagName.substring(1));
+      items.push(`<li class="toc-level-${lvl}"><a href="#${h.id}" data-target="${h.id}">${escapeAttr(h.textContent.trim())}</a></li>`);
+    });
+    tocListEl.innerHTML = items.join('');
+    tocListEl.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const t = document.getElementById(a.dataset.target);
+        if (t) t.scrollIntoView({ behavior:'smooth', block:'start' });
+      });
+    });
+  }
+
+  /* =========================================================
+     Main render
+     ========================================================= */
+  const contentEl = document.getElementById('preview');
+  const markdownInput = document.getElementById('markdownInput');
+  const charCount = document.getElementById('charCount');
+  const tocListEl = document.getElementById('tocList');
+  const sidebarTitleInput = document.getElementById('sidebarTitleInput');
+  const docTitleInput = document.getElementById('docTitleInput');
+
+  function render(){
+    const raw = markdownInput.value;
+    charCount.textContent = `${raw.length} chars · ${raw.split(/\n/).length} lines`;
+
+    // parse meta from current raw (front-matter)
+    const parsed = parseFrontMatter(raw);
+    // Use textarea inputs as source of truth for meta values
+    const sidebarTitle = sidebarTitleInput.value.trim() || parsed.meta['sidebar-title'] || 'Table of Contents';
+    const docTitle = docTitleInput.value.trim() || parsed.meta['doc-title'] || 'Untitled';
+
+    // strip front-matter for rendering
+    let body = parsed.body;
+
+    const { replaced, windows } = extractWindowBlocks(body);
+    document.querySelectorAll('qd-window-def').forEach(el => el.remove());
+    contentEl.innerHTML = parseMarkdown(replaced);
+
+    // hydrate window contents
+    windows.forEach(w => {
+      const defEl = contentEl.querySelector(`qd-window-def[data-window-id="${cssEscape(w.id)}"]`);
+      if (defEl) defEl.innerHTML = parseMarkdown(w.content);
+    });
+
+    renderAuthorComponents(contentEl);
+    bindWindowTriggers(contentEl);
+
+    // TOC
+    const headings = contentEl.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    generateTOC(headings, tocListEl, sidebarTitle);
+
+    // doc title
+    document.title = docTitle ? `${docTitle} — QD Editor` : 'QD Editor — Quick Documentation';
+
+    typeset(contentEl);
+  }
+
+  /* =========================================================
+     Debounced input + draft autosave
+     ========================================================= */
+  const DRAFT_KEY = 'qd-editor-draft';
+  let timer = null;
+  markdownInput.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      render();
+      try { localStorage.setItem(DRAFT_KEY, markdownInput.value); } catch(e){}
+    }, 180);
+  });
+  sidebarTitleInput.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(render, 120); });
+  docTitleInput.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(render, 120); });
+
+  /* =========================================================
+     Toolbar & shortcuts
+     ========================================================= */
+  function surround(before, after, placeholder){
+    const ta = markdownInput;
+    const start = ta.selectionStart, end = ta.selectionEnd;
+    const sel = ta.value.slice(start, end) || placeholder || '';
+    ta.value = ta.value.slice(0, start) + before + sel + after + ta.value.slice(end);
+    ta.focus();
+    ta.selectionStart = start + before.length;
+    ta.selectionEnd = start + before.length + sel.length;
+    ta.dispatchEvent(new Event('input'));
+  }
+  function linePrefix(prefix){
+    const ta = markdownInput;
+    const start = ta.selectionStart, end = ta.selectionEnd;
+    const lineStart = ta.value.lastIndexOf('\n', start - 1) + 1;
+    const seg = ta.value.slice(lineStart, end);
+    const lines = seg.split('\n').map(l => prefix + l).join('\n');
+    ta.value = ta.value.slice(0, lineStart) + lines + ta.value.slice(end);
+    ta.focus();
+    ta.selectionStart = lineStart; ta.selectionEnd = lineStart + lines.length;
+    ta.dispatchEvent(new Event('input'));
+  }
+  function insertBlock(text, cursorOffset){
+    const ta = markdownInput;
+    const start = ta.selectionStart;
+    const before = ta.value.slice(0, start);
+    const pad = before.endsWith('\n') || before === '' ? '' : '\n';
+    ta.value = before + pad + text + ta.value.slice(start);
+    const pos = start + pad.length + (cursorOffset != null ? cursorOffset : text.length);
+    ta.focus();
+    ta.selectionStart = ta.selectionEnd = pos;
+    ta.dispatchEvent(new Event('input'));
+  }
+
+  const commands = {
+    bold: () => surround('**','**','bold text'),
+    italic: () => surround('*','*','italic text'),
+    strike: () => surround('~~','~~','strikethrough'),
+    inlineCode: () => surround('`','`','code'),
+    h1: () => linePrefix('# '),
+    h2: () => linePrefix('## '),
+    h3: () => linePrefix('### '),
+    ul: () => linePrefix('- '),
+    ol: () => linePrefix('1. '),
+    task: () => linePrefix('- [ ] '),
+    quote: () => linePrefix('> '),
+    link: () => surround('[', '](https://example.com)', 'link text'),
+    image: () => surround('![', '](https://example.com/image.png)', 'alt text'),
+    table: () => insertBlock('\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Cell     | Cell     | Cell     |\n', 2),
+    code: () => insertBlock('\n' + FENCE + 'js\n// code here\n' + FENCE + '\n', FENCE.length + 4),
+    hr: () => insertBlock('\n---\n'),
+    math: () => insertBlock('\n$$\nE = mc^2\n$$\n', 4),
+    cards: () => insertBlock('\n' + FENCE + 'cards\nTitle 1 | Description | ?page1 | 🧊\nTitle 2 | Description | ?page2 | ⚡\n' + FENCE + '\n', FENCE.length + 7),
+    callout: () => insertBlock('\n> [!NOTE]\n> Your note here\n'),
+    // details 功能已移除
+    steps: () => insertBlock('\n' + FENCE + 'steps\nStep one\nStep two\nStep three\n' + FENCE + '\n', FENCE.length + 7),
+    window: () => insertBlock('\n' + FENCE + 'windowt\n# Title\nContent of the dialog\n' + FENCE + '\n\n<button data-window="1">Open dialog</button>\n', FENCE.length + 8)
+  };
+
+  document.getElementById('toolbar').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-cmd]');
+    if (!btn) return;
+    const cmd = btn.dataset.cmd;
+    if (commands[cmd]) commands[cmd]();
+  });
+
+  // Tab indentation inside textarea
+  markdownInput.addEventListener('keydown', e => {
+    if (e.key === 'Tab'){
+      e.preventDefault();
+      surround('  ', '');
+    }
+    if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey){
+      const k = e.key.toLowerCase();
+      if (k === 'b'){ e.preventDefault(); commands.bold(); }
+      else if (k === 'i'){ e.preventDefault(); commands.italic(); }
+      else if (k === 'k'){ e.preventDefault(); commands.link(); }
+      else if (k === 's'){ e.preventDefault(); exportDoc(); }
+    }
+  });
+
+  /* =========================================================
+     Export (front-matter + body)
+     ========================================================= */
+  function exportDoc(){
+    const raw = markdownInput.value;
+    const parsed = parseFrontMatter(raw);
+    const meta = { ...parsed.meta };
+    if (sidebarTitleInput.value.trim()) meta['sidebar-title'] = sidebarTitleInput.value.trim();
+    if (docTitleInput.value.trim()) meta['doc-title'] = docTitleInput.value.trim();
+    const accent = htmlEl.getAttribute('data-accent');
+    if (accent && accent !== 'blue') meta['theme'] = accent;
+
+    const output = buildFrontMatter(meta, parsed.body);
+    const blob = new Blob([output], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const safeName = (docTitleInput.value.trim() || 'document').replace(/[^a-z0-9\-_]+/gi,'-');
+    a.href = url;
+    a.download = `${safeName}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  document.getElementById('exportBtn').addEventListener('click', exportDoc);
+/* =========================================================
+   Import (.md file)
+   ========================================================= */
+const fileInput = document.getElementById('fileInput');
+
+document.getElementById('importBtn').addEventListener('click', () => {
+  fileInput.value = '';      // 允许重复选同一个文件
+  fileInput.click();
+});
+
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files && fileInput.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const text = String(reader.result || '');
+    markdownInput.value = text;
+
+    // 同步 front-matter 里的标题到输入框
+    const p = parseFrontMatter(text);
+    sidebarTitleInput.value = p.meta['sidebar-title'] || '';
+    docTitleInput.value = p.meta['doc-title'] || '';
+
+    // 若文件里带主题，应用到编辑器
+    if (p.meta['theme'] && ACCENTS.includes(p.meta['theme'])) {
+      applyAccent(p.meta['theme']);
+      localStorage.setItem(ACCENT_KEY, p.meta['theme']);
+    }
+
+    render();
+    try { localStorage.setItem(DRAFT_KEY, markdownInput.value); } catch(e){}
+  };
+  reader.readAsText(file, 'utf-8');
+});
+
+  /* =========================================================
+     New document
+     ========================================================= */
+  const defaultContent = [
+    '# Getting Started',
+    '',
+    'Welcome to the **QD Editor**. This editor renders your Markdown with the exact same components as the Quick Documentation renderer, so what you see is what you publish.',
+    'Both QuickDoc (QD) and QuickDoc Editor (QDE) are created with the assistance of AI.',
+    '',
+    '## Cards',
+    '',
+    FENCE + 'cards',
+    'Cursed Gold | Mod introduction | https://emocez.github.io/Quick-Documentation/?cursedgold | 🧊',
+    'Pi | About Pi | https://emocez.github.io/Quick-Documentation/?pi | 🧊🧊🧊',
+    FENCE,
+    '',
+    '## Callouts',
+    '',
+    '> [!TIP]',
+    '> Callouts support info, tip, warning, danger and note.',
+    '',
+    '> [!WARNING]',
+    '> Be careful with destructive actions.',
+    '',
+    '## Steps',
+    '',
+    FENCE + 'steps',
+    'Install dependencies',
+    'Configure your API key',
+    'Run the example script',
+    FENCE,
+    '',
+    '## Inline elements',
+    '',
+    'Version {{badge:1.0.0}} — press [[Ctrl+S]] to save.',
+    '',
+    '## Window dialogs',
+    '',
+    FENCE + 'windowt',
+    '# Hello',
+    'This is a standard dialog.',
+    FENCE,
+    '',
+    FENCE + 'windoww',
+    '# Warning',
+    'This is a warning dialog.',
+    FENCE,
+    '',
+    '<button data-window="1">Open standard dialog</button>',
+    '<button data-window="2">Open warning dialog</button>',
+    ''
+  ].join('\n');
+
+  document.getElementById('newBtn').addEventListener('click', () => {
+    if (!confirm('Start a new document? Unsaved changes will be lost.')) return;
+    markdownInput.value = defaultContent;
+    sidebarTitleInput.value = '';
+    docTitleInput.value = 'Getting Started';
+    localStorage.removeItem(DRAFT_KEY);
+    render();
+  });
+
+  /* =========================================================
+     Init
+     ========================================================= */
+  (function init(){
+    let draft = null;
+    try { draft = localStorage.getItem(DRAFT_KEY); } catch(e){}
+    markdownInput.value = draft || defaultContent;
+
+    // init doc title input from draft's front-matter if present
+    const p = parseFrontMatter(markdownInput.value);
+    if (p.meta['sidebar-title']) sidebarTitleInput.value = p.meta['sidebar-title'];
+    if (p.meta['doc-title']) docTitleInput.value = p.meta['doc-title'];
+
+    render();
+  })();
+
+})();
+</script>
+</body>
+</html>
