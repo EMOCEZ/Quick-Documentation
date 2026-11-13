@@ -12,6 +12,9 @@
 
 [円周率 (pi)](https://emocez.github.io/Quick-Documentation/?pi)
 
+# エディタ
+[こちら](https://emocez.github.io/Quick-Documentation/?qde)をクリックしてエディタを開きます（英語のみ）
+
 # 新しいドキュメントを投稿するには？
 
 1. ページ上部の「Issues」タブをクリックし、「New Issue」（新しい課題）を選択します。
