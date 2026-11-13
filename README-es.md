@@ -12,6 +12,9 @@ Este proyecto utiliza inteligencia artificial (IA) para facilitar su creación.
 
 [Pi](https://emocez.github.io/Quick-Documentation/?pi)
 
+# Editor
+Haga clic [aquí](https://emocez.github.io/Quick-Documentation/?qde) para abrir el editor (solo en inglés).
+
 # ¿Cómo reportar un nuevo problema?
 
 1. Haz clic en la pestaña "Problemas" en la parte superior de la página y luego en "Nuevo problema".
