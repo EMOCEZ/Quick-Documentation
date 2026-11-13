@@ -13,7 +13,7 @@
 [圆周率 (pi)](https://emocez.github.io/Quick-Documentation/?pi)
 
 # 编辑器
-点击[这里](https://emocez.github.io/Quick-Documentation/?qde)打开编辑器（仅英文）
+点击[这里](https://emocez.github.io/Quick-Documentation/qde)打开编辑器（仅英文）
 
 # 如何提交新文档？
 
