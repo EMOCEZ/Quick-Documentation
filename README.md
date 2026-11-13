@@ -13,7 +13,7 @@ This project leverages artificial intelligence (AI) to assist in the creation pr
 [Pi (π)](https://emocez.github.io/Quick-Documentation/?pi)
 
 # Editor
-Click [here](https://emocez.github.io/Quick-Documentation/?qde) to open the editor (English only)
+Click [here](https://emocez.github.io/Quick-Documentation/qde) to open the editor (English only)
 
 # How to Submit New Documentation?
 
