@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>反应力挑战 · 九重操作</title>
+    <style>
+        :root {
+            --shadow: rgba(0, 0, 0, 0.04);
+            --shadow-sidebar: rgba(0, 0, 0, 0.02);
+            --error: #b91c1c;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --surface-2: #f1f5f9;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --text-faint: #94a3b8;
+            --toc-hover-bg: #f1f5f9;
+            --code-bg: rgba(0, 0, 0, 0.05);
+            --pre-bg: #1e293b;
+            --pre-text: #f8fafc;
+            --blockquote-bg: rgba(0, 0, 0, 0.02);
+            --blockquote-text: #475569;
+            --glass-blur: 14px;
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.55);
+        }
+        html[data-theme="dark"] {
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-sidebar: rgba(0, 0, 0, 0.2);
+            --error: #f87171;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-faint: #64748b;
+            --toc-hover-bg: rgba(255, 255, 255, 0.05);
+            --code-bg: rgba(255, 255, 255, 0.1);
+            --pre-bg: #0b1220;
+            --pre-text: #e2e8f0;
+            --blockquote-bg: rgba(255, 255, 255, 0.03);
+            --blockquote-text: #cbd5e1;
+            --glass-bg: rgba(17, 26, 46, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
+        html[data-accent="blue"] { --bg:#f8fafc; --surface:#ffffff; --surface-2:#f1f5f9; --border:#e2e8f0; --border-strong:#cbd5e1; --accent:#2563eb; --accent-hover:#1d4ed8; --accent-soft:#eff6ff; --accent-border:#3b82f6; }
+        html[data-theme="dark"][data-accent="blue"] { --bg:#0b1120; --surface:#111a2e; --surface-2:#1b263e; --border:#2a3b5c; --accent:#60a5fa; --accent-hover:#93c5fd; --accent-soft:#1e3a5f; --accent-border:#60a5fa; }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { color-scheme: light dark; }
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            display: flex;
+            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background-color: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+            overflow-y: auto;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            box-shadow: 2px 0 8px var(--shadow-sidebar);
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .sidebar-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent);
+            margin: 0;
+            word-break: break-word;
+        }
+        .theme-toggle {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+            flex-shrink: 0;
+        }
+        .theme-toggle:hover { background: var(--toc-hover-bg); color: var(--text); }
+
+        .sidebar-home {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .sidebar-home .home-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.6rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 6px;
+            transition: background 0.15s, color 0.15s;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            justify-content: center;
+        }
+
+        .toc-list { list-style: none; padding-left: 0; margin: 0; flex: 1; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a {
+            display: block;
+            padding: 0.35rem 0.5rem;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+            word-break: break-word;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+        .toc-list a:hover { background-color: var(--toc-hover-bg); }
+        .toc-list a.active { background-color: var(--accent-soft); color: var(--accent); border-left-color: var(--accent-border); font-weight: 500; }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            overflow-x: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        #game-container {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 1px solid var(--border);
+            min-height: 200px;
+            transition: background-color 0.25s ease, border-color 0.25s ease;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            border-bottom: 2px solid var(--accent-border);
+            padding-bottom: 0.3rem;
+            margin-bottom: 0.6em;
+            color: var(--text);
+        }
+        .game-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.25rem 0;
+        }
+        .stats {
+            display: flex;
+            gap: 1.5rem;
+            background: var(--surface-2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid var(--border);
+        }
+        .stat-item { display: flex; align-items: baseline; gap: 0.4rem; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-value { font-weight: 700; font-size: 1.4rem; color: var(--accent); font-family: 'SF Mono', monospace; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.05rem 0.45rem;
+            border-radius: 999px;
+            font-size: 0.78em;
+            font-weight: 600;
+            border: 1px solid var(--accent-border);
+            background: var(--accent-soft);
+            color: var(--accent);
+            vertical-align: 1px;
+        }
+
+        button {
+            background: var(--surface-2);
+            color: var(--text);
+            border: 1px solid var(--border-strong);
+            border-radius: 6px;
+            padding: 0.35rem 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        button:hover {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-color: var(--accent-border);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px var(--shadow);
+        }
+        button:active {
+            transform: translateY(1px) scale(0.97);
+            box-shadow: none;
+        }
+        button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        .target-area {
+            position: relative;
+            width: 100%;
+            min-height: 420px;
+            background: var(--surface-2);
+            border-radius: 12px;
+            border: 2px dashed var(--border-strong);
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: crosshair;
+            user-select: none;
+            touch-action: none;
+        }
+        .target-area.dragging { cursor: grabbing; }
+
+        .target {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid var(--surface);
+            box-shadow: 0 0 0 2px var(--border-strong), 0 8px 20px var(--shadow);
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            user-select: none;
+            animation: pop 0.2s ease-out;
+            z-index: 2;
+        }
+        .target:hover { transform: scale(1.1); }
+        .target .op-label {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6rem;
+            background: var(--surface);
+            padding: 1px 6px;
+            border-radius: 10px;
+            white-space: nowrap;
+            font-weight: 600;
+            border: 1px solid var(--border-strong);
+            color: var(--text);
+        }
+
+        .target.normal {
+            background: radial-gradient(circle at 30% 30%, var(--accent), var(--accent-hover));
+            box-shadow: 0 0 0 2px var(--accent-border), 0 8px 20px var(--shadow);
+        }
+        .target.normal .op-label { color: var(--accent); border-color: var(--accent-border); }
+
+        .target.right-click {
+            background: radial-gradient(circle at 30% 30%, #f59e0b, #d97706);
+            box-shadow: 0 0 0 2px #fbbf24, 0 8px 20px var(--shadow);
+            cursor: context-menu;
+        }
+        .target.right-click .op-label { color: #b45309; border-color: #fbbf24; }
+
+        .target.drag-target {
+            background: radial-gradient(circle at 30% 30%, #10b981, #059669);
+            box-shadow: 0 0 0 2px #34d399, 0 8px 20px var(--shadow);
+            cursor: grab;
+        }
+        .target.drag-target .op-label { color: #047857; border-color: #34d399; }
+
+        .target.double-click {
+            background: radial-gradient(circle at 30% 30%, #8b5cf6, #6d28d9);
+            box-shadow: 0 0 0 2px #a78bfa, 0 8px 20px var(--shadow);
+        }
+        .target.double-click .op-label { color: #6d28d9; border-color: #a78bfa; }
+
+        .target.hold-charge {
+            background: radial-gradient(circle at 30% 30%, #f97316, #ea580c);
+            box-shadow: 0 0 0 2px #fdba74, 0 8px 20px var(--shadow);
+            cursor: pointer;
+        }
+        .target.hold-charge .op-label { color: #c2410c; border-color: #fdba74; }
+        .target.hold-charge .charge-ring {
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.85);
+            opacity: 0;
+            transition: opacity 0.1s;
+            pointer-events: none;
+        }
+        .target.hold-charge.charging .charge-ring { opacity: 1; }
+        .target.hold-charge.charging {
+            animation: chargePulse 0.5s infinite alternate;
+        }
+        @keyframes chargePulse {
+            from { box-shadow: 0 0 0 2px #fdba74, 0 8px 20px var(--shadow); }
+            to { box-shadow: 0 0 0 4px #fb923c, 0 8px 24px rgba(249,115,22,0.4); }
+        }
+
+        .target.circle-gesture {
+            background: radial-gradient(circle at 30% 30%, #06b6d4, #0891b2);
+            box-shadow: 0 0 0 2px #22d3ee, 0 8px 20px var(--shadow);
+            cursor: crosshair;
+        }
+        .target.circle-gesture .op-label { color: #0e7490; border-color: #22d3ee; }
+        .target.circle-gesture.drawing {
+            animation: circlePulse 0.8s infinite alternate;
+        }
+        @keyframes circlePulse {
+            from { box-shadow: 0 0 0 2px #22d3ee, 0 8px 20px var(--shadow); }
+            to { box-shadow: 0 0 0 4px #67e8f9, 0 8px 24px rgba(6,182,212,0.5); }
+        }
+
+        .target.rapid-tap {
+            background: radial-gradient(circle at 30% 30%, #ec4899, #be185d);
+            box-shadow: 0 0 0 2px #f472b6, 0 8px 20px var(--shadow);
+            cursor: pointer;
+        }
+        .target.rapid-tap .op-label { color: #be185d; border-color: #f472b6; }
+        .target.rapid-tap .tap-progress {
+            position: absolute;
+            inset: -10px;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.9);
+            opacity: 0;
+            transition: opacity 0.1s;
+            pointer-events: none;
+        }
+        .target.rapid-tap.tapping .tap-progress { opacity: 1; }
+        .target.rapid-tap .tap-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--surface);
+            color: #be185d;
+            border: 2px solid #f472b6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .target.swipe-h {
+            background: radial-gradient(circle at 30% 30%, #eab308, #ca8a04);
+            box-shadow: 0 0 0 2px #facc15, 0 8px 20px var(--shadow);
+            cursor: ew-resize;
+        }
+        .target.swipe-h .op-label { color: #854d0e; border-color: #facc15; }
+
+        .target.swipe-v {
+            background: radial-gradient(circle at 30% 30%, #4f46e5, #4338ca);
+            box-shadow: 0 0 0 2px #818cf8, 0 8px 20px var(--shadow);
+            cursor: ns-resize;
+        }
+        .target.swipe-v .op-label { color: #3730a3; border-color: #818cf8; }
+
+        .swipe-arrow {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .track-line {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+            border-radius: 4px;
+        }
+        .track-line.horizontal {
+            height: 6px;
+            background: repeating-linear-gradient(90deg, #eab308 0 10px, transparent 10px 18px);
+            box-shadow: 0 0 10px rgba(234,179,8,0.7);
+        }
+        .track-line.vertical {
+            width: 6px;
+            background: repeating-linear-gradient(180deg, #4f46e5 0 10px, transparent 10px 18px);
+            box-shadow: 0 0 10px rgba(79,70,229,0.7);
+        }
+        .track-end {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+            animation: pulse 1.5s infinite;
+        }
+        .track-end.horizontal {
+            width: 18px;
+            height: 18px;
+            background: #facc15;
+            border: 3px solid var(--surface);
+            box-shadow: 0 0 0 2px #eab308;
+        }
+        .track-end.vertical {
+            width: 22px;
+            height: 22px;
+            background: #818cf8;
+            border: 3px solid var(--surface);
+            box-shadow: 0 0 0 2px #4f46e5, 0 0 12px rgba(79,70,229,0.5);
+        }
+        .track-end.target-end.horizontal {
+            background: #ca8a04;
+            width: 24px;
+            height: 24px;
+            animation: targetPulse 1s infinite;
+            box-shadow: 0 0 0 3px #eab308, 0 0 20px rgba(234,179,8,0.6);
+        }
+        .track-end.target-end.vertical {
+            width: 28px;
+            height: 28px;
+            background: #4338ca;
+            animation: targetPulse 1s infinite;
+            box-shadow: 0 0 0 3px #4f46e5, 0 0 24px rgba(79,70,229,0.8);
+        }
+        .track-end .end-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.65rem;
+            color: white;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        @keyframes targetPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+        }
+
+        .drop-zone {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px dashed #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #059669;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-align: center;
+            pointer-events: none;
+            animation: pulse 1.5s infinite;
+            z-index: 1;
+        }
+        html[data-theme="dark"] .drop-zone {
+            color: #6ee7b7;
+            border-color: #6ee7b7;
+            background: rgba(110, 231, 183, 0.1);
+        }
+
+        /* ===== 画圈轨迹绘制 ===== */
+        .draw-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .draw-canvas.visible { opacity: 1; }
+
+        /* 画圈起点提示 */
+        .circle-start-hint {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px dashed #22d3ee;
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0.6;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.08); opacity: 1; }
+        }
+        @keyframes pop {
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .message-box {
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+        .message-box strong { color: var(--text); }
+        .message-box.error { border-left-color: var(--error); }
+        .message-box.success { border-left-color: #16a34a; }
+
+        .flex-row { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 0.8rem;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .legend-item { display: flex; align-items: center; gap: 0.3rem; }
+        .legend-dot {
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 2px solid var(--surface);
+            box-shadow: 0 0 0 1px var(--border-strong);
+            flex-shrink: 0;
+        }
+        .legend-dot.blue { background: radial-gradient(circle at 30% 30%, var(--accent), var(--accent-hover)); }
+        .legend-dot.gold { background: radial-gradient(circle at 30% 30%, #f59e0b, #d97706); }
+        .legend-dot.green { background: radial-gradient(circle at 30% 30%, #10b981, #059669); }
+        .legend-dot.purple { background: radial-gradient(circle at 30% 30%, #8b5cf6, #6d28d9); }
+        .legend-dot.orange { background: radial-gradient(circle at 30% 30%, #f97316, #ea580c); }
+        .legend-dot.cyan { background: radial-gradient(circle at 30% 30%, #06b6d4, #0891b2); }
+        .legend-dot.pink { background: radial-gradient(circle at 30% 30%, #ec4899, #be185d); }
+        .legend-dot.yellow { background: radial-gradient(circle at 30% 30%, #eab308, #ca8a04); }
+        .legend-dot.indigo { background: radial-gradient(circle at 30% 30%, #4f46e5, #4338ca); }
+
+        @media (max-width: 700px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; max-height: 300px; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 1rem; }
+            .main-content { padding: 1rem; justify-content: flex-start; }
+            #game-container { padding: 1.5rem; }
+            .target-area { min-height: 360px; }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3 id="toc-title">🎮 游戏控制</h3>
+            <button class="theme-toggle" id="theme-toggle" title="切换主题" aria-label="切换主题">🌙</button>
+        </div>
+        <div class="sidebar-home">
+            <div class="home-btn" style="cursor:default; background: var(--accent-soft); color: var(--accent); border-color: var(--accent-border);">🎯 九重操作</div>
+        </div>
+        <ul class="toc-list" id="toc-list">
+            <li><a class="active" data-action="newGame" style="cursor:pointer;">🔄 新游戏</a></li>
+            <li><a data-action="difficulty" style="cursor:pointer;">⚙️ 难度：<span id="difficulty-label">中等</span></a></li>
+            <li><a data-action="toggleSound" style="cursor:pointer;">🔊 声音：<span id="sound-label">开</span></a></li>
+            <li style="margin-top:1rem; border-top:1px solid var(--border); padding-top:0.5rem; color:var(--text-muted); font-size:0.75rem; list-style:none; line-height:1.9;">
+                🖱️ 左键点蓝靶<br>
+                🖱️ 右键点金靶<br>
+                🖐️ 拖绿靶到光圈<br>
+                👆👆 点紫靶两次<br>
+                ⏳ 按住橙靶不放<br>
+                🔄 在青靶上画圈<br>
+                ⚡ 快速点粉靶3次<br>
+                ↔️ 沿黄线拖到端点<br>
+                ↕️ 沿靛线拖到端点
+            </li>
+        </ul>
+    </aside>
+
+    <div class="main-content">
+        <main id="game-container">
+            <h1>🎯 九重操作挑战</h1>
+            <div class="game-info">
+                <div class="stats">
+                    <div class="stat-item"><span class="stat-label">得分</span><span class="stat-value" id="score">0</span></div>
+                    <div class="stat-item"><span class="stat-label">生命</span><span class="stat-value" id="lives">3</span></div>
+                    <div class="stat-item"><span class="stat-label">连击</span><span class="stat-value" id="combo">0</span></div>
+                </div>
+                <div class="flex-row">
+                    <span class="badge" id="difficulty-badge">中等</span>
+                    <button id="btn-new">新游戏</button>
+                </div>
+            </div>
+
+            <div class="target-area" id="target-area">
+                <div style="color: var(--text-faint); user-select: none; font-size: 1.2rem;" id="placeholder">点击“新游戏”开始</div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item"><span class="legend-dot blue"></span> 左键 (+1)</div>
+                <div class="legend-item"><span class="legend-dot gold"></span> 右键 (+2)</div>
+                <div class="legend-item"><span class="legend-dot green"></span> 拖到光圈 (+3)</div>
+                <div class="legend-item"><span class="legend-dot purple"></span> 点两次 (+3)</div>
+                <div class="legend-item"><span class="legend-dot orange"></span> 按住蓄力 (+4)</div>
+                <div class="legend-item"><span class="legend-dot cyan"></span> 画圈 (+5)</div>
+                <div class="legend-item"><span class="legend-dot pink"></span> 点3次 (+4)</div>
+                <div class="legend-item"><span class="legend-dot yellow"></span> 沿横线拖 (+4)</div>
+                <div class="legend-item"><span class="legend-dot indigo"></span> 沿竖线拖 (+4)</div>
+            </div>
+
+            <div class="message-box" id="message">
+                <strong>准备开始？</strong> 点击“新游戏”开始。九种颜色靶心对应九种操作。按住类操作会暂停超时计时器，但松手就失败！
+            </div>
+        </main>
+    </div>
+
+    <script>
+        (function() {
+            const THEME_KEY = 'qd-game-theme';
+            const htmlEl = document.documentElement;
+            const themeToggleBtn = document.getElementById('theme-toggle');
+
+            function getPreferredTheme() {
+                const stored = localStorage.getItem(THEME_KEY);
+                if (stored === 'light' || stored === 'dark') return stored;
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            function applyTheme(theme) {
+                htmlEl.setAttribute('data-theme', theme);
+                if (theme === 'dark') {
+                    themeToggleBtn.innerHTML = '☀️';
+                    themeToggleBtn.title = '切换到亮色模式';
+                } else {
+                    themeToggleBtn.innerHTML = '🌙';
+                    themeToggleBtn.title = '切换到暗色模式';
+                }
+                localStorage.setItem(THEME_KEY, theme);
+            }
+            let currentTheme = getPreferredTheme();
+            applyTheme(currentTheme);
+            themeToggleBtn.addEventListener('click', () => {
+                currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(currentTheme);
+            });
+
+            htmlEl.setAttribute('data-accent', 'blue');
+
+            const targetArea = document.getElementById('target-area');
+            const scoreEl = document.getElementById('score');
+            const livesEl = document.getElementById('lives');
+            const comboEl = document.getElementById('combo');
+            const messageEl = document.getElementById('message');
+            const difficultyLabel = document.getElementById('difficulty-label');
+            const difficultyBadge = document.getElementById('difficulty-badge');
+            const soundLabel = document.getElementById('sound-label');
+
+            const DIFFICULTIES = {
+                easy:   { name: '简单', timeout: 3200, spawnInterval: 1400, targetSize: 80, lifeDeduct: 1 },
+                medium: { name: '中等', timeout: 2400, spawnInterval: 1000, targetSize: 72, lifeDeduct: 1 },
+                hard:   { name: '困难', timeout: 1800, spawnInterval: 700,  targetSize: 64, lifeDeduct: 1 },
+                insane: { name: '疯狂', timeout: 1300, spawnInterval: 500,  targetSize: 56, lifeDeduct: 2 }
+            };
+            let currentDifficulty = 'medium';
+            let difficulty = DIFFICULTIES[currentDifficulty];
+
+            let score = 0;
+            let lives = 3;
+            let combo = 0;
+            let maxCombo = 0;
+            let gameActive = false;
+            let soundEnabled = true;
+            let currentTarget = null;
+            let currentDropZone = null;
+            let currentTrackEls = [];
+            let currentTargetType = null;
+            let targetTimeoutId = null;
+            let spawnTimeoutId = null;
+
+            let targetTimeoutRemaining = 0;
+            let targetTimeoutStart = 0;
+            let targetTimeoutPaused = false;
+            let currentTimeoutDuration = 0;
+
+            let isDragging = false;
+            let dragOffsetX = 0;
+            let dragOffsetY = 0;
+            let dragTargetEl = null;
+
+            let holdTimer = null;
+            let holdStartTime = 0;
+            let holdProgress = 0;
+            let holdActive = false;
+            const HOLD_DURATION = 800;
+            let holdMouseDown = false;
+
+            // ===== 画圈轨迹（Canvas）=====
+            let drawCanvas = null;
+            let drawCtx = null;
+            let circlePoints = [];
+            let circleTracking = false;
+            let circleMoved = false;
+            let circleStartPoint = null;
+            let circleStartHintEl = null;
+            let circleTargetEl = null;
+
+            let doubleTapCount = 0;
+            let rapidTapCount = 0;
+            const RAPID_TAP_NEEDED = 3;
+
+            let swipeTracking = false;
+            let swipeEl = null;
+            let swipeTargetType = null;
+            let swipeTrack = null;
+
+            let audioCtx = null;
+            function initAudio() {
+                if (!audioCtx) {
+                    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { }
+                }
+                if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            }
+            function playBeep(type) {
+                if (!soundEnabled) return;
+                initAudio();
+                if (!audioCtx) return;
+                try {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    const now = audioCtx.currentTime;
+                    const freqMap = {
+                        hit: 880, miss: 220, timeout: 330, dragStart: 660, dragDrop: 1320,
+                        charge: 440, circle: 1760, tap: 550, holdFail: 180, swipe: 990
+                    };
+                    const f = freqMap[type] || 660;
+                    osc.frequency.value = f;
+                    osc.type = type === 'miss' || type === 'holdFail' ? 'sawtooth' : (type === 'charge' ? 'square' : 'sine');
+                    gain.gain.value = 0.06 + (type === 'hit' || type === 'dragDrop' || type === 'circle' ? 0.04 : 0);
+                    osc.start();
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + (type === 'circle' ? 0.3 : 0.15));
+                    osc.stop(now + 0.3);
+                } catch (e) { }
+            }
+
+            function updateStats() {
+                scoreEl.textContent = score;
+                livesEl.textContent = lives;
+                comboEl.textContent = combo;
+            }
+            function showMessage(text, isError = false, isSuccess = false) {
+                messageEl.innerHTML = text;
+                messageEl.classList.toggle('error', isError);
+                messageEl.classList.toggle('success', isSuccess);
+            }
+
+            // ===== 超时计时器 =====
+            function startTargetTimeout() {
+                stopTargetTimeout();
+                currentTimeoutDuration = difficulty.timeout;
+                targetTimeoutRemaining = currentTimeoutDuration;
+                targetTimeoutStart = performance.now();
+                targetTimeoutPaused = false;
+                targetTimeoutId = setTimeout(onTargetTimeout, currentTimeoutDuration);
+            }
+            function pauseTargetTimeout() {
+                if (targetTimeoutPaused || !targetTimeoutId) return;
+                clearTimeout(targetTimeoutId);
+                targetTimeoutId = null;
+                const elapsed = performance.now() - targetTimeoutStart;
+                targetTimeoutRemaining = Math.max(0, targetTimeoutRemaining - elapsed);
+                targetTimeoutPaused = true;
+            }
+            function resumeTargetTimeout() {
+                if (!targetTimeoutPaused) return;
+                targetTimeoutPaused = false;
+                targetTimeoutStart = performance.now();
+                if (targetTimeoutRemaining > 0) {
+                    targetTimeoutId = setTimeout(onTargetTimeout, targetTimeoutRemaining);
+                } else {
+                    onTargetTimeout();
+                }
+            }
+            function stopTargetTimeout() {
+                if (targetTimeoutId) { clearTimeout(targetTimeoutId); targetTimeoutId = null; }
+                targetTimeoutPaused = false;
+            }
+            function onTargetTimeout() {
+                if (!gameActive) return;
+                cleanupTarget();
+                loseLife('靶心消失了！');
+                if (gameActive) spawnTimeoutId = setTimeout(spawnTarget, 250);
+            }
+
+            // ===== 画圈 Canvas 相关 =====
+            function ensureDrawCanvas() {
+                if (drawCanvas && drawCanvas.parentElement === targetArea) return;
+                if (drawCanvas) drawCanvas.remove();
+                drawCanvas = document.createElement('canvas');
+                drawCanvas.className = 'draw-canvas';
+                const rect = targetArea.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                drawCanvas.width = rect.width * dpr;
+                drawCanvas.height = rect.height * dpr;
+                drawCanvas.style.width = rect.width + 'px';
+                drawCanvas.style.height = rect.height + 'px';
+                drawCtx = drawCanvas.getContext('2d');
+                drawCtx.scale(dpr, dpr);
+                drawCtx.lineCap = 'round';
+                drawCtx.lineJoin = 'round';
+                targetArea.appendChild(drawCanvas);
+            }
+            function clearDrawCanvas() {
+                if (!drawCtx || !drawCanvas) return;
+                const rect = targetArea.getBoundingClientRect();
+                drawCtx.clearRect(0, 0, rect.width, rect.height);
+                drawCanvas.classList.remove('visible');
+            }
+            function drawTrail() {
+                if (!drawCtx || !drawCanvas || circlePoints.length < 2) return;
+                drawCanvas.classList.add('visible');
+                const rect = targetArea.getBoundingClientRect();
+                drawCtx.clearRect(0, 0, rect.width, rect.height);
+                // 绘制轨迹
+                drawCtx.beginPath();
+                drawCtx.moveTo(circlePoints[0].x, circlePoints[0].y);
+                for (let i = 1; i < circlePoints.length; i++) {
+                    drawCtx.lineTo(circlePoints[i].x, circlePoints[i].y);
+                }
+                // 发光效果
+                drawCtx.strokeStyle = 'rgba(34, 211, 238, 0.35)';
+                drawCtx.lineWidth = 10;
+                drawCtx.stroke();
+                // 主线
+                drawCtx.strokeStyle = 'rgba(34, 211, 238, 0.95)';
+                drawCtx.lineWidth = 3.5;
+                drawCtx.stroke();
+                // 起点标记
+                if (circlePoints.length > 0) {
+                    const start = circlePoints[0];
+                    drawCtx.beginPath();
+                    drawCtx.arc(start.x, start.y, 7, 0, Math.PI * 2);
+                    drawCtx.fillStyle = 'rgba(34, 211, 238, 0.9)';
+                    drawCtx.fill();
+                    drawCtx.strokeStyle = '#fff';
+                    drawCtx.lineWidth = 2;
+                    drawCtx.stroke();
+                }
+                // 当前笔尖
+                if (circlePoints.length > 0) {
+                    const last = circlePoints[circlePoints.length - 1];
+                    drawCtx.beginPath();
+                    drawCtx.arc(last.x, last.y, 5, 0, Math.PI * 2);
+                    drawCtx.fillStyle = '#fff';
+                    drawCtx.fill();
+                }
+            }
+
+            function removeTrackEls() {
+                currentTrackEls.forEach(el => el.remove());
+                currentTrackEls = [];
+            }
+
+            function cleanupTarget() {
+                if (currentTarget) {
+                    detachTargetEvents(currentTarget);
+                    currentTarget.remove();
+                    currentTarget = null;
+                }
+                if (currentDropZone) { currentDropZone.remove(); currentDropZone = null; }
+                removeTrackEls();
+                if (holdTimer) { clearInterval(holdTimer); holdTimer = null; }
+                clearDrawCanvas();
+                if (circleStartHintEl) { circleStartHintEl.remove(); circleStartHintEl = null; }
+                holdActive = false;
+                holdMouseDown = false;
+                swipeTracking = false;
+                swipeEl = null;
+                swipeTrack = null;
+                circleTracking = false;
+                circlePoints = [];
+                circleMoved = false;
+                circleStartPoint = null;
+                circleTargetEl = null;
+                document.removeEventListener('mouseup', onHoldGlobalEnd);
+                document.removeEventListener('mouseleave', onHoldGlobalEnd);
+                document.removeEventListener('mousemove', onSwipeMove);
+                document.removeEventListener('mouseup', onSwipeEnd);
+                document.removeEventListener('mousemove', onCircleMove);
+                document.removeEventListener('mouseup', onCircleEnd);
+            }
+
+            function clearAllTimers() {
+                stopTargetTimeout();
+                if (spawnTimeoutId) { clearTimeout(spawnTimeoutId); spawnTimeoutId = null; }
+                cleanupTarget();
+                if (dragTargetEl) dragTargetEl = null;
+                isDragging = false;
+                currentTargetType = null;
+                doubleTapCount = 0;
+                rapidTapCount = 0;
+                targetArea.classList.remove('dragging');
+                document.removeEventListener('mousemove', onDragMove);
+                document.removeEventListener('mouseup', onDragEnd);
+            }
+
+            function detachTargetEvents(el) {
+                el.removeEventListener('mousedown', onTargetMouseDown);
+                el.removeEventListener('click', onTargetClick);
+                el.removeEventListener('contextmenu', onTargetContextMenu);
+            }
+
+            function gameOver(reason) {
+                if (!gameActive) return;
+                gameActive = false;
+                clearAllTimers();
+                targetArea.innerHTML = '';
+                const placeholder = document.createElement('div');
+                placeholder.style.color = 'var(--text-faint)';
+                placeholder.style.userSelect = 'none';
+                placeholder.style.fontSize = '1.2rem';
+                placeholder.textContent = '游戏结束 — 点击“新游戏”再来一局';
+                targetArea.appendChild(placeholder);
+                showMessage(`<strong>游戏结束！</strong> ${reason} 最终得分：${score}，最高连击：${maxCombo}。`, true);
+                document.getElementById('btn-new').disabled = false;
+            }
+
+            function loseLife(reason = '操作失误！') {
+                if (!gameActive) return;
+                lives -= difficulty.lifeDeduct;
+                combo = 0;
+                if (lives <= 0) {
+                    lives = 0;
+                    updateStats();
+                    gameOver(reason);
+                    return;
+                }
+                updateStats();
+                showMessage(`<strong>${reason}</strong> 生命 -${difficulty.lifeDeduct}`, true);
+                playBeep('miss');
+            }
+
+            function hitTarget(points, msg) {
+                if (!gameActive || !currentTarget) return false;
+                score += points;
+                combo += 1;
+                if (combo > maxCombo) maxCombo = combo;
+                updateStats();
+                playBeep('hit');
+                showMessage(msg, false, true);
+                cleanupTarget();
+                stopTargetTimeout();
+                doubleTapCount = 0;
+                rapidTapCount = 0;
+                if (gameActive) spawnTimeoutId = setTimeout(spawnTarget, 100);
+                return true;
+            }
+
+            // ===== 生成靶心 =====
+            function spawnTarget() {
+                if (!gameActive) return;
+                cleanupTarget();
+                stopTargetTimeout();
+                doubleTapCount = 0;
+                rapidTapCount = 0;
+
+                const areaRect = targetArea.getBoundingClientRect();
+                const size = difficulty.targetSize;
+                const maxX = areaRect.width - size;
+                const maxY = areaRect.height - size;
+                if (maxX <= 0 || maxY <= 0) {
+                    spawnTimeoutId = setTimeout(spawnTarget, 100);
+                    return;
+                }
+
+                const types = ['normal', 'right', 'drag', 'double', 'hold', 'circle', 'rapid', 'swipeH', 'swipeV'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                currentTargetType = type;
+
+                const x = Math.random() * maxX;
+                const y = Math.random() * maxY;
+                const centerX = x + size / 2;
+                const centerY = y + size / 2;
+
+                if (type === 'drag') {
+                    const zoneSize = size + 10;
+                    const maxDropX = areaRect.width - zoneSize;
+                    const maxDropY = areaRect.height - zoneSize;
+                    let dropX = 0, dropY = 0;
+                    for (let attempt = 0; attempt < 15; attempt++) {
+                        dropX = Math.random() * Math.max(0, maxDropX);
+                        dropY = Math.random() * Math.max(0, maxDropY);
+                        const dist = Math.hypot((dropX + zoneSize / 2) - centerX, (dropY + zoneSize / 2) - centerY);
+                        if (dist > size * 1.6) break;
+                    }
+                    const zone = document.createElement('div');
+                    zone.className = 'drop-zone';
+                    zone.style.width = zoneSize + 'px';
+                    zone.style.height = zoneSize + 'px';
+                    zone.style.left = dropX + 'px';
+                    zone.style.top = dropY + 'px';
+                    zone.textContent = '拖到这里';
+                    targetArea.appendChild(zone);
+                    currentDropZone = zone;
+                }
+
+                if (type === 'swipeH') {
+                    const goRight = Math.random() < 0.5;
+                    const endX = goRight ? (areaRect.width - 20) : 20;
+                    const trackWidth = Math.abs(endX - centerX);
+                    if (trackWidth < size * 1.5) {
+                        spawnTimeoutId = setTimeout(spawnTarget, 50);
+                        return;
+                    }
+                    const line = document.createElement('div');
+                    line.className = 'track-line horizontal';
+                    line.style.left = Math.min(centerX, endX) + 'px';
+                    line.style.top = (centerY - 3) + 'px';
+                    line.style.width = trackWidth + 'px';
+                    targetArea.appendChild(line);
+                    currentTrackEls.push(line);
+
+                    const startDot = document.createElement('div');
+                    startDot.className = 'track-end horizontal';
+                    startDot.style.left = (centerX - 9) + 'px';
+                    startDot.style.top = (centerY - 9) + 'px';
+                    startDot.style.opacity = '0.4';
+                    targetArea.appendChild(startDot);
+                    currentTrackEls.push(startDot);
+
+                    const endDot = document.createElement('div');
+                    endDot.className = 'track-end horizontal target-end';
+                    endDot.style.left = (endX - 12) + 'px';
+                    endDot.style.top = (centerY - 12) + 'px';
+                    const endLabel = document.createElement('span');
+                    endLabel.className = 'end-label';
+                    endLabel.textContent = goRight ? '→' : '←';
+                    endDot.appendChild(endLabel);
+                    targetArea.appendChild(endDot);
+                    currentTrackEls.push(endDot);
+
+                    swipeTrack = {
+                        axis: 'h',
+                        startX: x, startY: y,
+                        centerY: centerY,
+                        endCenterX: endX,
+                        dir: goRight ? 1 : -1,
+                        size: size
+                    };
+                }
+                if (type === 'swipeV') {
+                    const goDown = Math.random() < 0.5;
+                    const endY = goDown ? (areaRect.height - 20) : 20;
+                    const trackHeight = Math.abs(endY - centerY);
+                    if (trackHeight < size * 1.5) {
+                        spawnTimeoutId = setTimeout(spawnTarget, 50);
+                        return;
+                    }
+                    const line = document.createElement('div');
+                    line.className = 'track-line vertical';
+                    line.style.top = Math.min(centerY, endY) + 'px';
+                    line.style.left = (centerX - 3) + 'px';
+                    line.style.height = trackHeight + 'px';
+                    targetArea.appendChild(line);
+                    currentTrackEls.push(line);
+
+                    const startDot = document.createElement('div');
+                    startDot.className = 'track-end vertical';
+                    startDot.style.left = (centerX - 11) + 'px';
+                    startDot.style.top = (centerY - 11) + 'px';
+                    startDot.style.opacity = '0.4';
+                    targetArea.appendChild(startDot);
+                    currentTrackEls.push(startDot);
+
+                    const endDot = document.createElement('div');
+                    endDot.className = 'track-end vertical target-end';
+                    endDot.style.left = (centerX - 14) + 'px';
+                    endDot.style.top = (endY - 14) + 'px';
+                    const endLabel = document.createElement('span');
+                    endLabel.className = 'end-label';
+                    endLabel.textContent = goDown ? '↓' : '↑';
+                    endDot.appendChild(endLabel);
+                    targetArea.appendChild(endDot);
+                    currentTrackEls.push(endDot);
+
+                    swipeTrack = {
+                        axis: 'v',
+                        startX: x, startY: y,
+                        centerX: centerX,
+                        endCenterY: endY,
+                        dir: goDown ? 1 : -1,
+                        size: size
+                    };
+                }
+
+                // 画圈靶心：显示起点提示
+                if (type === 'circle') {
+                    const hint = document.createElement('div');
+                    hint.className = 'circle-start-hint';
+                    hint.style.width = (size + 30) + 'px';
+                    hint.style.height = (size + 30) + 'px';
+                    hint.style.left = (x - 15) + 'px';
+                    hint.style.top = (y - 15) + 'px';
+                    targetArea.appendChild(hint);
+                    circleStartHintEl = hint;
+                    ensureDrawCanvas();
+                }
+
+                const target = document.createElement('div');
+                target.className = 'target';
+                const labels = {
+                    normal: '左键', right: '右键', drag: '拖拽',
+                    double: '点两次', hold: '按住不放', circle: '画圈',
+                    rapid: '点3次', swipeH: '沿横线拖', swipeV: '沿竖线拖'
+                };
+                target.classList.add({
+                    normal: 'normal', right: 'right-click', drag: 'drag-target',
+                    double: 'double-click', hold: 'hold-charge', circle: 'circle-gesture',
+                    rapid: 'rapid-tap', swipeH: 'swipe-h', swipeV: 'swipe-v'
+                }[type]);
+                target.style.width = size + 'px';
+                target.style.height = size + 'px';
+                target.style.left = x + 'px';
+                target.style.top = y + 'px';
+                target.style.fontSize = Math.floor(size * 0.4) + 'px';
+                target.textContent = '🎯';
+                const label = document.createElement('span');
+                label.className = 'op-label';
+                label.textContent = labels[type];
+                target.appendChild(label);
+
+                if (type === 'hold') {
+                    const ring = document.createElement('div');
+                    ring.className = 'charge-ring';
+                    target.appendChild(ring);
+                }
+                if (type === 'double') {
+                    const dots = document.createElement('div');
+                    dots.className = 'tap-dots';
+                    dots.innerHTML = '<div class="tap-dot"></div><div class="tap-dot"></div>';
+                    dots.style.cssText = 'position:absolute;bottom:-24px;left:50%;transform:translateX(-50%);display:flex;gap:4px;';
+                    target.appendChild(dots);
+                }
+                if (type === 'rapid') {
+                    const prog = document.createElement('div');
+                    prog.className = 'tap-progress';
+                    target.appendChild(prog);
+                    const cnt = document.createElement('div');
+                    cnt.className = 'tap-count';
+                    cnt.textContent = '0';
+                    target.appendChild(cnt);
+                }
+                if (type === 'swipeH') {
+                    const arr = document.createElement('div');
+                    arr.className = 'swipe-arrow';
+                    arr.textContent = '↔';
+                    target.appendChild(arr);
+                }
+                if (type === 'swipeV') {
+                    const arr = document.createElement('div');
+                    arr.className = 'swipe-arrow';
+                    arr.textContent = '↕';
+                    target.appendChild(arr);
+                }
+
+                target.addEventListener('mousedown', onTargetMouseDown);
+                target.addEventListener('click', onTargetClick);
+                target.addEventListener('contextmenu', onTargetContextMenu);
+
+                targetArea.appendChild(target);
+                currentTarget = target;
+                circleTargetEl = target;
+
+                startTargetTimeout();
+            }
+
+            // ===== 画圈轨迹检查 =====
+            function checkCircleCompletion() {
+                if (circlePoints.length < 15) return false;
+                const first = circlePoints[0];
+                const last = circlePoints[circlePoints.length - 1];
+                const closeDist = Math.hypot(last.x - first.x, last.y - first.y);
+                if (closeDist > 40) return false;
+
+                // 计算轨迹包围盒
+                let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+                for (const p of circlePoints) {
+                    if (p.x < minX) minX = p.x;
+                    if (p.x > maxX) maxX = p.x;
+                    if (p.y < minY) minY = p.y;
+                    if (p.y > maxY) maxY = p.y;
+                }
+                const bboxW = maxX - minX;
+                const bboxH = maxY - minY;
+                // 圈要有一定大小
+                if (bboxW < 30 || bboxH < 30) return false;
+
+                // 检查是否大致围绕靶心中心
+                const tRect = circleTargetEl.getBoundingClientRect();
+                const areaRect = targetArea.getBoundingClientRect();
+                const tcx = tRect.left - areaRect.left + tRect.width / 2;
+                const tcy = tRect.top - areaRect.top + tRect.height / 2;
+                const centerDist = Math.hypot((minX + maxX) / 2 - tcx, (minY + maxY) / 2 - tcy);
+                if (centerDist > Math.max(bboxW, bboxH)) return false;
+
+                // 检查是否有足够多的点围绕靶心
+                const radius = Math.max(bboxW, bboxH) / 2;
+                let farCount = 0;
+                for (const p of circlePoints) {
+                    const d = Math.hypot(p.x - tcx, p.y - tcy);
+                    if (d > radius * 0.5 && d < radius * 2) farCount++;
+                }
+                return farCount > circlePoints.length * 0.3;
+            }
+
+            // ===== 按住蓄力松手检测 =====
+            function onHoldGlobalEnd(e) {
+                if (!holdActive || currentTargetType !== 'hold') return;
+                if (e.button !== undefined && e.button !== 0) return;
+                if (holdActive && holdProgress < 1) {
+                    holdActive = false;
+                    holdMouseDown = false;
+                    if (holdTimer) { clearInterval(holdTimer); holdTimer = null; }
+                    if (currentTarget) {
+                        currentTarget.classList.remove('charging');
+                        const ring = currentTarget.querySelector('.charge-ring');
+                        if (ring) ring.style.background = '';
+                    }
+                    playBeep('holdFail');
+                    cancelCurrentTarget('松手太早！需要按住不放直到蓄满');
+                    if (gameActive) spawnTimeoutId = setTimeout(spawnTarget, 300);
+                }
+            }
+
+            // ===== 点击事件 =====
+            function onTargetClick(e) {
+                if (!gameActive || !currentTarget) return;
+                if (e.button !== 0) return;
+                e.stopPropagation();
+
+                if (currentTargetType === 'normal') {
+                    hitTarget(1, `<strong>左键命中蓝色靶心！</strong> +1 分`);
+                }
+                else if (currentTargetType === 'double') {
+                    doubleTapCount++;
+                    playBeep('tap');
+                    const dots = currentTarget.querySelectorAll('.tap-dot');
+                    if (dots.length >= 2 && doubleTapCount <= 2) {
+                        dots[doubleTapCount - 1]?.classList.add('filled');
+                    }
+                    const label = currentTarget.querySelector('.op-label');
+                    if (doubleTapCount === 1) {
+                        if (label) label.textContent = '再点一次';
+                        showMessage('紫色靶心：再点一次就成功！', false);
+                    }
+                    if (doubleTapCount >= 2) {
+                        hitTarget(3, `<strong>两次点击命中紫色靶心！</strong> +3 分`);
+                    }
+                }
+                else if (currentTargetType === 'rapid') {
+                    rapidTapCount++;
+                    playBeep('tap');
+                    const cnt = currentTarget.querySelector('.tap-count');
+                    const prog = currentTarget.querySelector('.tap-progress');
+                    if (cnt) cnt.textContent = rapidTapCount;
+                    if (prog) {
+                        const pct = Math.min(rapidTapCount / RAPID_TAP_NEEDED, 1);
+                        const angle = pct * 360;
+                        prog.style.background = `conic-gradient(rgba(255,255,255,0.9) ${angle}deg, transparent ${angle}deg)`;
+                        prog.style.opacity = '1';
+                    }
+                    if (currentTarget) currentTarget.classList.add('tapping');
+                    if (rapidTapCount >= RAPID_TAP_NEEDED) {
+                        hitTarget(4, `<strong>快速点击3次完成！</strong> +4 分`);
+                    }
+                }
+                else if (currentTargetType === 'right') {
+                    cancelCurrentTarget('操作错误！应右键点击金色靶心');
+                }
+            }
+
+            function onTargetContextMenu(e) {
+                e.preventDefault();
+                if (!gameActive || !currentTarget) return;
+                if (currentTargetType === 'right') {
+                    hitTarget(2, `<strong>右键命中金色靶心！</strong> +2 分`);
+                } else if (currentTargetType === 'normal') {
+                    cancelCurrentTarget('操作错误！应左键点击蓝色靶心');
+                } else if (currentTargetType === 'double') {
+                    cancelCurrentTarget('操作错误！应左键点击紫色靶心两次');
+                }
+            }
+
+            // ===== 靶心 mousedown =====
+            function onTargetMouseDown(e) {
+                if (!gameActive || !currentTarget) return;
+                if (e.button !== 0) return;
+
+                if (currentTargetType === 'drag') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    isDragging = true;
+                    dragTargetEl = currentTarget;
+                    targetArea.classList.add('dragging');
+                    const rect = currentTarget.getBoundingClientRect();
+                    dragOffsetX = e.clientX - rect.left;
+                    dragOffsetY = e.clientY - rect.top;
+                    playBeep('dragStart');
+                    pauseTargetTimeout();
+                    document.addEventListener('mousemove', onDragMove);
+                    document.addEventListener('mouseup', onDragEnd);
+                }
+                else if (currentTargetType === 'hold') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (holdActive) return;
+                    holdActive = true;
+                    holdMouseDown = true;
+                    currentTarget.classList.add('charging');
+                    const ring = currentTarget.querySelector('.charge-ring');
+                    holdStartTime = performance.now();
+                    playBeep('charge');
+                    pauseTargetTimeout();
+                    document.addEventListener('mouseup', onHoldGlobalEnd);
+                    document.addEventListener('mouseleave', onHoldGlobalEnd);
+
+                    holdTimer = setInterval(() => {
+                        if (!gameActive || !currentTarget || currentTargetType !== 'hold') {
+                            clearInterval(holdTimer); holdTimer = null; holdActive = false;
+                            document.removeEventListener('mouseup', onHoldGlobalEnd);
+                            document.removeEventListener('mouseleave', onHoldGlobalEnd);
+                            resumeTargetTimeout();
+                            return;
+                        }
+                        if (!holdMouseDown) {
+                            clearInterval(holdTimer); holdTimer = null;
+                            holdActive = false;
+                            document.removeEventListener('mouseup', onHoldGlobalEnd);
+                            document.removeEventListener('mouseleave', onHoldGlobalEnd);
+                            resumeTargetTimeout();
+                            return;
+                        }
+                        const elapsed = performance.now() - holdStartTime;
+                        holdProgress = Math.min(elapsed / HOLD_DURATION, 1);
+                        if (ring) {
+                            const angle = holdProgress * 360;
+                            ring.style.background = `conic-gradient(rgba(255,255,255,0.9) ${angle}deg, transparent ${angle}deg)`;
+                        }
+                        if (holdProgress >= 1) {
+                            clearInterval(holdTimer); holdTimer = null;
+                            holdActive = false;
+                            holdMouseDown = false;
+                            document.removeEventListener('mouseup', onHoldGlobalEnd);
+                            document.removeEventListener('mouseleave', onHoldGlobalEnd);
+                            if (currentTarget && currentTargetType === 'hold') {
+                                hitTarget(4, `<strong>蓄力成功！</strong> +4 分`);
+                            }
+                        }
+                    }, 30);
+                }
+                else if (currentTargetType === 'circle') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // 初始化画圈
+                    ensureDrawCanvas();
+                    circleTracking = true;
+                    circleMoved = false;
+                    circlePoints = [];
+                    const rect = targetArea.getBoundingClientRect();
+                    const startPt = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+                    circlePoints.push(startPt);
+                    circleStartPoint = startPt;
+
+                    if (currentTarget) currentTarget.classList.add('drawing');
+                    if (circleStartHintEl) circleStartHintEl.style.opacity = '0.2';
+                    playBeep('tap');
+                    pauseTargetTimeout();
+                    document.addEventListener('mousemove', onCircleMove);
+                    document.addEventListener('mouseup', onCircleEnd);
+                }
+                else if (currentTargetType === 'swipeH' || currentTargetType === 'swipeV') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!swipeTrack) return;
+                    swipeTracking = true;
+                    swipeEl = currentTarget;
+                    swipeTargetType = currentTargetType;
+                    playBeep('swipe');
+                    pauseTargetTimeout();
+                    document.addEventListener('mousemove', onSwipeMove);
+                    document.addEventListener('mouseup', onSwipeEnd);
+                }
+            }
+
+            // ===== 拖拽 =====
+            function onDragMove(e) {
+                if (!isDragging || !dragTargetEl || !currentTarget) return;
+                e.preventDefault();
+                const areaRect = targetArea.getBoundingClientRect();
+                let newLeft = e.clientX - areaRect.left - dragOffsetX;
+                let newTop = e.clientY - areaRect.top - dragOffsetY;
+                const size = difficulty.targetSize;
+                newLeft = Math.max(0, Math.min(newLeft, areaRect.width - size));
+                newTop = Math.max(0, Math.min(newTop, areaRect.height - size));
+                dragTargetEl.style.left = newLeft + 'px';
+                dragTargetEl.style.top = newTop + 'px';
+            }
+
+            function onDragEnd(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                const target = dragTargetEl;
+                const targetType = currentTargetType;
+                document.removeEventListener('mousemove', onDragMove);
+                document.removeEventListener('mouseup', onDragEnd);
+                targetArea.classList.remove('dragging');
+                isDragging = false;
+                dragTargetEl = null;
+
+                if (!target || !currentTarget || targetType !== 'drag') return;
+
+                if (currentDropZone) {
+                    const dropRect = currentDropZone.getBoundingClientRect();
+                    const targetRect = target.getBoundingClientRect();
+                    const tcx = targetRect.left + targetRect.width / 2;
+                    const tcy = targetRect.top + targetRect.height / 2;
+                    const dcx = dropRect.left + dropRect.width / 2;
+                    const dcy = dropRect.top + dropRect.height / 2;
+                    const dist = Math.hypot(tcx - dcx, tcy - dcy);
+                    if (dist < dropRect.width / 2 + 8) {
+                        playBeep('dragDrop');
+                        hitTarget(3, `<strong>拖拽成功！</strong> +3 分`);
+                        return;
+                    }
+                }
+
+                cancelCurrentTarget('拖拽失败！松手了但未到光圈');
+                if (gameActive) spawnTimeoutId = setTimeout(spawnTarget, 300);
+            }
+
+            // ===== 画圈（实时绘制轨迹）=====
+            function onCircleMove(e) {
+                if (!circleTracking || !currentTarget || currentTargetType !== 'circle') return;
+                e.preventDefault();
+                const rect = targetArea.getBoundingClientRect();
+                const px = e.clientX - rect.left;
+                const py = e.clientY - rect.top;
+                circlePoints.push({ x: px, y: py });
+
+                if (!circleMoved && circlePoints.length > 3) {
+                    const first = circlePoints[0];
+                    const last = circlePoints[circlePoints.length - 1];
+                    if (Math.hypot(last.x - first.x, last.y - first.y) > 8) circleMoved = true;
+                }
+
+                // 实时绘制轨迹
+                drawTrail();
+
+                // 检查是否完成
+                if (circleMoved && checkCircleCompletion()) {
+                    circleTracking = false;
+                    document.removeEventListener('mousemove', onCircleMove);
+                    document.removeEventListener('mouseup', onCircleEnd);
+                    playBeep('circle');
+                    // 保留轨迹短暂显示后消失
+                    setTimeout(() => {
+                        if (drawCanvas) drawCanvas.classList.remove('visible');
+                    }, 200);
+                    hitTarget(5, `<strong>画圈成功！</strong> +5 分`);
+                }
+            }
+
+            function onCircleEnd(e) {
+                if (!circleTracking) return;
+                e.preventDefault();
+                circleTracking = false;
+                document.removeEventListener('mousemove', onCircleMove);
+                document.removeEventListener('mouseup', onCircleEnd);
+                clearDrawCanvas();
+                if (circleStartHintEl) { circleStartHintEl.remove(); circleStartHintEl = null; }
+                if (currentTarget) currentTarget.classList.remove('drawing');
+
+                if (currentTarget && currentTargetType === 'circle') {
+                    if (!circleMoved) {
+                        cancelCurrentTarget('画圈失败！松手太早，还没画');
+                    } else {
+                        cancelCurrentTarget('画圈失败！松手太早，圈未闭合');
+                    }
+                    if (gameActive) spawnTimeoutId = setTimeout(spawnTarget, 300);
+                }
+                circlePoints = [];
+                circleStartPoint = null;
+            }
+
+            // ===== 轨道滑动 =====
+            function onSwipeMove(e) {
+                if (!swipeTracking || !swipeEl || !currentTarget || !swipeTrack) return;
+                e.preventDefault();
+                const rect = targetArea.getBoundingClientRect();
+                const size = swipeTrack.size;
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                if (swipeTrack.axis === 'h') {
+                    let newCenterX = mouseX;
+                    const minC = Math.min(swipeTrack.startX + size / 2, swipeTrack.endCenterX);
+                    const maxC = Math.max(swipeTrack.startX + size / 2, swipeTrack.endCenterX);
+                    newCenterX = Math.max(minC, Math.min(maxC, newCenterX));
+                    const newLeft = newCenterX - size / 2;
+                    const newTop = swipeTrack.centerY - size / 2;
+                    swipeEl.style.left = newLeft + 'px';
+                    swipeEl.style.top = newTop + 'px';
+
+                    const dist = Math.abs(newCenterX - swipeTrack.endCenterX);
+                    if (dist < 15) {
+                        swipeTracking = false;
+                        document.removeEventListener('mousemove', onSwipeMove);
+                        document.removeEventListener('mouseup', onSwipeEnd);
+                        playBeep('swipe');
+                        hitTarget(4, `<strong>沿横线拖到端点成功！</strong> +4 分`);
+                        swipeEl = null;
+                        swipeTrack = null;
+                        return;
+                    }
+                } else {
+                    let newCenterY = mouseY;
+                    const minC = Math.min(swipeTrack.startY + size / 2, swipeTrack.endCenterY);
+                    const maxC = Math.max(swipeTrack.startY + size / 2, swipeTrack.endCenterY);
+                    newCenterY = Math.max(minC, Math.min(maxC, newCenterY));
+                    const newLeft = swipeTrack.centerX - size / 2;
+                    const newTop = newCenterY - size / 2;
+                    swipeEl.style.left = newLeft + 'px';
+                    swipeEl.style.top = newTop + 'px';
+
+                    const dist = Math.abs(newCenterY - swipeTrack.endCenterY);
+                    if (dist < 15) {
+                        swipeTracking = false;
+                        document.removeEventListener('mousemove', onSwipeMove);
+                        document.removeEventListener('mouseup', onSwipeEnd);
+                        playBeep('swipe');
+                        hitTarget(4, `<strong>沿竖线拖到端点成功！</strong> +4 分`);
+                        swipeEl = null;
+                        swipeTrack = null;
+                        return;
+                    }
+                }
+            }
+
+            function onSwipeEnd(e) {
+                if (!swipeTracking) return;
+                e.preventDefault();
+                swipeTracking = false;
+                document.removeEventListener('mousemove', onSwipeMove);
+                document.removeEventListener('mouseup', onSwipeEnd);
+                if (currentTarget && (currentTargetType === 'swipeH' || currentTargetType === 'swipeV')) {
+                    cancelCurrentTarget('滑动失败！松手了但没拖到端点');
+                    if (gameActive) spawnTimeoutId = setTimeout(spawnTarget, 300);
+                }
+                swipeEl = null;
+                swipeTrack = null;
+            }
+
+            function cancelCurrentTarget(reason) {
+                if (!gameActive) return;
+                cleanupTarget();
+                stopTargetTimeout();
+                doubleTapCount = 0;
+                rapidTapCount = 0;
+                loseLife(reason);
+                if (gameActive) spawnTimeoutId = setTimeout(spawnTarget, 350);
+            }
+
+            targetArea.addEventListener('click', (e) => {
+                if (!gameActive) return;
+                if (e.target === targetArea || e.target.id === 'placeholder') {
+                    if (currentTarget && !isDragging && !holdActive && !swipeTracking && !circleTracking) {
+                        if (currentTargetType === 'drag') {
+                            cancelCurrentTarget('拖拽失败！');
+                        } else if (currentTargetType === 'circle') {
+                            cancelCurrentTarget('画圈失败！');
+                        } else if (currentTargetType === 'swipeH' || currentTargetType === 'swipeV') {
+                            cancelCurrentTarget('滑动失败！');
+                        } else if (currentTargetType !== 'hold') {
+                            cancelCurrentTarget('打空了！');
+                        }
+                    }
+                }
+            });
+
+            targetArea.addEventListener('contextmenu', (e) => e.preventDefault());
+
+            function startGame() {
+                gameActive = true;
+                score = 0;
+                lives = 3;
+                combo = 0;
+                maxCombo = 0;
+                updateStats();
+                clearAllTimers();
+                targetArea.innerHTML = '';
+                showMessage('游戏开始！九种颜色对应九种操作，加油！', false);
+                playBeep('hit');
+                difficulty = DIFFICULTIES[currentDifficulty];
+                difficultyLabel.textContent = difficulty.name;
+                difficultyBadge.textContent = difficulty.name;
+                if (spawnTimeoutId) clearTimeout(spawnTimeoutId);
+                spawnTimeoutId = setTimeout(spawnTarget, 100);
+            }
+
+            function resetGame() {
+                gameActive = false;
+                clearAllTimers();
+                targetArea.innerHTML = '';
+                const placeholder = document.createElement('div');
+                placeholder.style.color = 'var(--text-faint)';
+                placeholder.style.userSelect = 'none';
+                placeholder.style.fontSize = '1.2rem';
+                placeholder.textContent = '点击“新游戏”开始';
+                targetArea.appendChild(placeholder);
+                score = 0;
+                lives = 3;
+                combo = 0;
+                maxCombo = 0;
+                updateStats();
+                showMessage('<strong>准备开始？</strong> 九种颜色靶心对应九种操作。操作错误或超时会扣生命。按住类操作会暂停超时，但松手就失败！', false);
+                document.getElementById('btn-new').disabled = false;
+            }
+
+            document.getElementById('btn-new').addEventListener('click', () => {
+                initAudio();
+                startGame();
+            });
+            document.querySelector('[data-action="newGame"]').addEventListener('click', () => {
+                initAudio();
+                startGame();
+            });
+            document.querySelector('[data-action="difficulty"]').addEventListener('click', () => {
+                const keys = Object.keys(DIFFICULTIES);
+                let idx = keys.indexOf(currentDifficulty);
+                idx = (idx + 1) % keys.length;
+                currentDifficulty = keys[idx];
+                difficulty = DIFFICULTIES[currentDifficulty];
+                difficultyLabel.textContent = difficulty.name;
+                difficultyBadge.textContent = difficulty.name;
+                if (gameActive) {
+                    showMessage(`难度已切换至 <strong>${difficulty.name}</strong>，新参数立即生效。`, false);
+                } else {
+                    showMessage(`难度已切换至 <strong>${difficulty.name}</strong>。点击新游戏开始。`, false);
+                }
+            });
+            document.querySelector('[data-action="toggleSound"]').addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                soundLabel.textContent = soundEnabled ? '开' : '关';
+                showMessage(`声音已${soundEnabled ? '开启' : '关闭'}。`, false);
+            });
+
+            resetGame();
+
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                if (!gameActive) return;
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if (!gameActive) return;
+                    if (currentTarget) {
+                        if (isDragging) {
+                            document.removeEventListener('mousemove', onDragMove);
+                            document.removeEventListener('mouseup', onDragEnd);
+                            isDragging = false;
+                            dragTargetEl = null;
+                            targetArea.classList.remove('dragging');
+                        }
+                        if (holdTimer) { clearInterval(holdTimer); holdTimer = null; holdActive = false; holdMouseDown = false; }
+                        if (circleTracking) { circleTracking = false; document.removeEventListener('mousemove', onCircleMove); document.removeEventListener('mouseup', onCircleEnd); }
+                        if (swipeTracking) { swipeTracking = false; document.removeEventListener('mousemove', onSwipeMove); document.removeEventListener('mouseup', onSwipeEnd); }
+                        document.removeEventListener('mouseup', onHoldGlobalEnd);
+                        document.removeEventListener('mouseleave', onHoldGlobalEnd);
+                        if (spawnTimeoutId) clearTimeout(spawnTimeoutId);
+                        spawnTimeoutId = setTimeout(spawnTarget, 150);
+                    }
+                }, 300);
+            });
+
+        })();
+    </script>
+</body>
+</html>
