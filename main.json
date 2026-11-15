@@ -1,0 +1,88 @@
+{
+  "title": "⚔️ 角色擂台赛 · 极简AI",
+  "subtitle": "JSON 驱动 · 地图自定义 · SVG 导入导出 · 自动对战",
+  "accent": "blue",
+  "speed": 1,
+  "mapWidth": 16,
+  "mapHeight": 10,
+  "map": {
+    "grid": [
+      [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, "#60a5fa", "#60a5fa", null, null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, "#60a5fa", "#60a5fa", null, null, null, null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, "#22c55e", "#22c55e", "#22c55e", null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, "#22c55e", "#22c55e", "#22c55e", null, null, null, null, null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null, "#ef4444", "#ef4444", null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null, "#ef4444", "#ef4444", null, null, null, null],
+      [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+    ]
+  },
+  "fighters": [
+    {
+      "id": "knight",
+      "name": "圣殿骑士",
+      "icon": "🛡️",
+      "color": "#2563eb",
+      "team": "blue",
+      "hp": 120,
+      "atk": 18,
+      "def": 12,
+      "spd": 8,
+      "skills": [
+        { "name": "盾击", "type": "attack", "mult": 1.0, "desc": "坚实的一击" },
+        { "name": "圣光斩", "type": "attack", "mult": 1.35, "crit": 0.2, "desc": "有几率暴击" },
+        { "name": "治疗祷言", "type": "heal", "amount": 25, "desc": "恢复自身生命" }
+      ]
+    },
+    {
+      "id": "rogue",
+      "name": "暗影刺客",
+      "icon": "🗡️",
+      "color": "#7c3aed",
+      "team": "blue",
+      "hp": 100,
+      "atk": 21,
+      "def": 8,
+      "spd": 14,
+      "skills": [
+        { "name": "背刺", "type": "attack", "mult": 1.2, "crit": 0.3, "desc": "高暴击率" },
+        { "name": "毒刃", "type": "attack", "mult": 0.85, "poison": true, "desc": "附带中毒持续伤害" },
+        { "name": "闪避", "type": "buff", "defUp": 0.5, "desc": "本回合提升防御" }
+      ]
+    },
+    {
+      "id": "mage",
+      "name": "火焰法师",
+      "icon": "🔥",
+      "color": "#ea580c",
+      "team": "red",
+      "hp": 95,
+      "atk": 24,
+      "def": 6,
+      "spd": 10,
+      "skills": [
+        { "name": "火球术", "type": "attack", "mult": 1.1, "desc": "灼热的火球" },
+        { "name": "炎爆", "type": "attack", "mult": 1.6, "crit": 0.25, "desc": "高风险高伤害" },
+        { "name": "冥想", "type": "heal", "amount": 18, "desc": "恢复少量生命" }
+      ]
+    },
+    {
+      "id": "paladin",
+      "name": "光明牧师",
+      "icon": "✨",
+      "color": "#16a34a",
+      "team": "red",
+      "hp": 110,
+      "atk": 14,
+      "def": 10,
+      "spd": 9,
+      "skills": [
+        { "name": "圣光", "type": "attack", "mult": 1.0, "desc": "神圣伤害" },
+        { "name": "治愈之光", "type": "heal", "amount": 30, "desc": "恢复大量生命" },
+        { "name": "神圣护盾", "type": "buff", "defUp": 0.6, "desc": "大幅提升防御" }
+      ]
+    }
+  ]
+}
